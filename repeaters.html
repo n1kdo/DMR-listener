@@ -1,0 +1,429 @@
+<html>
+
+<style>
+BODY {
+    margin: 0;
+    border: 0;
+    font-family: sans-serif;
+}
+.notes {
+    font-size: 1em;
+    text-align: center;
+}
+.repeater-header {
+    background-color: #cff;
+    font-size: 2em;
+    font-weight: bold;
+    margin-block-end: 0;
+}   
+.talk-groups-table {
+    background-color: #cfc;
+    border-collapse: collapse;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.tg-name {
+    text-align: left;
+}
+.tg-number {
+    text-align: right;
+}
+
+.tabs {
+    Zborder-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.5);
+}
+.tab {
+    width: 100%;
+    color: white;
+    overflow: hidden;
+}
+.tab-label {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 1em;
+    background: #2c3e50;
+    font-weight: bold;
+    cursor: pointer;
+}
+.tab-label:hover {
+    background: #1a252f;
+}
+.tab-label::after {
+    content: ">";
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    -webkit-transition: all .35s;
+    transition: all .35s;
+}
+.tab-content {
+    background-color: #ccc;
+    max-height: 0;
+    padding: 0 1em;
+    color: black;
+    -webkit-transition: all .35s;
+    transition: all .35s;
+}
+input:checked + .tab-label {
+    background: black;
+}
+input:checked + .tab-label::after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+input:checked ~ .tab-content {
+    max-height: 200vh;
+    padding: 1em;
+}
+
+input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+.heading {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+</style>
+<body>
+<div class="heading">Metro Atlanta Area DMR Repeaters</div><div class="tabs"><div class="tab"><input type="checkbox" id="chck1"><label class="tab-label" for="chck1">W4BOC 441.8125 Stone Mountain GA Color Code 1, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide English</td><td class="tg-number">13</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR+ USA</td><td class="tg-number">133</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC313</td><td class="tg-number">313</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC314</td><td class="tg-number">314</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC315</td><td class="tg-number">315</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC316</td><td class="tg-number">316</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC317</td><td class="tg-number">317</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC318</td><td class="tg-number">318</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC319</td><td class="tg-number">319</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">USA</td><td class="tg-number">1776</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Florida State-wide</td><td class="tg-number">3112</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Ohio State-wide</td><td class="tg-number">3139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee State-wide</td><td class="tg-number">3147</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Northeast Region NY NJ VT MA CT NH RI ME</td><td class="tg-number">3172</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">QuadNet</td><td class="tg-number">31012</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">First Coast</td><td class="tg-number">31121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia ARES</td><td class="tg-number">31130</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia North</td><td class="tg-number">31134</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia Skywarn</td><td class="tg-number">31139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div><div class="tab"><input type="checkbox" id="chck2"><label class="tab-label" for="chck2">W4DOC 444.8250 Atlanta GA Color Code 10, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide English</td><td class="tg-number">13</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR+ USA</td><td class="tg-number">133</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC313</td><td class="tg-number">313</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC314</td><td class="tg-number">314</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC315</td><td class="tg-number">315</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC316</td><td class="tg-number">316</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC317</td><td class="tg-number">317</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC318</td><td class="tg-number">318</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC319</td><td class="tg-number">319</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">USA</td><td class="tg-number">1776</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Florida State-wide</td><td class="tg-number">3112</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Ohio State-wide</td><td class="tg-number">3139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee State-wide</td><td class="tg-number">3147</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Texas State-wide</td><td class="tg-number">3148</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC1</td><td class="tg-number">8951</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">QuadNet</td><td class="tg-number">31012</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">First Coast</td><td class="tg-number">31121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia ARES</td><td class="tg-number">31130</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia North</td><td class="tg-number">31134</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia Skywarn</td><td class="tg-number">31139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee Ten</td><td class="tg-number">314710</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div><div class="tab"><input type="checkbox" id="chck3"><label class="tab-label" for="chck3">W8RED 442.6000 Snellville, GA Color Code 3, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide German</td><td class="tg-number">10</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide English</td><td class="tg-number">13</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR+ USA</td><td class="tg-number">133</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC319</td><td class="tg-number">319</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC1</td><td class="tg-number">8951</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">QuadNet</td><td class="tg-number">31012</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee Ten</td><td class="tg-number">314710</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div><div class="tab"><input type="checkbox" id="chck4"><label class="tab-label" for="chck4">KD4KHO 434.400 Canton GA Color Code 3, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide German</td><td class="tg-number">10</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Florida State-wide</td><td class="tg-number">3112</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Tennessee State-wide</td><td class="tg-number">3147</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC1</td><td class="tg-number">8951</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">First Coast</td><td class="tg-number">31121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia North</td><td class="tg-number">31134</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+<p class="notes">limited coverage</p></div></div><div class="tab"><input type="checkbox" id="chck5"><label class="tab-label" for="chck5">N4TAW 443.7375 Between GA Color Code 3, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide English</td><td class="tg-number">13</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Florida State-wide</td><td class="tg-number">3112</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">New York State-wide</td><td class="tg-number">3136</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">South Carolina State-wide</td><td class="tg-number">3145</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee State-wide</td><td class="tg-number">3147</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia ARES</td><td class="tg-number">31130</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div><div class="tab"><input type="checkbox" id="chck6"><label class="tab-label" for="chck6">KA3JIJ 444.9500 Gainesville GA Color Code 1, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR+ USA</td><td class="tg-number">133</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC313</td><td class="tg-number">313</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC314</td><td class="tg-number">314</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC315</td><td class="tg-number">315</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC316</td><td class="tg-number">316</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC317</td><td class="tg-number">317</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC318</td><td class="tg-number">318</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC319</td><td class="tg-number">319</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">USA</td><td class="tg-number">1776</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Kentucky State-wide</td><td class="tg-number">3121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Massachusetts State-wide</td><td class="tg-number">3125</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Michigan State-wide</td><td class="tg-number">3126</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">New Hampshire State-wide</td><td class="tg-number">3133</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">New York State-wide</td><td class="tg-number">3136</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">South Carolina State-wide</td><td class="tg-number">3145</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee State-wide</td><td class="tg-number">3147</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Texas State-wide</td><td class="tg-number">3148</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Virginia State-wide</td><td class="tg-number">3151</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC1</td><td class="tg-number">8951</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">QuadNet</td><td class="tg-number">31012</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">First Coast</td><td class="tg-number">31121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia ARES</td><td class="tg-number">31130</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia North</td><td class="tg-number">31134</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia Skywarn</td><td class="tg-number">31139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div><div class="tab"><input type="checkbox" id="chck7"><label class="tab-label" for="chck7">KD4Z 442.9750 Sweat Mountain GA Color Code 1, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide German</td><td class="tg-number">10</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">World-wide English</td><td class="tg-number">13</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">World-wide Spanish</td><td class="tg-number">14</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR+ USA</td><td class="tg-number">133</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC313</td><td class="tg-number">313</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC314</td><td class="tg-number">314</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC315</td><td class="tg-number">315</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC316</td><td class="tg-number">316</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC317</td><td class="tg-number">317</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC318</td><td class="tg-number">318</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC319</td><td class="tg-number">319</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">USA</td><td class="tg-number">1776</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Delaware State-wide</td><td class="tg-number">3110</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">District of Columbia</td><td class="tg-number">3111</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Florida State-wide</td><td class="tg-number">3112</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Indiana State-wide</td><td class="tg-number">3118</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Kentucky State-wide</td><td class="tg-number">3121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Maryland State-wide</td><td class="tg-number">3124</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Massachusetts State-wide</td><td class="tg-number">3125</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Michigan State-wide</td><td class="tg-number">3126</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Minnesota State-wide</td><td class="tg-number">3127</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">New Hampshire State-wide</td><td class="tg-number">3133</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">New York State-wide</td><td class="tg-number">3136</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Ohio State-wide</td><td class="tg-number">3139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Pennsylvania State-wide</td><td class="tg-number">3142</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">South Carolina State-wide</td><td class="tg-number">3145</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Tennessee State-wide</td><td class="tg-number">3147</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Texas State-wide</td><td class="tg-number">3148</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Virginia State-wide</td><td class="tg-number">3151</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Wisconsin State-wide</td><td class="tg-number">3155</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Midwest Region ND SD NE MN IA MO WI IL MI IN OH</td><td class="tg-number">3169</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Northeast Region NY NJ VT MA CT NH RI ME</td><td class="tg-number">3172</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Mid-Atlantic Region PA WV VA MD DE DC</td><td class="tg-number">3173</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southern Plains Region KS OK TX</td><td class="tg-number">3175</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southwest Region CA NV AZ NM HI</td><td class="tg-number">3176</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Mountain Region AK WA OR ID MT WY UT CO</td><td class="tg-number">3177</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Fusion</td><td class="tg-number">3182</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Cactus</td><td class="tg-number">3185</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">PRN2</td><td class="tg-number">7762</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Dillo</td><td class="tg-number">8484</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Crossroads Indiana</td><td class="tg-number">8710</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC1</td><td class="tg-number">8951</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">QuadNet</td><td class="tg-number">31012</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">First Coast</td><td class="tg-number">31121</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia ARES</td><td class="tg-number">31130</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia North</td><td class="tg-number">31134</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia Skywarn</td><td class="tg-number">31139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div><div class="tab"><input type="checkbox" id="chck8"><label class="tab-label" for="chck8">W4KIP 146.730 Sweat Mountain, Marietta GA Color Code 1, Brandmeister network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Parrot (private call)</td><td class="tg-number">9990</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro BM</td><td class="tg-number">31131</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Brandmeister Parrot (private call)</td><td class="tg-number">9990</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+<p class="notes">Any Brandmeister talk group may be activated on Time Slot 1</p></div></div><div class="tab"><input type="checkbox" id="chck9"><label class="tab-label" for="chck9">W4KIP 444.775 Sweat Mountain, Marietta GA Color Code 1, Brandmeister network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Parrot (private call)</td><td class="tg-number">9990</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro BM</td><td class="tg-number">31131</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Brandmeister Parrot (private call)</td><td class="tg-number">9990</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+<p class="notes">Any Brandmeister talk group may be activated on Time Slot 1</p></div></div><div class="tab"><input type="checkbox" id="chck10"><label class="tab-label" for="chck10">W4KIP 444.050 Pine Log Mountain, Waleska, GA Color Code 1, Brandmeister network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Parrot (private call)</td><td class="tg-number">9990</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro BM</td><td class="tg-number">31131</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Brandmeister Parrot (private call)</td><td class="tg-number">9990</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+<p class="notes">Any Brandmeister talk group may be activated on Time Slot 1</p></div></div><div class="tab"><input type="checkbox" id="chck11"><label class="tab-label" for="chck11">NG4RF 444.6250 Sawnee Mountain GA Color Code 1, K4USD network</label><div class="tab-content"><table class="talk-groups-table" border="1">
+<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>
+<tr><td class="tg-name">DMR-MARC North America</td><td class="tg-number">1</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR-MARC World-wide</td><td class="tg-number">3</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Atlanta Metro</td><td class="tg-number">8</td><td class="tg-number">1</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">World-wide English</td><td class="tg-number">13</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister Worldwide</td><td class="tg-number">91</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Brandmeister North America</td><td class="tg-number">93</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">DMR+ USA</td><td class="tg-number">133</td><td class="tg-number">1</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Local 2</td><td class="tg-number">2</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">Local 9</td><td class="tg-number">9</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">TAC310</td><td class="tg-number">310</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC311</td><td class="tg-number">311</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC312</td><td class="tg-number">312</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC313</td><td class="tg-number">313</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC314</td><td class="tg-number">314</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC315</td><td class="tg-number">315</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC316</td><td class="tg-number">316</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC317</td><td class="tg-number">317</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC318</td><td class="tg-number">318</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC319</td><td class="tg-number">319</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">USA</td><td class="tg-number">1776</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Bridge</td><td class="tg-number">3100</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia State-wide</td><td class="tg-number">3113</td><td class="tg-number">2</td><td class="tg-number">static</td></tr>
+<tr><td class="tg-name">New Hampshire State-wide</td><td class="tg-number">3133</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Northeast Region NY NJ VT MA CT NH RI ME</td><td class="tg-number">3172</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Southeast Region AR LA KY TN MS AL GA FL NC SC</td><td class="tg-number">3174</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Fusion</td><td class="tg-number">3182</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TAC1</td><td class="tg-number">8951</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Parrot</td><td class="tg-number">9998</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">QuadNet</td><td class="tg-number">31012</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia ARES</td><td class="tg-number">31130</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia North</td><td class="tg-number">31134</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">Georgia Skywarn</td><td class="tg-number">31139</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+<tr><td class="tg-name">TGIF Network</td><td class="tg-number">31665</td><td class="tg-number">2</td><td class="tg-number"></td></tr>
+</table>
+</div></div></div></body></html>
