@@ -1,4 +1,4 @@
-#!/bin/python36
+#!/bin/python3
 import csv
 import datetime
 
@@ -21,14 +21,6 @@ def convert_elapsed(elapsed):
     if seconds < 10:
         seconds = '0%s' % seconds
     return '%s:%s:%s' % (hours, minutes, seconds)
-
-
-def Zconvert_timestamp(s):
-    try:
-        t = datetime.datetime.strptime(s[0:8] + s[12:], "%H:%M:%S %b %d").replace(year=2019)
-    except ValueError:
-        t = None
-    return t
 
 
 def convert_iso_timestamp(s):
@@ -115,12 +107,11 @@ def write_csv_moto_contacts(users):
             datafile.write(line + '\n')
 
 
-def write_repeater_html():
+def write_repeater_html(filename='repeaters.html'):
     """
     write data for web
     :return:
     """
-    filename = 'repeaters.html'
     with open(filename, 'w') as htmlfile:
         htmlfile.write('<html>\n')
         htmlfile.write("""
@@ -256,6 +247,74 @@ input {
         htmlfile.write('</body></html>\n')
 
 
+def write_peers_html(peers_list, heading='', filename='peers.html'):
+    with open(filename, 'w') as htmlfile:
+        htmlfile.write('<html>\n')
+        htmlfile.write("""
+<style>
+BODY {
+    margin: 0;
+    border: 0;
+    font-family: sans-serif;
+}
+.peers-table {
+    border-collapse: collapse;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.header-row {
+    background-color: #ccc;
+}
+.peer-row {
+    background-color: #cfc;
+}
+.talkgroup-row {
+    background-color: #cff;
+}
+TD {
+    padding: 2px;
+}
+.heading {
+    text-align:center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+</style>
+""")
+        htmlfile.write('<body>\n')
+        htmlfile.write('<div class="heading">' + heading + '</div>\n')
+        htmlfile.write('<div>\n')
+        htmlfile.write('<table class="peers-table" border="1">\n')
+        htmlfile.write('<tr class="header-row"><th>Peer ID</th><th>Callsign</th><th>Peer Name</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
+        for peer in peers_list:
+            htmlfile.write('<tr class="peer-row">')
+            htmlfile.write('<td align="right">{:6d}</td>'.format(peer['peer_id']))
+            htmlfile.write('<td>' + peer['peer_callsign'] + '</td>')
+            htmlfile.write('<td>' + peer['peer_name'] + '</td>')
+            htmlfile.write('<td align="right">' + str(peer['count']) + '</td>')
+            htmlfile.write('<td>' + convert_elapsed(peer['total_elapsed']) + '</td>')
+            htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(peer['last_heard']))
+            htmlfile.write('</tr>\n')
+            peer_talk_groups = peer['talk_groups']
+            all_talk_groups = list(peer_talk_groups.values())
+            # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
+            sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
+            for talk_group in sorted_talk_groups:
+                if talk_group['talk_group'].startswith('UnKnown'):
+                    continue
+                htmlfile.write('<tr class="talkgroup-row">')
+                htmlfile.write('<td colspan="2" align="right">{:6d}</td>'.format(talk_group['talk_group_number']))
+                htmlfile.write('<td>{:s}</td>'.format(talk_group['talk_group']))
+                htmlfile.write('<td align="right">{:5d}</td>'.format(talk_group['count']))
+                htmlfile.write('<td>' + convert_elapsed(talk_group['total_elapsed']) + '</td>')
+                htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td'.format(talk_group['last_heard']))
+                htmlfile.write('</tr>\n')
+        htmlfile.write('</table>')
+        htmlfile.write('</div>')
+        htmlfile.write('</body></html>\n')
+
+
 def validate_repeater_data(repeaters_list, peers_list):
     print('\nvaliding talkgroup lists...\n')
     for peer in peers_list:
@@ -267,7 +326,7 @@ def validate_repeater_data(repeaters_list, peers_list):
                 peer_talk_groups = peer['talk_groups']
                 for peer_talk_group in peer_talk_groups:
                     ptgn = peer_talk_groups[peer_talk_group]['talk_group_number']
-                    if ptgn == -1:
+                    if ptgn < 1:
                         continue
                     talk_group_found = False
                     for repeater_talk_group in repeater_talk_groups:
@@ -289,7 +348,14 @@ def update_usage(a_dict, call):
     if usage_dict is None:
         talk_group_data = talk_group_name_to_number_mapping['K4USD'].get(talk_group_name)
         if talk_group_data is None:
-            talk_group_number = -1
+            if talk_group_name.startswith('UnKnown Ipsc '):
+                invalid_number = safe_int(talk_group_name[13:])
+                talk_group_number = -invalid_number
+            elif talk_group_name.startswith('UnKnown Analog '):
+                invalid_number = safe_int(talk_group_name[15:])
+                talk_group_number = -invalid_number
+            else:
+                talk_group_number = 0
         else:
             talk_group_number = talk_group_data['tg']
         usage_dict = {'talk_group': talk_group_name,
@@ -337,10 +403,10 @@ def update_peer(a_dict, call):
 def print_peers(peers_list):
     print('%d Sources, sorted by elapsed time.' % len(peers_list))
     print()
-    print('   Peer ID Callsign             Peer Name                      Count    Elapsed    Last Heard UTC ')
-    print('---------- -------------------- ------------------------------ ----- ----------   ----------------')
+    print('   Peer ID Callsign             Peer Name                        Count    Elapsed   Last Heard UTC ')
+    print('---------- -------------------- ------------------------------   ----- ----------  ----------------')
     for peer in peers_list:
-        print('{:10d} {:<20s} {:<30s} {:5d} {:>10s}   {:%Y-%m-%d %H:%M}'
+        print('{:10d} {:<20s} {:<30s} {:7d} {:>10s}  {:%Y-%m-%d %H:%M}'
               .format(peer['peer_id'], peer['peer_callsign'], peer['peer_name'],
                       peer['count'], convert_elapsed(peer['total_elapsed']), peer['last_heard']))
         peer_talk_groups = peer['talk_groups']
@@ -350,7 +416,7 @@ def print_peers(peers_list):
         for talk_group in sorted_talk_groups:
             if talk_group['talk_group'].startswith('UnKnown'):
                 continue
-            print('                                * {:6d} {:<20s}  {:5d} {:>10s}   {:%Y-%m-%d %H:%M}'
+            print('                                * {:6d} {:<20s} {:8d} {:>10s}  {:%Y-%m-%d %H:%M}'
                   .format(talk_group['talk_group_number'],
                           talk_group['talk_group'],
                           talk_group['count'],
@@ -359,16 +425,16 @@ def print_peers(peers_list):
 
 
 def print_talkgroups(talkgroups_list):
-    print('----- talkgroups  heard -----')
-    print('tg name        TG # count   elapsed ')
-    print('------------ ------ ----- ----------')
+    print('---------- talkgroups heard ----------')
+    print('tg name          TG # count   elapsed ')
+    print('------------ -------- ----- ----------')
     for tg in talkgroups_list:
         talk_group_data = talk_group_name_to_number_mapping['K4USD'].get(tg['talk_group'])
         if talk_group_data is None:
             talk_group_number = -1
         else:
             talk_group_number = talk_group_data['tg']
-        print('%-12s %6d %5d %10s' % (tg['talk_group'],
+        print('%-12s %8d %5d %10s' % (tg['talk_group'],
                                       talk_group_number,
                                       tg['count'],
                                       convert_elapsed(tg['total_elapsed'])))
@@ -396,6 +462,109 @@ def print_users_detail1(users_list):
                           talk_group['count'],
                           convert_elapsed(talk_group['total_elapsed']),
                           talk_group['last_heard']))
+
+
+def write_users_html(users_list, heading='', filename='users.html'):
+    with open(filename, 'w') as htmlfile:
+        htmlfile.write('<html>\n')
+        htmlfile.write("""
+<style>
+BODY {
+    margin: 0;
+    border: 0;
+    font-family: sans-serif;
+}
+.users-table {
+    border-collapse: collapse;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.user-row {
+    background-color: #ccf;
+}
+.header-row {
+    background-color: #ccc;
+}
+.peer-row {
+    background-color: #cfc;
+}
+.peer-col-1 {
+    padding-left: 2em;
+}
+.tg-row {
+    background-color: #cff;
+}
+.tg-col-1 {
+    padding-left: 4em;
+}
+.unknown-tg {
+    color: red;
+}
+TD {
+    padding: 2px;
+}
+.heading {
+    text-align:center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.subhead {
+    text-align:center;
+    font-size: 0.85em;
+}
+</style>
+""")
+        htmlfile.write('<body>\n')
+        htmlfile.write('<div class="heading">' + heading + '</div>\n')
+        htmlfile.write('<div class="subhead">\n')
+        htmlfile.write('Usage by user, sorted by total elapsed time.<br>')
+        htmlfile.write('Users with low usage (count < 5, elapsed time < 10 seconds) are not shown on this report. ')
+        htmlfile.write('</div>')
+        htmlfile.write('<div>\n')
+        htmlfile.write('<table class="users-table" border="1">\n')
+        htmlfile.write('<tr class="header-row"><th>Call</th><th>Name</th><th>Contact ID</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
+        for user in users_list:
+            htmlfile.write('<tr class="user-row">')
+            htmlfile.write('<td>{:s}</td>'.format(user['radio_name']))
+            htmlfile.write('<td>{:s}</td>'.format(user['radio_username']))
+            htmlfile.write('<td align="right">{:d}</td>'.format(user['radio_id']))
+            htmlfile.write('<td align="right">{:d}</td>'.format(user['count']))
+            htmlfile.write('<td>{:s}'.format(convert_elapsed(user['total_elapsed'])))
+            htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(user['last_heard']))
+            htmlfile.write('</tr>\n')
+
+            user_peers = user['peers'] or {}
+            all_peers = list(user_peers.values())
+            sorted_peers = sorted(all_peers, key=lambda peer: peer['total_elapsed'], reverse=True)
+            for peer in sorted_peers:
+                htmlfile.write('<tr class="peer-row">')
+                htmlfile.write('<td class="peer-col-1" colspan="2">{:s}</td>'.format(peer['peer_callsign']))
+                htmlfile.write('<td align="right">{:d}</td>'.format(peer['peer_id']))
+                htmlfile.write('<td align="right">{:d}</td>'.format(peer['count']))
+                htmlfile.write('<td>{:s}'.format(convert_elapsed(peer['total_elapsed'])))
+                htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(peer['last_heard']))
+                htmlfile.write('</tr>\n')
+
+                all_talk_groups = list(peer['talk_groups'].values())
+                sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
+                # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
+                for talk_group in sorted_talk_groups:
+                    htmlfile.write('<tr class="tg-row">')
+                    if talk_group['talk_group_number'] < 1:
+                        htmlfile.write('<td class="tg-col-1 unknown-tg" colspan="2">{:18s}</td>'.format(talk_group['talk_group']))
+                        htmlfile.write('<td class="unknown-tg" align="right">{:d}</td>'.format(-talk_group['talk_group_number']))
+                    else:
+                        htmlfile.write('<td class="tg-col-1" colspan="2">{:s}</td>'.format(talk_group['talk_group']))
+                        htmlfile.write('<td align="right">{:d}</td>'.format(talk_group['talk_group_number']))
+                    htmlfile.write('<td align="right">{:d}</td>'.format(talk_group['count']))
+                    htmlfile.write('<td>{:s}'.format(convert_elapsed(talk_group['total_elapsed'])))
+                    htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(talk_group['last_heard']))
+                    htmlfile.write('</tr>\n')
+
+        htmlfile.write('</table>')
+        htmlfile.write('</div>')
+        htmlfile.write('</body></html>\n')
 
 
 def print_users_detail(users_list):
@@ -448,12 +617,12 @@ def print_users_summary(users_list):
 def main():
     now = datetime.datetime.utcnow()
     #start_time = now - datetime.timedelta(days=365)
-    start_time = now - datetime.timedelta(days=90)
+    start_time = now - datetime.timedelta(days=30)
     end_time = now
     #start_time = datetime.datetime.strptime('2019-12-07 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
     # start_time = datetime.datetime.strptime('2020-02-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-03-01 00:00:00', '%Y-%m-%d %H:%M:%S')
-    start_time = datetime.datetime.strptime('2020-04-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+    # start_time = datetime.datetime.strptime('2020-04-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # end_time = datetime.datetime.strptime('2020-01-31 23:59:59', '%Y-%m-%d %H:%M:%S')
     # end_time = datetime.datetime.strptime('2020-02-29 23:59:59', '%Y-%m-%d %H:%M:%S')
 
@@ -461,6 +630,7 @@ def main():
     # show a sample row of data
     print('first record: {}'.format(calls[0]['timestamp']))
     print(' last record: {}'.format(calls[-1]['timestamp']))
+    date_header = 'From {} to {}'.format(calls[0]['timestamp'], calls[-1]['timestamp'])
 
     talk_groups = {}
     users = {}
@@ -566,6 +736,9 @@ def main():
     print('(ignored {} users due to low count or low time.)'.format(discounted_users))
 
     all_users = sorted(all_users, key=lambda user: user['total_elapsed'], reverse=True)
+
+    write_users_html(all_users, heading='Usage ' + date_header)
+
     print_users_detail(all_users)
     print()
     top_users = all_users[0:200]
@@ -578,6 +751,7 @@ def main():
     write_csv_contacts(contact_list)
     write_csv_moto_contacts(contact_list)
     write_repeater_html()
+    write_peers_html(all_peers, heading='Peer Usage ' + date_header)
 
     validate_repeater_data(repeaters, all_peers)
 
@@ -586,7 +760,7 @@ def main():
         # if key >= start_date and key <= end_date:
         results.append(timeseries[key])
 
-    charts.plot_activity(results, interesting_talk_group_names[:2], 'Talkgroup Activity', filename='activity.png')
+    charts.plot_activity(results, interesting_talk_group_names[:2], 'Talkgroup Activity ' + date_header, filename='activity.png')
 
 
 if __name__ == '__main__':

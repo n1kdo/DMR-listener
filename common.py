@@ -113,6 +113,7 @@ talk_groups['K4USD'] = [
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
+    {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
 
@@ -163,6 +164,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
+    {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
 
@@ -425,6 +427,7 @@ repeaters = [
          (31134, 2, 1),
          (31139, 2, 1),
          (31665, 2, 1),
+         (314710, 2, 1),
      ], },
     # 146.73 W4KIP
     {'peer_id': '310295', 'call': 'W4KIP', 'input': '146.130', 'output': '146.730', 'color_code': '1',
