@@ -95,6 +95,8 @@ def plot_activity(timeseries, interesting_talk_groups, title, filename=None, sta
     logging.debug('plot_activity(...,%s, %s)' % (title, filename))
     max_duration = 0.0
 
+    interesting_talk_groups = interesting_talk_groups[:10]  # force reasonable length
+
     data = []
     for i in range(0, len(interesting_talk_groups) + 1):
         data.append([])
@@ -136,8 +138,8 @@ def plot_activity(timeseries, interesting_talk_groups, title, filename=None, sta
     y_max = (int(max_duration / 30) + 1) * 30
     ax.set_ylim(0, y_max)
 
-    colors = ['r', 'g', 'b', 'c', '#990099', '#ff6600', '#00ff00', '#663300', '#00ff99']
-    line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--']
+    colors = ['r', 'g', 'b', 'c', '#990099', '#ff6600', '#00ff00', '#663300', '#00ff99', 'k', '#990099']
+    line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--', ':', '--']  # -.
 
     for i in range(0, len(interesting_talk_groups)):
         ax.plot_date(dates, data[i + 1], color=colors[i],

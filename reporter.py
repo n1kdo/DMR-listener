@@ -113,7 +113,7 @@ def write_repeater_html(filename='repeaters.html'):
     :return:
     """
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html>\n')
+        htmlfile.write('<html lang="i-klingon">\n')
         htmlfile.write("""
 <style>
 BODY {
@@ -249,7 +249,7 @@ input {
 
 def write_peers_html(peers_list, heading='', filename='peers.html'):
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html>\n')
+        htmlfile.write('<html lang="i-klingon">\n')
         htmlfile.write("""
 <style>
 BODY {
@@ -272,8 +272,12 @@ BODY {
 .talkgroup-row {
     background-color: #cff;
 }
-TD {
-    padding: 2px;
+TABLE, TH, TD {
+    border: solid black 1px;
+    padding: 2px
+}
+.right {
+    text-align:right;
 }
 .heading {
     text-align:center;
@@ -283,40 +287,40 @@ TD {
 </style>
 """)
         htmlfile.write('<body>\n')
-        htmlfile.write('<div class="heading">' + heading + '</div>\n')
+        htmlfile.write('<p class="heading">' + heading + '</p>\n')
         htmlfile.write('<div>\n')
-        htmlfile.write('<table class="peers-table" border="1">\n')
+        htmlfile.write('<table class="peers-table">\n')
         htmlfile.write('<tr class="header-row"><th>Peer ID</th><th>Callsign</th><th>Peer Name</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
         for peer in peers_list:
             htmlfile.write('<tr class="peer-row">')
-            htmlfile.write('<td align="right">{:6d}</td>'.format(peer['peer_id']))
+            htmlfile.write('<td class="right">{:6d}</td>'.format(peer['peer_id']))
             htmlfile.write('<td>' + peer['peer_callsign'] + '</td>')
             htmlfile.write('<td>' + peer['peer_name'] + '</td>')
-            htmlfile.write('<td align="right">' + str(peer['count']) + '</td>')
+            htmlfile.write('<td class="right">' + str(peer['count']) + '</td>')
             htmlfile.write('<td>' + convert_elapsed(peer['total_elapsed']) + '</td>')
             htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(peer['last_heard']))
             htmlfile.write('</tr>\n')
             peer_talk_groups = peer['talk_groups']
             all_talk_groups = list(peer_talk_groups.values())
-            # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
-            sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
+            sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
+            # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
             for talk_group in sorted_talk_groups:
                 if talk_group['talk_group'].startswith('UnKnown'):
                     continue
                 htmlfile.write('<tr class="talkgroup-row">')
-                htmlfile.write('<td colspan="2" align="right">{:6d}</td>'.format(talk_group['talk_group_number']))
+                htmlfile.write('<td colspan="2" class="right">{:6d}</td>'.format(talk_group['talk_group_number']))
                 htmlfile.write('<td>{:s}</td>'.format(talk_group['talk_group']))
-                htmlfile.write('<td align="right">{:5d}</td>'.format(talk_group['count']))
+                htmlfile.write('<td class="right">{:5d}</td>'.format(talk_group['count']))
                 htmlfile.write('<td>' + convert_elapsed(talk_group['total_elapsed']) + '</td>')
-                htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td'.format(talk_group['last_heard']))
+                htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(talk_group['last_heard']))
                 htmlfile.write('</tr>\n')
-        htmlfile.write('</table>')
-        htmlfile.write('</div>')
+        htmlfile.write('</table>\n')
+        htmlfile.write('</div>\n')
         htmlfile.write('</body></html>\n')
 
 
 def validate_repeater_data(repeaters_list, peers_list):
-    print('\nvaliding talkgroup lists...\n')
+    # print('\nvalidating talkgroup lists...\n')
     for peer in peers_list:
         peer_id = peer['peer_id']
         repeater_found = False
@@ -466,7 +470,7 @@ def print_users_detail1(users_list):
 
 def write_users_html(users_list, heading='', filename='users.html'):
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html>\n')
+        htmlfile.write('<html lang="i-klingon">\n')
         htmlfile.write("""
 <style>
 BODY {
@@ -501,8 +505,12 @@ BODY {
 .unknown-tg {
     color: red;
 }
-TD {
-    padding: 2px;
+TABLE, TH, TD {
+    border: solid black 1px;
+    padding: 2px
+}
+.right {
+    text-align:right;
 }
 .heading {
     text-align:center;
@@ -516,20 +524,20 @@ TD {
 </style>
 """)
         htmlfile.write('<body>\n')
-        htmlfile.write('<div class="heading">' + heading + '</div>\n')
-        htmlfile.write('<div class="subhead">\n')
-        htmlfile.write('Usage by user, sorted by total elapsed time.<br>')
-        htmlfile.write('Users with low usage (count < 5, elapsed time < 10 seconds) are not shown on this report. ')
-        htmlfile.write('</div>')
+        htmlfile.write('<p class="heading">' + heading + '</p>\n')
+        htmlfile.write('<p class="subhead">\n')
+        htmlfile.write('Usage by user, sorted by total elapsed time.<br>\n')
+        htmlfile.write('Users with low usage (count < 5, elapsed time < 10 seconds) are not shown on this report.\n')
+        htmlfile.write('</p>\n')
         htmlfile.write('<div>\n')
-        htmlfile.write('<table class="users-table" border="1">\n')
+        htmlfile.write('<table class="users-table">\n')
         htmlfile.write('<tr class="header-row"><th>Call</th><th>Name</th><th>Contact ID</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
         for user in users_list:
             htmlfile.write('<tr class="user-row">')
             htmlfile.write('<td>{:s}</td>'.format(user['radio_name']))
             htmlfile.write('<td>{:s}</td>'.format(user['radio_username']))
-            htmlfile.write('<td align="right">{:d}</td>'.format(user['radio_id']))
-            htmlfile.write('<td align="right">{:d}</td>'.format(user['count']))
+            htmlfile.write('<td class="right">{:d}</td>'.format(user['radio_id']))
+            htmlfile.write('<td class="right">{:d}</td>'.format(user['count']))
             htmlfile.write('<td>{:s}'.format(convert_elapsed(user['total_elapsed'])))
             htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(user['last_heard']))
             htmlfile.write('</tr>\n')
@@ -540,8 +548,8 @@ TD {
             for peer in sorted_peers:
                 htmlfile.write('<tr class="peer-row">')
                 htmlfile.write('<td class="peer-col-1" colspan="2">{:s}</td>'.format(peer['peer_callsign']))
-                htmlfile.write('<td align="right">{:d}</td>'.format(peer['peer_id']))
-                htmlfile.write('<td align="right">{:d}</td>'.format(peer['count']))
+                htmlfile.write('<td class="right">{:d}</td>'.format(peer['peer_id']))
+                htmlfile.write('<td class="right">{:d}</td>'.format(peer['count']))
                 htmlfile.write('<td>{:s}'.format(convert_elapsed(peer['total_elapsed'])))
                 htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(peer['last_heard']))
                 htmlfile.write('</tr>\n')
@@ -553,17 +561,24 @@ TD {
                     htmlfile.write('<tr class="tg-row">')
                     if talk_group['talk_group_number'] < 1:
                         htmlfile.write('<td class="tg-col-1 unknown-tg" colspan="2">{:18s}</td>'.format(talk_group['talk_group']))
-                        htmlfile.write('<td class="unknown-tg" align="right">{:d}</td>'.format(-talk_group['talk_group_number']))
+                        htmlfile.write('<td class="unknown-tg right">{:d}</td>'.format(-talk_group['talk_group_number']))
                     else:
                         htmlfile.write('<td class="tg-col-1" colspan="2">{:s}</td>'.format(talk_group['talk_group']))
-                        htmlfile.write('<td align="right">{:d}</td>'.format(talk_group['talk_group_number']))
-                    htmlfile.write('<td align="right">{:d}</td>'.format(talk_group['count']))
+                        htmlfile.write('<td class="right">{:d}</td>'.format(talk_group['talk_group_number']))
+                    htmlfile.write('<td class="right">{:d}</td>'.format(talk_group['count']))
                     htmlfile.write('<td>{:s}'.format(convert_elapsed(talk_group['total_elapsed'])))
                     htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(talk_group['last_heard']))
                     htmlfile.write('</tr>\n')
 
-        htmlfile.write('</table>')
-        htmlfile.write('</div>')
+        htmlfile.write('</table>\n')
+        htmlfile.write('</div>\n')
+        htmlfile.write('<p class="subhead">\n')
+        htmlfile.write('<b>A note about "UnKnown Ipsc"</b><br>\n')
+        htmlfile.write('There are several likely reasons you may see "UnKnown Ipsc":<br>\n')
+        htmlfile.write('Use of a Brandmeister talkgroup number on a C-Bridge repeater.<br>\n')
+        htmlfile.write('The talk group number is correct, but the timeslot is not.>\n')
+        htmlfile.write('The talk group number is incorrect.\n')
+        htmlfile.write('</p>\n')
         htmlfile.write('</body></html>\n')
 
 
@@ -600,6 +615,75 @@ def print_users_detail(users_list):
                               convert_elapsed(talk_group['total_elapsed']),
                               talk_group['last_heard']))
         # print()
+
+
+def write_users_summary_html(users_list, heading='', filename='users_summary.html'):
+    with open(filename, 'w') as htmlfile:
+        htmlfile.write('<html lang="i-klingon">\n')
+        htmlfile.write("""
+<style>
+BODY {
+    margin: 0;
+    border: 0;
+    font-family: sans-serif;
+}
+.users-table {
+    border-collapse: collapse;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.user-row-0 {
+    background-color: #cfc;
+}
+.user-row-1 {
+    background-color: #cff;
+}
+.header-row {
+    background-color: #ccc;
+}
+TABLE, TH, TD {
+    border: solid black 1px;
+    padding: 2px
+}
+.right {
+    text-align:right;
+}
+.heading {
+    text-align:center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.subhead {
+    text-align:center;
+    font-size: 0.85em;
+}
+</style>
+""")
+        htmlfile.write('<body>\n')
+        htmlfile.write('<p class="heading">' + heading + '</p>\n')
+        htmlfile.write('<p class="subhead">\n')
+        htmlfile.write('Sorted by callsign, useful for manual edit in CPS<br>\n')
+        htmlfile.write('Users with low usage (count < 5, elapsed time < 10 seconds) are not shown on this report.\n')
+        htmlfile.write('</p>\n')
+        htmlfile.write('<div>\n')
+        htmlfile.write('<table class="users-table">\n')
+        htmlfile.write('<tr class="header-row"><th>Call</th><th>Name</th><th>Contact ID</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
+        count = 0
+        for user in users_list:
+            count += 1
+            odd = count % 2
+            htmlfile.write('<tr class="user-row-' + str(odd) + '">')
+            htmlfile.write('<td>{:s}</td>'.format(user['radio_name']))
+            htmlfile.write('<td>{:s}</td>'.format(user['radio_username']))
+            htmlfile.write('<td class="right">{:d}</td>'.format(user['radio_id']))
+            htmlfile.write('<td class="right">{:d}</td>'.format(user['count']))
+            htmlfile.write('<td>{:s}'.format(convert_elapsed(user['total_elapsed'])))
+            htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(user['last_heard']))
+            htmlfile.write('</tr>\n')
+        htmlfile.write('</table>\n')
+        htmlfile.write('</div>\n')
+        htmlfile.write('</body></html>\n')
 
 
 def print_users_summary(users_list):
@@ -705,9 +789,9 @@ def main():
 
     all_talkgroups = list(talk_groups.values())
     sorted_talkgroups = sorted(all_talkgroups, key=lambda tg: tg['total_elapsed'], reverse=True)
-    print()
-    print_talkgroups(sorted_talkgroups)
-    print()
+    #print()
+    #print_talkgroups(sorted_talkgroups)
+    #print()
 
     all_peers = []
     for peer_id in peers:
@@ -717,9 +801,9 @@ def main():
 
     all_peers = sorted(all_peers, key=lambda peer: peer['total_elapsed'], reverse=True)
 
-    print()
-    print_peers(all_peers)
-    print()
+    #print()
+    #print_peers(all_peers)
+    #print()
 
     all_users = []
     # narrow users into all_users.
@@ -739,13 +823,15 @@ def main():
 
     write_users_html(all_users, heading='Usage ' + date_header)
 
-    print_users_detail(all_users)
-    print()
+    #print_users_detail(all_users)
+    #print()
     top_users = all_users[0:200]
     # top_users = all_users
     top_users = sorted(top_users, key=lambda user: user['radio_name'])
 
-    print_users_summary(top_users)
+    # print_users_summary(top_users)
+
+    write_users_summary_html(top_users, heading='Top Users ' + date_header)
 
     contact_list = sorted(all_users, key=lambda user: user['radio_id'])
     write_csv_contacts(contact_list)
@@ -760,7 +846,12 @@ def main():
         # if key >= start_date and key <= end_date:
         results.append(timeseries[key])
 
-    charts.plot_activity(results, interesting_talk_group_names[:2], 'Talkgroup Activity ' + date_header, filename='activity.png')
+    talk_group_names = interesting_talk_group_names[:2]
+    talk_group_names = []
+    for tg in sorted_talkgroups[:5]:
+        talk_group_names.append(tg['talk_group'])
+
+    charts.plot_activity(results, talk_group_names, 'Talkgroup Activity ' + date_header, filename='activity.png')
 
 
 if __name__ == '__main__':
