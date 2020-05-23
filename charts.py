@@ -138,14 +138,15 @@ def plot_activity(timeseries, interesting_talk_groups, title, filename=None, sta
     y_max = (int(max_duration / 30) + 1) * 30
     ax.set_ylim(0, y_max)
 
+    # 11 colors, linestyles, markers?
     colors = ['r', 'g', 'b', 'c', '#990099', '#ff6600', '#00ff00', '#663300', '#00ff99', 'k', '#990099']
     line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--', ':', '--']  # -.
 
     for i in range(0, len(interesting_talk_groups)):
         ax.plot_date(dates, data[i + 1], color=colors[i],
                      linestyle=line_styles[i],
-                     marker='o',  # was 'none'
-                     mew=0, markersize=5, label='{:s}'.format(interesting_talk_groups[i]))
+                     antialiased=True, markersize=0,
+                     label='{:s}'.format(interesting_talk_groups[i]))
 
     ax.grid(True)
 

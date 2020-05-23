@@ -125,12 +125,12 @@ BODY {
     font-size: 1em;
     text-align: center;
 }
-.repeater-header {
-    background-color: #cff;
-    font-size: 2em;
-    font-weight: bold;
-    margin-block-end: 0;
-}   
+TABLE, TH, TR, TD {
+    border: solid black 1px; 
+}
+TH {
+    background-color: #ccc;
+}
 .talk-groups-table {
     background-color: #cfc;
     border-collapse: collapse;
@@ -144,9 +144,7 @@ BODY {
 .tg-number {
     text-align: right;
 }
-
 .tabs {
-    Zborder-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.5);
 }
@@ -177,7 +175,7 @@ BODY {
     transition: all .35s;
 }
 .tab-content {
-    background-color: #ccc;
+    background-color: #233;
     max-height: 0;
     padding: 0 1em;
     color: black;
@@ -209,16 +207,17 @@ input {
 </style>
 """)
         htmlfile.write('<body>\n')
-        htmlfile.write('<div class="heading">Metro Atlanta Area DMR Repeaters</div>')
-        htmlfile.write('<div class="tabs">')
+        htmlfile.write('<div class="heading">Metro Atlanta Area DMR Repeaters</div>\n')
+        htmlfile.write('<div class="tabs">\n')
         ctr = 1
-        for repeater in repeaters:
-            htmlfile.write('<div class="tab">')
+        sorted_repeaters = sorted(repeaters, key=lambda repeater: repeater['call'])
+        for repeater in sorted_repeaters:
+            htmlfile.write('<div class="tab">\n')
             htmlfile.write('<input type="checkbox" id="chck{}">'.format(ctr))
             rptr = '{} {} {} Color Code {}, {} network'.format(repeater['call'], repeater['output'], repeater['location'], repeater['color_code'], repeater['network'])
-            htmlfile.write('<label class="tab-label" for="chck{}">{}</label>'.format(ctr, rptr))
-            htmlfile.write('<div class="tab-content">')
-            htmlfile.write('<table class="talk-groups-table" border="1">\n')
+            htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
+            htmlfile.write('<div class="tab-content">\n')
+            htmlfile.write('<table class="talk-groups-table">\n')
             talk_groups = repeater['talk_groups']
             htmlfile.write('<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>\n')
             for ts in [1, 2]:
@@ -239,11 +238,11 @@ input {
             htmlfile.write('</table>\n')
             notes = repeater.get('notes')
             if notes is not None:
-                htmlfile.write('<p class="notes">{}</p>'.format(notes))
-            htmlfile.write('</div>')
-            htmlfile.write('</div>')
+                htmlfile.write('<p class="notes">{}</p>\n'.format(notes))
+            htmlfile.write('</div>\n')
+            htmlfile.write('</div>\n')
             ctr += 1
-        htmlfile.write('</div>')
+        htmlfile.write('</div>\n')
         htmlfile.write('</body></html>\n')
 
 
@@ -575,8 +574,8 @@ TABLE, TH, TD {
         htmlfile.write('<p class="subhead">\n')
         htmlfile.write('<b>A note about "UnKnown Ipsc"</b><br>\n')
         htmlfile.write('There are several likely reasons you may see "UnKnown Ipsc":<br>\n')
-        htmlfile.write('Use of a Brandmeister talkgroup number on a C-Bridge repeater.<br>\n')
-        htmlfile.write('The talk group number is correct, but the timeslot is not.>\n')
+        htmlfile.write('Use of a Brandmeister talk group number on a C-Bridge repeater.<br>\n')
+        htmlfile.write('The talk group number is correct, but the timeslot is not.<br>\n')
         htmlfile.write('The talk group number is incorrect.\n')
         htmlfile.write('</p>\n')
         htmlfile.write('</body></html>\n')
@@ -725,8 +724,19 @@ def main():
     # crunch data, assume it is clean
     for call in calls:
         ts = call.get("timestamp")
-        dt = ts.date()  # this forces bins into days
-        # dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
+        num_days = (end_time - start_time).days
+        if num_days <= 7:
+            bin_hours = 1
+            dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
+        elif num_days <= 30:
+            bin_hours = 4
+            dt = ts.replace(minute=0, second=0, microsecond=0)
+            h = ts.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
+            dt = dt.replace(hour=h)
+        else:
+            bin_hours = 24
+            dt = ts.date()  # this forces bins into days
+
         radio_id = call.get('radio_id') or 0
         radio_name = call.get('radio_name')
         radio_username = call.get('radio_username')
