@@ -720,6 +720,7 @@ def main():
     peers = {}
 
     timeseries = {}
+    chart_talk_groups = {}
 
     # crunch data, assume it is clean
     for call in calls:
@@ -744,17 +745,21 @@ def main():
         peer_id = call.get('peer_id') or 0
         duration = call.get('duration') or 0.0
         # build/add to timeseries
-        this_day = timeseries.get(dt)
-        if this_day is None:
-            this_day = {'date': dt}
-            timeseries[dt] = this_day
+        this_bin = timeseries.get(dt)
+        if this_bin is None:
+            this_bin = {'date': dt}
+            timeseries[dt] = this_bin
         if talk_group_name in interesting_talk_group_names:
-            this_day_tg = this_day.get(talk_group_name)
-            if this_day_tg is None:
-                this_day_tg = {'count': 0, 'duration': 0.0}
-                this_day[talk_group_name] = this_day_tg
-            this_day_tg['count'] += 1
-            this_day_tg['duration'] += duration
+            this_bin_tg = this_bin.get(talk_group_name)
+            if this_bin_tg is None:
+                this_bin_tg = {'count': 0, 'duration': 0.0}
+                this_bin[talk_group_name] = this_bin_tg
+            this_bin_tg['count'] += 1
+            this_bin_tg['duration'] += duration
+            chart_talk_group = chart_talk_groups.get(talk_group_name)
+            if chart_talk_group is None:
+                chart_talk_groups[talk_group_name] = {'talk_group': talk_group_name, 'duration': 0.0}
+            chart_talk_groups[talk_group_name]['duration'] += duration
 
         if radio_id < 1000000:
             # print('unknown radio id {}'.format(rid))
@@ -856,10 +861,13 @@ def main():
         # if key >= start_date and key <= end_date:
         results.append(timeseries[key])
 
-    talk_group_names = interesting_talk_group_names[:2]
+    #talk_group_names = interesting_talk_group_names[:2]
+    chart_talk_groups_list = list(chart_talk_groups.values())
+    chart_talk_groups_lista = sorted(chart_talk_groups_list, key=lambda ctg: ctg['duration'], reverse=True)
     talk_group_names = []
-    for tg in sorted_talkgroups[:5]:
+    for tg in chart_talk_groups_lista[:10]:
         talk_group_names.append(tg['talk_group'])
+
 
     charts.plot_activity(results, talk_group_names, 'Talkgroup Activity ' + date_header, filename='activity.png')
 
