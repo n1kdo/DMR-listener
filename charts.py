@@ -88,22 +88,47 @@ def make_bins(dates, data):
     return binned_dates, binned_data
 
 
-def plot_activity(timeseries, interesting_talk_groups, title, filename=None, start_date=None, end_date=None):
+def plot_activity(time_series, title, filename=None, start_date=None, end_date=None):
     """
     make the chart
     """
     logging.debug('plot_activity(...,%s, %s)' % (title, filename))
-    max_duration = 0.0
 
-    interesting_talk_groups = interesting_talk_groups[:10]  # force reasonable length
+    max_duration = 0.0
+    talk_groups = {}
+    for item in time_series:
+        for k, v in item.items():
+            if k != 'date':
+                count = v['count']
+                duration = v['duration']
+                dd = talk_groups.get(k)
+                if dd is None:
+                    dd = {'talk_group': k, 'count':0, 'duration': 0.0}
+                    talk_groups[k] = dd
+                if duration > dd['duration']:
+                    dd['duration'] = duration
+                if count > dd['count']:
+                    dd['count'] = count
+                if duration > max_duration:
+                    max_duration = duration
+
+    talk_groups_list = list(talk_groups.values())
+    talk_groups_list = sorted(talk_groups_list, key=lambda ctg: ctg['duration'], reverse=True)
+    talk_groups_list = talk_groups_list[:10]
+    max_duration = talk_groups_list[0]['duration'] / 60.0
+
+    interesting_talk_groups = []
+    for tg in talk_groups_list:
+        interesting_talk_groups.append(tg['talk_group'])
+
+   # interesting_talk_groups = interesting_talk_groups[:10]  # force reasonable length
 
     data = []
     for i in range(0, len(interesting_talk_groups) + 1):
         data.append([])
 
-    for i in range(0, len(timeseries)):
-        item = timeseries[i]
-        #print(item)
+    for i in range(0, len(time_series)):
+        item = time_series[i]
         data[0].append(item['date'])
         for j in range(0, len(interesting_talk_groups)):
             tg_name = interesting_talk_groups[j]
@@ -113,29 +138,18 @@ def plot_activity(timeseries, interesting_talk_groups, title, filename=None, sta
             else:
                 duration = 0.0
             data[j+1].append(duration)
-            if duration > max_duration:
-                max_duration = duration
 
-    if False:  # debug output
-        for i in range(0, len(data[0])):
-            s = '{}'.format(data[0][i])
-            for j in range(0, len(interesting_talk_groups)):
-                s += ' {:>6.1f}'.format(data[j+1][i])
-            print(s)
-    # {'pad': 0.10}
     fig = plt.Figure(figsize=(WIDTH_INCHES, HEIGHT_INCHES), dpi=100, tight_layout=True)
-
     ax = fig.add_subplot(111, facecolor=BG)
-
     ax.set_title(title, color=FG, size='xx-large', weight='bold')
-
     dates = matplotlib.dates.date2num(data[0])
     if start_date is None:
         start_date = dates[0]
     if end_date is None:
         end_date = dates[-1]
     ax.set_xlim(start_date, end_date)
-    y_max = (int(max_duration / 30) + 1) * 30
+    y_axis_multiple = 10
+    y_max = (int(max_duration / y_axis_multiple) + 1) * y_axis_multiple
     ax.set_ylim(0, y_max)
 
     # 11 colors, linestyles, markers?
@@ -154,8 +168,8 @@ def plot_activity(timeseries, interesting_talk_groups, title, filename=None, sta
 
     ax.tick_params(axis='y', colors=FG, which='both', direction='out', right=False)
     ax.tick_params(axis='x', colors=FG, which='both', direction='out', top=False)
-    ax.set_ylabel('Minutes', color=FG, size='x-large', weight='bold')
-    ax.set_xlabel('Date', color=FG, size='x-large', weight='bold')
+    ax.set_ylabel('Usage Minutes', color=FG, size='x-large', weight='bold')
+    ax.set_xlabel('UTC Date', color=FG, size='x-large', weight='bold')
 
     ax.xaxis.set_major_locator(WeekdayLocator(byweekday=6))  # sunday
     ax.xaxis.set_minor_locator(DayLocator())  # every day
