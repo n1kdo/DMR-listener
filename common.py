@@ -18,7 +18,7 @@ interesting_peer_ids = [
     311314,  # KD4KHO Canton
     311320,  # w4cba  cumming
     311321,  # n4taw  between
-    311326,  # AI1U   lawrenceville
+    #311326,  # AI1U   lawrenceville # nothing much happening here.
     311322,  # ka3jij gainesville
     311338,  # kd4z   sweat mountain
     311637,  # NG4RF  Cumming
@@ -224,7 +224,7 @@ repeaters = [
          (9990, 2, 1),
          (31131, 1, 0),
      ], },
-    # 311313
+    # 311313 W8RED Snellville
     {'peer_id': '311313', 'call': 'W8RED', 'input': '447.6000', 'output': '442.6000', 'color_code': '3',
      'location': 'Snellville, GA', 'network': 'K4USD',
      'talk_groups': [
@@ -251,7 +251,7 @@ repeaters = [
          (31665, 2, 1),
          (314710, 2, 1),
      ], },
-    # 311314
+    # 311314 KD4KHO Canton
     {'peer_id': '311314', 'call': 'KD4KHO', 'input': '439.400', 'output': '434.400', 'color_code': '3',
      'location': 'Canton GA', 'network': 'K4USD', 'notes': 'limited coverage',
      'talk_groups': [
@@ -275,7 +275,7 @@ repeaters = [
          (31134, 2, 1),
          (31665, 2, 1),
      ], },
-    # 311321
+    # 311321 N4TAW Between
     {'peer_id': '311321', 'call': 'N4TAW', 'input': '448.7375', 'output': '443.7375', 'color_code': '3',
      'location': 'Between GA', 'network': 'K4USD',
      'talk_groups': [
@@ -289,6 +289,7 @@ repeaters = [
          (310, 2, 1),
          (311, 2, 1),
          (312, 2, 1),
+         (1776, 2, 1),
          (3100, 2, 1),
          (3112, 2, 1),
          (3113, 2, 0),
@@ -301,7 +302,7 @@ repeaters = [
          (31130, 2, 1),
          (31665, 2, 1),
      ], },
-    # 311322
+    # 311322 KA4JIJ Gainesville
     {'peer_id': '311322', 'call': 'KA3JIJ', 'input': '449.9500', 'output': '444.9500', 'color_code': '1',
      'location': 'Gainesville GA', 'network': 'K4USD',
      'talk_groups': [
@@ -347,7 +348,7 @@ repeaters = [
      ], },
     # 311326 AI1U Lawrenceville
     # TODO fill this in.
-    # 311338 KD4Z
+    # 311338 KD4Z Sweat Mountain
     {'peer_id': '311338', 'call': 'KD4Z', 'input': '447.9750', 'output': '442.9750', 'color_code': '1',
      'location': 'Sweat Mountain GA', 'network': 'K4USD',
      'talk_groups': [
@@ -530,8 +531,6 @@ repeaters = [
          (31139, 2, 1),
          (31665, 2, 1),
      ], },
-
-
 ]
 
 talk_group_name_to_number_mapping = {}

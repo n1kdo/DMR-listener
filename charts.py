@@ -154,7 +154,7 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
 
     # 11 colors, linestyles, markers?
     colors = ['r', 'g', 'b', 'c', '#990099', '#ff6600', '#00ff00', '#663300', '#00ff99', 'k', '#990099']
-    line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--', ':', '--']  # -.
+    line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--', '--', '-.']  # -.
     marker_style = ['o', 'v', 's', 'p', 'P', '*', 'h', 'X', 'd', '8', 'x']
     for i in range(0, len(interesting_talk_groups)):
         ax.plot_date(dates, data[i + 1], color=colors[i],
