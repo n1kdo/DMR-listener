@@ -124,6 +124,7 @@ BODY {
 .notes {
     font-size: 1em;
     text-align: center;
+    color: #ff8;
 }
 TABLE, TH, TR, TD {
     border: solid black 1px; 
