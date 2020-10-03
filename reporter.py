@@ -724,19 +724,37 @@ def main():
     chart_talk_groups = {}
 
     # crunch data, assume it is clean
+    num_days = (end_time - start_time).days
+    if num_days <= 7:
+        bin_hours = 1
+        bins_start = start_time.replace(minute=0, second=0, microsecond=0)
+        bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
+    elif num_days <= 30:
+        bin_hours = 4
+        bins_start = start_time.replace(minute=0, second=0, microsecond=0)
+        h = bins_start.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
+        bins_start = bins_start.replace(hour=h)
+        bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
+        bins_end = bins_end.replace(hour=h)
+    else:
+        bin_hours = 24
+        bins_start = start_time.date()
+        bins_end = end_time.date() + datetime.timedelta(days=1)
+
+    this_bin_key = bins_start
+    while this_bin_key <= bins_end:
+        timeseries[this_bin_key] = {'date': this_bin_key}
+        this_bin_key = this_bin_key + datetime.timedelta(hours=bin_hours)
+
     for call in calls:
         ts = call.get("timestamp")
-        num_days = (end_time - start_time).days
         if num_days <= 7:
-            bin_hours = 1
             dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
         elif num_days <= 30:
-            bin_hours = 4
             dt = ts.replace(minute=0, second=0, microsecond=0)
             h = ts.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
             dt = dt.replace(hour=h)
         else:
-            bin_hours = 24
             dt = ts.date()  # this forces bins into days
 
         radio_id = call.get('radio_id') or 0
@@ -866,7 +884,8 @@ def main():
         # if key >= start_date and key <= end_date:
         results.append(timeseries[key])
 
-    charts.plot_activity(results, 'Talkgroup Activity ' + date_header, filename='activity.png')
+    chart_date_header = 'From {} to {}'.format(results[0]['date'], results[-1]['date'])
+    charts.plot_activity(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
 
 
 if __name__ == '__main__':

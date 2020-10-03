@@ -103,7 +103,7 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
                 duration = v['duration']
                 dd = talk_groups.get(k)
                 if dd is None:
-                    dd = {'talk_group': k, 'count':0, 'duration': 0.0}
+                    dd = {'talk_group': k, 'count': 0, 'duration': 0.0}
                     talk_groups[k] = dd
                 if duration > dd['duration']:
                     dd['duration'] = duration
@@ -143,10 +143,8 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
     ax = fig.add_subplot(111, facecolor=BG)
     ax.set_title(title, color=FG, size='xx-large', weight='bold')
     dates = matplotlib.dates.date2num(data[0])
-    if start_date is None:
-        start_date = dates[0]
-    if end_date is None:
-        end_date = dates[-1]
+    start_date = time_series[0]['date']
+    end_date = time_series[-1]['date']
     ax.set_xlim(start_date, end_date)
     y_axis_multiple = 10
     y_max = (int(max_duration / y_axis_multiple) + 1) * y_axis_multiple
