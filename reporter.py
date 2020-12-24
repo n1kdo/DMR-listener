@@ -700,10 +700,10 @@ def print_users_summary(users_list):
 
 def main():
     now = datetime.datetime.utcnow()
-    #start_time = now - datetime.timedelta(days=365)
+    # start_time = now - datetime.timedelta(days=365)
     start_time = now - datetime.timedelta(days=30)
     end_time = now
-    #start_time = datetime.datetime.strptime('2019-12-07 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
+    # start_time = datetime.datetime.strptime('2019-12-07 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
     # start_time = datetime.datetime.strptime('2020-02-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-03-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-04-01 00:00:00', '%Y-%m-%d %H:%M:%S')
@@ -768,7 +768,7 @@ def main():
         if this_bin is None:
             this_bin = {'date': dt}
             timeseries[dt] = this_bin
-        #if talk_group_name in interesting_talk_group_names:
+        # if talk_group_name in interesting_talk_group_names:
         if True:
             this_bin_tg = this_bin.get(talk_group_name)
             if this_bin_tg is None:
@@ -781,7 +781,7 @@ def main():
                 chart_talk_groups[talk_group_name] = {'talk_group': talk_group_name, 'duration': 0.0}
 
             chart_talk_groups[talk_group_name]['duration'] += duration
-            #if duration > chart_talk_groups[talk_group_name]['duration']:
+            # if duration > chart_talk_groups[talk_group_name]['duration']:
             #    chart_talk_groups[talk_group_name]['duration'] = duration
 
         if radio_id < 1000000:
@@ -827,9 +827,9 @@ def main():
 
     all_talkgroups = list(talk_groups.values())
     sorted_talkgroups = sorted(all_talkgroups, key=lambda tg: tg['total_elapsed'], reverse=True)
-    #print()
-    #print_talkgroups(sorted_talkgroups)
-    #print()
+    # print()
+    # print_talkgroups(sorted_talkgroups)
+    # print()
 
     all_peers = []
     for peer_id in peers:
@@ -839,9 +839,9 @@ def main():
 
     all_peers = sorted(all_peers, key=lambda peer: peer['total_elapsed'], reverse=True)
 
-    #print()
-    #print_peers(all_peers)
-    #print()
+    # print()
+    # print_peers(all_peers)
+    # print()
 
     all_users = []
     # narrow users into all_users.
@@ -861,8 +861,8 @@ def main():
 
     write_users_html(all_users, heading='Usage ' + date_header)
 
-    #print_users_detail(all_users)
-    #print()
+    # print_users_detail(all_users)
+    # print()
     top_users = all_users[0:200]
     # top_users = all_users
     top_users = sorted(top_users, key=lambda user: user['radio_name'])

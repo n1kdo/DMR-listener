@@ -1,9 +1,11 @@
 import datetime
 import logging
-import numpy as np
+# import numpy as np
 import matplotlib
-from matplotlib.dates import DateFormatter, YearLocator, MonthLocator, WeekdayLocator, DayLocator
-from matplotlib.ticker import FormatStrFormatter, MultipleLocator
+# from matplotlib.dates import DateFormatter, YearLocator, MonthLocator, WeekdayLocator, DayLocator
+from matplotlib.dates import DateFormatter, WeekdayLocator, DayLocator
+# from matplotlib.ticker import FormatStrFormatter, MultipleLocator
+from matplotlib.ticker import MultipleLocator
 
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_agg as agg
@@ -121,7 +123,7 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
     for tg in talk_groups_list:
         interesting_talk_groups.append(tg['talk_group'])
 
-   # interesting_talk_groups = interesting_talk_groups[:10]  # force reasonable length
+    # interesting_talk_groups = interesting_talk_groups[:10]  # force reasonable length
 
     data = []
     for i in range(0, len(interesting_talk_groups) + 1):
@@ -157,8 +159,8 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
     for i in range(0, len(interesting_talk_groups)):
         ax.plot_date(dates, data[i + 1], color=colors[i],
                      linestyle=line_styles[i],
-                     #marker=marker_style[i],
-                     #markersize=0,
+                     # marker=marker_style[i],
+                     # markersize=0,
                      marker='',
                      label='{:s}'.format(interesting_talk_groups[i]))
 

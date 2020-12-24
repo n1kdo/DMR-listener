@@ -230,7 +230,6 @@ def parse_call_data(call):
 
 
 def do_poll(update_number):
-    #params = {'param': 'ajaxminimalnetwatch', 'url': 'http://cbridge.k4usd.org:42420/data.txt'}
     params = {'param': 'ajaxcallwatch', 'url': 'http://cbridge.k4usd.org:42420/data.txt'}
     if update_number != 0:
         params['updatenumber'] = '%d' % update_number
