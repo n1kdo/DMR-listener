@@ -37,6 +37,13 @@ def safe_int(s):
         return -1
 
 
+def read_file(filename):
+    lines = []
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    return lines
+
+
 def read_log(filename, start, end):
     calls = []
     fields = ['timestamp', 'site', 'dest', 'peer_id', 'peer_callsign', 'peer_name',
@@ -112,10 +119,15 @@ def write_repeater_html(filename='repeaters.html'):
     write data for web
     :return:
     """
+    header_lines = read_file('log_analytics_fragment.html')
+    title = 'Metro Atlanta Area DMR Repeaters'
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html lang="i-klingon">\n')
+        htmlfile.write('<html lang="i-klingon">\n<head>\n')
+        htmlfile.write('<title>' + title + '</title>\n')
+        if header_lines is not None:
+            htmlfile.writelines(header_lines)
         htmlfile.write("""
-<style>
+  <style>
 BODY {
     margin: 0;
     border: 0;
@@ -194,7 +206,6 @@ input:checked ~ .tab-content {
     max-height: 200vh;
     padding: 1em;
 }
-
 input {
     position: absolute;
     opacity: 0;
@@ -205,10 +216,10 @@ input {
     font-size: 2em;
     font-weight: bold;
 }
-</style>
+  </style>
 """)
-        htmlfile.write('<body>\n')
-        htmlfile.write('<div class="heading">Metro Atlanta Area DMR Repeaters</div>\n')
+        htmlfile.write('</head>\n<body>\n')
+        htmlfile.write('<div class="heading">' + title + '/div>\n')
         htmlfile.write('<div class="tabs">\n')
         ctr = 1
         sorted_repeaters = sorted(repeaters, key=lambda repeater: repeater['call'])
@@ -248,8 +259,12 @@ input {
 
 
 def write_peers_html(peers_list, heading='', filename='peers.html'):
+    header_lines = read_file('log_analytics_fragment.html')
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html lang="i-klingon">\n')
+        htmlfile.write('<html lang="i-klingon">\n<head>\n')
+        htmlfile.write('<title>' + heading + '</title>\n')
+        if header_lines is not None:
+            htmlfile.writelines(header_lines)
         htmlfile.write("""
 <style>
 BODY {
@@ -284,7 +299,8 @@ TABLE, TH, TD {
     font-size: 1.5em;
     font-weight: bold;
 }
-</style>
+  </style>
+</head>
 """)
         htmlfile.write('<body>\n')
         htmlfile.write('<p class="heading">' + heading + '</p>\n')
@@ -469,10 +485,14 @@ def print_users_detail1(users_list):
 
 
 def write_users_html(users_list, heading='', filename='users.html'):
+    header_lines = read_file('log_analytics_fragment.html')
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html lang="i-klingon">\n')
+        htmlfile.write('<html lang="i-klingon">\n<head>\n')
+        htmlfile.write('<title>' + heading + '</title>\n')
+        if header_lines is not None:
+            htmlfile.writelines(header_lines)
         htmlfile.write("""
-<style>
+  <style>
 BODY {
     margin: 0;
     border: 0;
@@ -521,7 +541,8 @@ TABLE, TH, TD {
     text-align:center;
     font-size: 0.85em;
 }
-</style>
+  </style>
+</head>
 """)
         htmlfile.write('<body>\n')
         htmlfile.write('<p class="heading">' + heading + '</p>\n')
@@ -618,10 +639,14 @@ def print_users_detail(users_list):
 
 
 def write_users_summary_html(users_list, heading='', filename='users_summary.html'):
+    header_lines = read_file('log_analytics_fragment.html')
     with open(filename, 'w') as htmlfile:
-        htmlfile.write('<html lang="i-klingon">\n')
+        htmlfile.write('<html lang="i-klingon">\n<head>\n')
+        htmlfile.write('<title>' + heading + '</title>\n')
+        if header_lines is not None:
+            htmlfile.writelines(header_lines)
         htmlfile.write("""
-<style>
+  <style>
 BODY {
     margin: 0;
     border: 0;
@@ -658,7 +683,8 @@ TABLE, TH, TD {
     text-align:center;
     font-size: 0.85em;
 }
-</style>
+  </style>
+</head>
 """)
         htmlfile.write('<body>\n')
         htmlfile.write('<p class="heading">' + heading + '</p>\n')
