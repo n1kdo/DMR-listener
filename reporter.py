@@ -219,7 +219,7 @@ input {
   </style>
 """)
         htmlfile.write('</head>\n<body>\n')
-        htmlfile.write('<div class="heading">' + title + '/div>\n')
+        htmlfile.write('<div class="heading">' + title + '</div>\n')
         htmlfile.write('<div class="tabs">\n')
         ctr = 1
         sorted_repeaters = sorted(repeaters, key=lambda repeater: repeater['call'])
