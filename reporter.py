@@ -127,6 +127,7 @@ def write_repeater_html(filename='repeaters.html'):
         if header_lines is not None:
             htmlfile.writelines(header_lines)
         htmlfile.write("""
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">      
   <style>
 BODY {
     margin: 0;
@@ -266,6 +267,7 @@ def write_peers_html(peers_list, heading='', filename='peers.html'):
         if header_lines is not None:
             htmlfile.writelines(header_lines)
         htmlfile.write("""
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
 <style>
 BODY {
     margin: 0;
@@ -492,6 +494,7 @@ def write_users_html(users_list, heading='', filename='users.html'):
         if header_lines is not None:
             htmlfile.writelines(header_lines)
         htmlfile.write("""
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">    
   <style>
 BODY {
     margin: 0;
@@ -646,6 +649,7 @@ def write_users_summary_html(users_list, heading='', filename='users_summary.htm
         if header_lines is not None:
             htmlfile.writelines(header_lines)
         htmlfile.write("""
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">    
   <style>
 BODY {
     margin: 0;

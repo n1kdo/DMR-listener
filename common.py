@@ -21,6 +21,7 @@ interesting_peer_ids = [
     311322,  # ka3jij gainesville
     311338,  # kd4z   sweat mountain
     311637,  # NG4RF  Cumming
+    312243,  # WA4OKJ Rome
 ]
 
 
@@ -68,8 +69,8 @@ talk_groups['K4USD'] = [
     {'name': 'TAC317', 'tg': 317, 'description': 'TAC317', },
     {'name': 'TAC318', 'tg': 318, 'description': 'TAC318', },
     {'name': 'TAC319', 'tg': 319, 'description': 'TAC319', },
-    {'name': 'USA', 'tg': 1776, 'description': 'USA', },
-    {'name': 'Bridge', 'tg': 3100, 'description': 'Bridge', },
+    {'name': 'USA', 'tg': 1776, 'description': 'USA 1776', },
+    {'name': 'Bridge', 'tg': 3100, 'description': 'Bridge 3100', },
     {'name': 'DEstate', 'tg': 3110, 'description': 'Delaware State-wide', },
     {'name': 'DCstate', 'tg': 3111, 'description': 'District of Columbia', },
     {'name': 'FLstate', 'tg': 3112, 'description': 'Florida State-wide', },
@@ -271,6 +272,7 @@ repeaters = [
          (311, 2, 1),
          (312, 2, 1),
          (314, 2, 1),
+         (318, 2, 1),
          (3100, 2, 1),
          (3112, 2, 1),
          (3113, 2, 0),
@@ -557,6 +559,27 @@ repeaters = [
          (31139, 2, 1),
          (31665, 2, 1),
          (314710, 2, 1),
+     ], },
+    # 312243 442.2375 WA4OKJ Rome
+    {'peer_id': '312243', 'call': 'WA4OKJ', 'input': '447.2375', 'output': '442.2375', 'color_code': '1',
+     'location': 'Mt. Alto Rome GA', 'network': 'K4USD',
+     'talk_groups': [
+         (91, 1, 1),
+         (93, 1, 1),
+         (312, 2, 1),
+         (3100, 2, 1),
+         (3113, 2, 0),
+         (3124, 2, 1),
+         (3147, 2, 1),
+         (3155, 2, 1),
+         (9998, 2, 1),
+         (31665, 2, 1),
+     ], },
+    # 310969 W4KST Marietta
+    {'peer_id': '310969', 'call': 'W4KST', 'input': '448.275', 'output': '443.275', 'color_code': '7',
+     'location': 'KSU Campus Marietta GA', 'network': 'K4USD',
+     'talk_groups': [
+         (3113, 2, 0),  # maybe there are more?
      ], },
 ]
 
