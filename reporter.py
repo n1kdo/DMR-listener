@@ -65,7 +65,11 @@ def read_log(filename, start, end):
 
             duration = row.get('duration') or '0'
             if duration is not None:
-                row['duration'] = float(duration)
+                try:
+                    row['duration'] = float(duration)
+                except Exception as e:
+                    print(e)
+                    print(row)
             else:
                 row['duration'] = 0.0
             if row.get('peer_id') is not None:
@@ -365,7 +369,12 @@ def validate_repeater_data(repeaters_list, peers_list):
 def update_usage(a_dict, call):
     talk_group_name = call.get('talk_group')
     timestamp = call['timestamp']
-    duration = call.get('duration') or 0.0
+    try:
+        duration = float(call.get('duration')) or 0.0
+    except Exception as e:
+        print(e)
+        print(call)
+        duration = 0.0
     usage_dict = a_dict['talk_groups'].get(talk_group_name)
     if usage_dict is None:
         talk_group_data = talk_group_name_to_number_mapping['K4USD'].get(talk_group_name)
@@ -792,7 +801,11 @@ def main():
         radio_username = call.get('radio_username')
         talk_group_name = call.get('talk_group') or 'unknown'
         peer_id = call.get('peer_id') or 0
-        duration = call.get('duration') or 0.0
+        try:
+            duration = float(call.get('duration')) or 0.0
+        except Exception as e:
+            print(e)
+            print(call)
         # build/add to timeseries
         this_bin = timeseries.get(dt)
         if this_bin is None:

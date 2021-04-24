@@ -106,6 +106,7 @@ def call_cbridge(**params):
         try:
             line = line.decode('iso-8859-1')
             line = line.replace('&nbsp;', ' ')
+            line = line.replace(',', '_')
             sections = line.split('\010')
             # if False: # get current qsos in progress # don't care about these, historical is good enough.
             #     users = sections[0].split('\t')
@@ -128,7 +129,19 @@ def call_cbridge(**params):
                     updatenumber = sections[0]
                 else:
                     call = {}
+                    if len(sections) != len(datalabels):
+                        print('something is not right!')
+                        print(stuff)
+                        print(sections)
+                        print('---')
                     for i in range(0, len(datalabels)):
+                        if datalabels[i] == 'duration':
+                            try:
+                                d = str(float(sections[i]))
+                            except Exception as e:
+                                print(e)
+                                print(sections)
+                                sections[i] = '0.0'
                         call[datalabels[i]] = sections[i]
                     parse_call_data(call)
                     calls.append(call)
@@ -221,7 +234,11 @@ def parse_call_data(call):
         elif len(more_stuff) == 2:
             call['peer_callsign'] = more_stuff[0].strip()
             call['peer_name'] = more_stuff[1].strip()
+        elif len(more_stuff) == 3:
+            call['peer_callsign'] = more_stuff[0].strip().split(' ')[0]
+            call['peer_name'] = more_stuff[1].strip() + more_stuff[2].strip()
         else:
+            print('=== len(more_stuff)=%d ===' % len(more_stuff))
             print(more_stuff)
             call['peer_callsign'] = 'unknown'
             call['peer_name'] = 'unknown'
