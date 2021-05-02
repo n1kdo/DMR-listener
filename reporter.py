@@ -1,6 +1,8 @@
 #!/bin/python3
 import csv
 import datetime
+import logging
+import time
 
 from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping
 from common import repeaters
@@ -8,6 +10,10 @@ from common import interesting_peer_ids
 from common import filter_talk_group_name
 
 import charts
+
+logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
+                    level=logging.INFO)
+logging.Formatter.converter = time.gmtime
 
 
 def convert_elapsed(elapsed):
@@ -25,7 +31,7 @@ def convert_elapsed(elapsed):
 
 def convert_iso_timestamp(s):
     try:
-        return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+        return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
     except ValueError:
         return None
 
@@ -85,8 +91,8 @@ def read_log(filename, start, end):
                 row['talk_group'] = talk_group
             calls.append(row)
 
-    print("read        %6d rows" % rows)
-    print("filtered to %6d records" % len(calls))
+    logging.info('read        {} rows'.format(rows))
+    logging.info('filtered to {} records'.format(len(calls)))
     return calls
 
 
@@ -342,7 +348,7 @@ TABLE, TH, TD {
 
 
 def validate_repeater_data(repeaters_list, peers_list):
-    # print('\nvalidating talkgroup lists...\n')
+    logging.info('validating talkgroup lists...')
     for peer in peers_list:
         peer_id = peer['peer_id']
         repeater_found = False
@@ -360,10 +366,10 @@ def validate_repeater_data(repeaters_list, peers_list):
                         if ptgn == rtgn:
                             talk_group_found = True
                     if not talk_group_found:
-                        print('did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
+                        logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
                 repeater_found = True
         if not repeater_found:
-            print('Could not find a repeater matching peer_id {}'.format(peer_id))
+            logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))
 
 
 def update_usage(a_dict, call):
@@ -751,8 +757,8 @@ def main():
 
     calls = read_log('logged_calls.txt', start_time, end_time)
     # show a sample row of data
-    print('first record: {}'.format(calls[0]['timestamp']))
-    print(' last record: {}'.format(calls[-1]['timestamp']))
+    logging.info('first record: {}'.format(calls[0]['timestamp']))
+    logging.info(' last record: {}'.format(calls[-1]['timestamp']))
     date_header = 'From {} to {}'.format(calls[0]['timestamp'], calls[-1]['timestamp'])
 
     talk_groups = {}
@@ -786,7 +792,7 @@ def main():
         this_bin_key = this_bin_key + datetime.timedelta(hours=bin_hours)
 
     for call in calls:
-        ts = call.get("timestamp")
+        ts = call.get('timestamp')
         if num_days <= 7:
             dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
         elif num_days <= 30:
@@ -855,7 +861,7 @@ def main():
         if peer_id in interesting_peer_ids:
             update_peer(peers, call)
 
-        if not talk_group_name[0:7] == 'UnKnown':
+        if not talk_group_name.lower().startswith('unknown'):
             talk_group = talk_groups.get(talk_group_name)
             if talk_group is None:
                 talk_group = {'talk_group': talk_group_name,
@@ -898,7 +904,7 @@ def main():
             all_users.append(user)
         else:
             discounted_users += 1
-    print('(ignored {} users due to low count or low time.)'.format(discounted_users))
+    logging.info('(ignored {} users due to low count or low time.)'.format(discounted_users))
 
     all_users = sorted(all_users, key=lambda user: user['total_elapsed'], reverse=True)
 
@@ -928,7 +934,8 @@ def main():
         results.append(timeseries[key])
 
     chart_date_header = 'From {} to {}'.format(results[0]['date'], results[-1]['date'])
-    charts.plot_activity(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
+    # charts.plot_activity(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
+    charts.plot_activity_stackbar(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
 
 
 if __name__ == '__main__':

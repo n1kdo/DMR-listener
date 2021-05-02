@@ -12,6 +12,7 @@ interesting_talk_group_names = [
 interesting_peer_ids = [
     310293,  # w4boc  stone mountain
     310371,  # w4doc  atlanta
+    310592,  # KG4BKO vidalia
     310969,  # W4KST  Marietta
     311303,  # KE4OKD Sandy Springs
     311313,  # w8red  snellville
@@ -22,6 +23,8 @@ interesting_peer_ids = [
     311338,  # kd4z   sweat mountain
     311637,  # NG4RF  Cumming
     312243,  # WA4OKJ Rome
+    312284,  # KD4IEZ Dublin
+    312444,  # KZ4FOX Athens
 ]
 
 
@@ -40,7 +43,6 @@ def filter_talk_group_name(s):
 
 
 networks = ['Brandmeister', 'K4USD']
-
 
 """ 
 mapping of C-bridge talkgroup name to talkgroup number to description
@@ -117,7 +119,6 @@ talk_groups['K4USD'] = [
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
-
 talk_groups['Brandmeister'] = [
     {'name': 'Local2', 'tg': 2, 'description': 'Local 2', },
     {'name': 'Local9', 'tg': 9, 'description': 'Local 9', },
@@ -167,7 +168,6 @@ talk_groups['Brandmeister'] = [
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
-
 
 repeaters = [
     {'peer_id': '310293', 'call': 'W4BOC', 'input': '446.8125', 'output': '441.8125', 'color_code': '1',

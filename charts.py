@@ -1,10 +1,8 @@
 import datetime
 import logging
-# import numpy as np
 import matplotlib
-# from matplotlib.dates import DateFormatter, YearLocator, MonthLocator, WeekdayLocator, DayLocator
+import numpy as np
 from matplotlib.dates import DateFormatter, WeekdayLocator, DayLocator
-# from matplotlib.ticker import FormatStrFormatter, MultipleLocator
 from matplotlib.ticker import MultipleLocator
 
 import matplotlib.pyplot as plt
@@ -21,8 +19,8 @@ def auto_scale(val):
     t = val
     while t > 10:
         factor = factor * 10
-        t = int(t/10)
-    return (t+1) * factor
+        t = int(t / 10)
+    return (t + 1) * factor
 
 
 def no_zero(n):
@@ -66,7 +64,7 @@ def make_bins(dates, data):
 
     for i in range(len(data)):
         binned_data.append([])
-    bin_total = [0]*len(data)
+    bin_total = [0] * len(data)
 
     for i in range(0, len(dates)):
         d = dates[i]
@@ -137,9 +135,13 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
             tg_data = item.get(tg_name)
             if tg_data is not None:
                 duration = tg_data['duration'] / 60.0
+                if len(data[j + 1]) > 1 and data[j + 1][-1] is None:
+                    data[j + 1][-1] = 0.0
             else:
                 duration = 0.0
-            data[j+1].append(duration)
+                if len(data[j + 1]) > 1 and data[j + 1][-1] == 0.0:
+                    duration = None
+            data[j + 1].append(duration)
 
     fig = plt.Figure(figsize=(WIDTH_INCHES, HEIGHT_INCHES), dpi=100, tight_layout=True)
     ax = fig.add_subplot(111, facecolor=BG)
@@ -166,6 +168,124 @@ def plot_activity(time_series, title, filename=None, start_date=None, end_date=N
 
     ax.grid(True)
 
+    ax.tick_params(axis='y', colors=FG, which='both', direction='out', right=False)
+    ax.tick_params(axis='x', colors=FG, which='both', direction='out', top=False)
+    ax.set_ylabel('Usage Minutes', color=FG, size='x-large', weight='bold')
+    ax.set_xlabel('UTC Date', color=FG, size='x-large', weight='bold')
+
+    ax.xaxis.set_major_locator(WeekdayLocator(byweekday=6))  # sunday
+    ax.xaxis.set_minor_locator(DayLocator())  # every day
+    ax.xaxis.set_major_formatter(DateFormatter('%m-%d'))
+    ax.tick_params(axis='x', labelrotation=90)
+
+    ax.yaxis.set_major_locator(MultipleLocator(30))
+
+    legend = ax.legend(loc='upper left', numpoints=1, facecolor=BG, edgecolor=FG)
+    for text in legend.get_texts():
+        text.set_color(FG)
+
+    ax.spines['left'].set_color(FG)
+    ax.spines['right'].set_color(FG)
+    ax.spines['top'].set_color(FG)
+    ax.spines['bottom'].set_color(FG)
+
+    if filename is not None:
+        canvas = agg.FigureCanvasAgg(fig)
+        canvas.draw()
+        fig.savefig(filename, facecolor=BG)
+    else:
+        plt.show()
+    plt.close(fig)
+    return
+
+
+def plot_activity_stackbar(time_series, title, filename=None, start_date=None, end_date=None):
+    """
+    make a stacked bar chart of the various talkgroup activity.
+    """
+    logging.debug('plot_activity_stackbar(...,%s, %s)' % (title, filename))
+
+    max_duration = 0.0
+    talk_groups = {}
+    for item in time_series:
+        for k, v in item.items():
+            if k != 'date' and not k.lower().startswith('unknown'):
+                count = v['count']
+                duration = v['duration']
+                dd = talk_groups.get(k)
+                if dd is None:
+                    dd = {'talk_group': k, 'count': 0, 'duration': 0.0}
+                    talk_groups[k] = dd
+                if duration > dd['duration']:
+                    dd['duration'] = duration
+                if count > dd['count']:
+                    dd['count'] = count
+                if duration > max_duration:
+                    max_duration = duration
+
+    talk_groups_list = list(talk_groups.values())
+    talk_groups_list = sorted(talk_groups_list, key=lambda ctg: ctg['duration'], reverse=True)
+    talk_groups_list = talk_groups_list[:10]
+
+    interesting_talk_groups = []
+    for tg in talk_groups_list:
+        interesting_talk_groups.append(tg['talk_group'])
+
+    data = []
+    # data[0] is list of dates
+    for i in range(0, len(interesting_talk_groups) + 1):
+        data.append([])
+
+    max_duration = 0.0
+    for i in range(0, len(time_series)):
+        item = time_series[i]
+        data[0].append(item['date'])
+        bin_total_duration = 0.0
+        for j in range(0, len(interesting_talk_groups)):
+            tg_name = interesting_talk_groups[j]
+            tg_data = item.get(tg_name)
+            if tg_data is not None:
+                duration = tg_data['duration'] / 60.0
+            else:
+                duration = 0.0
+            data[j + 1].append(duration)
+            bin_total_duration += duration
+            if bin_total_duration > max_duration:
+                max_duration = bin_total_duration
+
+    fig = plt.Figure(figsize=(WIDTH_INCHES, HEIGHT_INCHES), dpi=100, tight_layout=True)
+    ax = fig.add_subplot(111, facecolor=BG)
+    ax.set_title(title, color=FG, size='xx-large', weight='bold')
+    dates = matplotlib.dates.date2num(data[0])
+    #start_date = time_series[0]['date']
+    #end_date = time_series[-1]['date']
+    start_date = data[0][0]
+    end_date = data[0][-1]
+    ax.set_xlim(start_date, end_date)
+    y_axis_multiple = 10
+    y_max = (int(max_duration / y_axis_multiple) + 1) * y_axis_multiple
+    ax.set_ylim(0, y_max)
+    logging.debug('bins = {}'.format(len(data[0])))
+    width = 20.0 / len(data[0])   # 20 / number_of_bins ... about
+    logging.debug('width={}'.format(width))
+
+    cmap = matplotlib.cm.get_cmap('tab10')
+    # print(cmap.colors)
+
+    #  11 colors, linestyles, markers?
+    #  colors = ['r', 'g', 'b', 'c', '#990099', '#ff6600', '#00ff00', '#663300', '#00ff99', 'k', '#990099']
+    #  line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--', '--', '-.']  # -.
+    #  marker_style = ['o', 'v', 's', 'p', 'P', '*', 'h', 'X', 'd', '8', 'x']
+    offset = np.zeros((len(dates)), dtype=np.float_)
+    for i in range(0, len(interesting_talk_groups)):
+        ta = np.array(data[i + 1])
+        ax.bar(dates, ta, width, bottom=offset,
+               #color=colors[i],
+               color=cmap.colors[i],
+               label='{:s}'.format(interesting_talk_groups[i]))
+        offset += ta
+
+    ax.grid(True)
     ax.tick_params(axis='y', colors=FG, which='both', direction='out', right=False)
     ax.tick_params(axis='x', colors=FG, which='both', direction='out', top=False)
     ax.set_ylabel('Usage Minutes', color=FG, size='x-large', weight='bold')
