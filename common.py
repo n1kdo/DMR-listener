@@ -12,18 +12,24 @@ interesting_talk_group_names = [
 interesting_peer_ids = [
     310293,  # w4boc  stone mountain
     310371,  # w4doc  atlanta
+    310466,  # k4vyx  savannah
     310592,  # KG4BKO vidalia
     310969,  # W4KST  Marietta
     311303,  # KE4OKD Sandy Springs
     311313,  # w8red  snellville
     311314,  # KD4KHO Canton
+    311318,  # K4QHR  Kingsland
     311320,  # w4cba  cumming
     311321,  # n4taw  between
     311322,  # ka3jij gainesville
+    311337,  # wa4asi covington
     311338,  # kd4z   sweat mountain
+    311350,  # km4dnd waycross
     311637,  # NG4RF  Cumming
     312243,  # WA4OKJ Rome
     312284,  # KD4IEZ Dublin
+    312288,  # AF1G   Kathleen
+    312384,  # KZ4FOX Athens
     312444,  # KZ4FOX Athens
 ]
 

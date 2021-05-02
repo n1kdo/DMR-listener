@@ -333,7 +333,8 @@ TABLE, TH, TD {
             sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
             # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
             for talk_group in sorted_talk_groups:
-                if talk_group['talk_group'].startswith('UnKnown'):
+                # print(talk_group['talk_group'])
+                if talk_group['talk_group'].lower().startswith('unknown'):
                     continue
                 htmlfile.write('<tr class="talkgroup-row">')
                 htmlfile.write('<td colspan="2" class="right">{:6d}</td>'.format(talk_group['talk_group_number']))
@@ -516,6 +517,9 @@ BODY {
     border: 0;
     font-family: sans-serif;
 }
+.centered {
+    text-align: center;
+}
 .users-table {
     border-collapse: collapse;
     font-size: 0.8em;
@@ -548,16 +552,22 @@ TABLE, TH, TD {
     padding: 2px
 }
 .right {
-    text-align:right;
+    text-align: right;
 }
 .heading {
-    text-align:center;
+    text-align: center;
     font-size: 1.5em;
     font-weight: bold;
 }
 .subhead {
-    text-align:center;
+    text-align: center;
     font-size: 0.85em;
+}
+ul {
+    display: table;
+    font-size:0.85em;
+    margin: 0 auto;
+    text-align: left;
 }
   </style>
 </head>
@@ -599,8 +609,9 @@ TABLE, TH, TD {
                 for talk_group in sorted_talk_groups:
                     htmlfile.write('<tr class="tg-row">')
                     if talk_group['talk_group_number'] < 1:
+                        bad_talk_group_number = talk_group['talk_group'].split(' ')[-1]
                         htmlfile.write('<td class="tg-col-1 unknown-tg" colspan="2">{:18s}</td>'.format(talk_group['talk_group']))
-                        htmlfile.write('<td class="unknown-tg right">{:d}</td>'.format(-talk_group['talk_group_number']))
+                        htmlfile.write('<td class="unknown-tg right">{}</td>'.format(bad_talk_group_number))
                     else:
                         htmlfile.write('<td class="tg-col-1" colspan="2">{:s}</td>'.format(talk_group['talk_group']))
                         htmlfile.write('<td class="right">{:d}</td>'.format(talk_group['talk_group_number']))
@@ -613,11 +624,15 @@ TABLE, TH, TD {
         htmlfile.write('</div>\n')
         htmlfile.write('<p class="subhead">\n')
         htmlfile.write('<b>A note about "UnKnown Ipsc"</b><br>\n')
-        htmlfile.write('There are several likely reasons you may see "UnKnown Ipsc":<br>\n')
-        htmlfile.write('Use of a Brandmeister talk group number on a C-Bridge repeater.<br>\n')
-        htmlfile.write('The talk group number is correct, but the timeslot is not.<br>\n')
-        htmlfile.write('The talk group number is incorrect.\n')
+        htmlfile.write('There are several likely reasons you may see "UnKnown Ipsc":\n')
         htmlfile.write('</p>\n')
+        htmlfile.write('<div class="centered">')
+        htmlfile.write('<ul>\n')
+        htmlfile.write('<li>Use of a Brandmeister talk group number on a C-Bridge repeater.\n')
+        htmlfile.write('<li>The talk group number is correct, but the timeslot is not.\n')
+        htmlfile.write('<li>The talk group number is incorrect.\n')
+        htmlfile.write('</ul>\n')
+        htmlfile.write('</div>\n')
         htmlfile.write('</body></html>\n')
 
 
