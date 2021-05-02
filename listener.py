@@ -319,10 +319,11 @@ def main():
 
         if write_files:
             append_logged_calls(logged_calls_filename, calls_to_log)
-        if len(calls_to_log):
-            for call in calls_to_log:
-                s = format_call(call)
-                logging.info(s)
+        else:
+            if len(calls_to_log):
+                for call in calls_to_log:
+                    s = format_call(call)
+                    logging.debug(s)
         if False:
             if len(ignored_calls):
                 for call in ignored_calls:
