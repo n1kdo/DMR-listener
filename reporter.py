@@ -2,6 +2,7 @@
 import csv
 import datetime
 import logging
+import sys
 import time
 
 from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping
@@ -66,7 +67,7 @@ def read_log(filename, start, end):
             ts = convert_iso_timestamp(tss)
             if ts is not None:
                 row['timestamp'] = ts
-                if ts < start or ts > end:
+                if start is not None and ts < start or end is not None and ts > end:
                     continue
 
             duration = row.get('duration') or '0'
@@ -761,10 +762,20 @@ def print_users_summary(users_list):
 def main():
     now = datetime.datetime.utcnow()
     # start_time = now - datetime.timedelta(days=365)
-    start_time = now - datetime.timedelta(days=30)
     end_time = now
-    # start_time = datetime.datetime.strptime('2019-12-07 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
-    # start_time = datetime.datetime.strptime('2020-02-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+    if len(sys.argv) >= 2:
+        if sys.argv[1].lower() == '--all':
+            logging.info('selected all data.')
+            start_time = datetime.datetime.strptime('2019-12-01 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
+        elif sys.argv[1].lower() == '--year':
+            logging.info('selected the last year\'s data.')
+            start_time = now - datetime.timedelta(days=365)
+    else:
+        logging.info('last 30 days mode.')
+        start_time = now - datetime.timedelta(days=30)
+
+
+# start_time = datetime.datetime.strptime('2020-02-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-03-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-04-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # end_time = datetime.datetime.strptime('2020-01-31 23:59:59', '%Y-%m-%d %H:%M:%S')
@@ -790,7 +801,7 @@ def main():
         bins_start = start_time.replace(minute=0, second=0, microsecond=0)
         bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
     elif num_days <= 30:
-        bin_hours = 4
+        bin_hours = 3
         bins_start = start_time.replace(minute=0, second=0, microsecond=0)
         h = bins_start.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
         bins_start = bins_start.replace(hour=h)

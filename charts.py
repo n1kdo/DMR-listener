@@ -265,25 +265,27 @@ def plot_activity_stackbar(time_series, title, filename=None, start_date=None, e
     y_axis_multiple = 10
     y_max = (int(max_duration / y_axis_multiple) + 1) * y_axis_multiple
     ax.set_ylim(0, y_max)
-    logging.debug('bins = {}'.format(len(data[0])))
-    width = 20.0 / len(data[0])   # 20 / number_of_bins ... about
-    logging.debug('width={}'.format(width))
+    num_bins = len(data[0])
+    logging.info('bins = {}'.format(num_bins))
+    if num_bins >= 365:
+        width = 0.60
+    else:
+        width = 0.08
+    logging.info('width = {}'.format(width))
 
     cmap = matplotlib.cm.get_cmap('tab10')
-    # print(cmap.colors)
-
-    #  11 colors, linestyles, markers?
-    #  colors = ['r', 'g', 'b', 'c', '#990099', '#ff6600', '#00ff00', '#663300', '#00ff99', 'k', '#990099']
-    #  line_styles = ['-', '-', '-', '-', '-', ':', '--', ':', '--', '--', '-.']  # -.
-    #  marker_style = ['o', 'v', 's', 'p', 'P', '*', 'h', 'X', 'd', '8', 'x']
-    offset = np.zeros((len(dates)), dtype=np.float_)
+    bar_offset = np.zeros((len(dates)), dtype=np.float_)
     for i in range(0, len(interesting_talk_groups)):
-        ta = np.array(data[i + 1])
-        ax.bar(dates, ta, width, bottom=offset,
-               #color=colors[i],
+        bar_data = np.array(data[i + 1])
+        ax.bar(dates, bar_data,
+               width,
+               align='edge',
+               bottom=bar_offset,
                color=cmap.colors[i],
-               label='{:s}'.format(interesting_talk_groups[i]))
-        offset += ta
+               label=interesting_talk_groups[i],
+               linewidth=0.0,
+               )
+        bar_offset += bar_data
 
     ax.grid(True)
     ax.tick_params(axis='y', colors=FG, which='both', direction='out', right=False)
