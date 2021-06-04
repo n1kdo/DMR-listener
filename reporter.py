@@ -238,12 +238,14 @@ input {
         for repeater in sorted_repeaters:
             htmlfile.write('<div class="tab">\n')
             htmlfile.write('<input type="checkbox" id="chck{}">'.format(ctr))
-            rptr = '{} {} {} Color Code {}, {} network'.format(repeater['call'], repeater['output'], repeater['location'], repeater['color_code'], repeater['network'])
+            rptr = '{} {} {}'.format(repeater['call'], repeater['output'], repeater['location'])
             htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
             htmlfile.write('<div class="tab-content">\n')
             htmlfile.write('<table class="talk-groups-table">\n')
+            info = '{} {} {} {} CC {} {}'.format(repeater['call'], repeater['location'], repeater['output'], repeater['input'], repeater['color_code'], repeater['network'])
+            htmlfile.write('<tr><th colspan="4" class="rptr-info">{}</th></tr>'.format(info))
             talk_groups = repeater['talk_groups']
-            htmlfile.write('<tr><th>Talk Group<br>Name</th><th>Talk<br>Group<br>#</th><th>Time<br>Slot<br>#</th><th>Notes</th></tr>\n')
+            htmlfile.write('<tr><th>Talk Group Name</th><th>TG #</th><th>TS #<br>#</th><th>Notes</th></tr>\n')
             for ts in [1, 2]:
                 for talk_group in talk_groups:
                     tg_number = talk_group[0]
@@ -251,7 +253,7 @@ input {
                     tg_mode = talk_group[2]
                     talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
                     if talk_group_data is None:
-                        print('missing talk group data for tg {}'.format(tg_number))
+                        logging.warning('missing talk group data for tg {}'.format(tg_number))
                         break
                     if tg_timeslot == ts:
                         if tg_mode == 0:
