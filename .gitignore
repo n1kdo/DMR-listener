@@ -1,4 +1,8 @@
-logged_calls.txt
 __pycache__/
 log_analytics_fragment.html
 .idea/
+*.csv
+*.html
+*.iml
+*.txt
+
