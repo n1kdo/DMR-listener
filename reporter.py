@@ -89,6 +89,9 @@ def read_log(filename, start, end):
                 # filter out talk groups that are uninteresting
                 if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
                     continue
+                # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
+                if talk_group == 'Local8' and peer_id == 311637:
+                    talk_group = 'ATL Metro'
                 row['talk_group'] = talk_group
             calls.append(row)
 
@@ -370,7 +373,8 @@ def validate_repeater_data(repeaters_list, peers_list):
                         if ptgn == rtgn:
                             talk_group_found = True
                     if not talk_group_found:
-                        logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
+                        if ptgn != 16777215:
+                            logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
                 repeater_found = True
         if not repeater_found:
             logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))
@@ -417,6 +421,9 @@ def update_peer(a_dict, call):
     peer_id = call.get('peer_id') or 0
     peer_callsign = call.get('peer_callsign')
     peer_name = call.get('peer_name')
+    if peer_id == -1:
+        peer_name = 'Brandmeister Network'  # more horribleness HACK HACK
+        peer_callsign = 'Brandmeister'
     if peer_name == 'n/a':
         peer_name = '{}'.format(peer_id)
     if peer_callsign == 'n/a':
@@ -776,8 +783,7 @@ def main():
         logging.info('last 30 days mode.')
         start_time = now - datetime.timedelta(days=30)
 
-
-# start_time = datetime.datetime.strptime('2020-02-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+    # start_time = datetime.datetime.strptime('2020-02-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-03-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # start_time = datetime.datetime.strptime('2020-04-01 00:00:00', '%Y-%m-%d %H:%M:%S')
     # end_time = datetime.datetime.strptime('2020-01-31 23:59:59', '%Y-%m-%d %H:%M:%S')

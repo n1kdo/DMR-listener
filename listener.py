@@ -227,6 +227,8 @@ def parse_call_data(call):
             call['peer_id'] = 'n/a'
             call['peer_callsign'] = more_stuff[0].strip()
             call['peer_name'] = more_stuff[1].strip()
+            if call['peer_callsign'] == 'BM':
+                call['peer_id'] = 0 - safe_int(call['peer_name'])  # non-cbridge peer ID
         elif len(more_stuff) == 3:
             call['peer_id'] = more_stuff[2].strip()
             call['peer_callsign'] = more_stuff[0].strip()
@@ -281,16 +283,18 @@ def main():
     # main part....
     #
     write_files = True
-
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
             write_files = False
-            logging.basicConfig(level=logging.DEBUG)
+            #logging.basicConfig(level=logging.DEBUG)
+            #logging.root.level = logging.DEBUG
+
     update_number = 0
     seen_talk_groups_filename = 'seen_talk_groups.txt'
     logged_calls_filename = 'logged_calls.txt'
-    update_interval = 15
+    update_interval = 30
     seen_talk_groups = read_seen_talk_groups(seen_talk_groups_filename)
+    next_poll = int(time.time())
 
     while True:
         calls, update_number = do_poll(update_number)
@@ -323,15 +327,17 @@ def main():
             if len(calls_to_log):
                 for call in calls_to_log:
                     s = format_call(call)
-                    logging.debug(s)
+                    logging.info(s)
         if False:
             if len(ignored_calls):
                 for call in ignored_calls:
                     s = format_call(call)
                     logging.info('not logged: ' + s)
-        logging.debug("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
+        logging.info("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
+        next_poll = next_poll + update_interval
         try:
-            time.sleep(update_interval)
+            while time.time() < next_poll:
+                time.sleep(1)
         except KeyboardInterrupt as e:
             print('\nexiting...\n')
             exit(0)

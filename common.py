@@ -10,6 +10,7 @@ interesting_talk_group_names = [
 ]
 
 interesting_peer_ids = [
+    -1,      # brandmeister
     310293,  # w4boc  stone mountain
     310371,  # w4doc  atlanta
     310466,  # k4vyx  savannah
@@ -122,6 +123,8 @@ talk_groups['K4USD'] = [
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
+    {'name': 'Vidalia Net', 'tg': 310592, 'description': 'Vidalia Net', },
+    {'name': 'Vdalia Net', 'tg': 310592, 'description': 'Vidalia Net', }, # typo!
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
@@ -439,6 +442,7 @@ repeaters = [
          (31134, 2, 1),
          (31139, 2, 1),
          (31665, 2, 1),
+         (31990, 2, 1),
          (314710, 2, 1),
      ], },
     # 311340 444.775 W4KIP
@@ -528,6 +532,7 @@ repeaters = [
          (3, 1, 1),
          (8, 1, 0),
          (9, 2, 0),
+         (10, 1, 1),
          (13, 1, 1),
          (91, 1, 1),
          (93, 1, 1),
@@ -554,6 +559,7 @@ repeaters = [
          (3145, 2, 1),
          (3147, 2, 1),
          (3148, 2, 1),
+         (3155, 2, 1),
          (3172, 2, 1),
          (3174, 2, 1),
          (3175, 2, 1),
@@ -577,8 +583,10 @@ repeaters = [
          (93, 1, 1),
          (312, 2, 1),
          (3100, 2, 1),
+         (3112, 2, 1),
          (3113, 2, 0),
          (3124, 2, 1),
+         (3137, 2, 1),
          (3147, 2, 1),
          (3155, 2, 1),
          (9998, 2, 1),
