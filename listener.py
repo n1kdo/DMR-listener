@@ -54,16 +54,18 @@ def append_logged_calls(filename, new_calls):
     if new_calls is not None and len(new_calls) > 0:
         with open(filename, 'a') as datafile:
             for stuff in new_calls:
-                line = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s' % (stuff['timestamp'],
-                                                          stuff['site'],
-                                                          stuff['dest'],
-                                                          stuff['peer_id'],
-                                                          stuff['peer_callsign'],
-                                                          stuff['peer_name'],
-                                                          stuff['radio_id'],
-                                                          stuff['radio_callsign'],
-                                                          stuff['radio_username'],
-                                                          stuff['duration'])
+                line = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s' % (stuff['timestamp'],
+                                                             stuff['site'],
+                                                             stuff['dest'],
+                                                             stuff['peer_id'],
+                                                             stuff['peer_callsign'],
+                                                             stuff['peer_name'],
+                                                             stuff['radio_id'],
+                                                             stuff['radio_callsign'],
+                                                             stuff['radio_username'],
+                                                             stuff['duration'],
+                                                             stuff['sourcepeer'],
+                                                             )
                 datafile.write(line + '\n')
 
 
@@ -109,20 +111,6 @@ def call_cbridge(**params):
             line = line.replace('&nbsp;', ' ')
             line = line.replace(',', '_')
             sections = line.split('\010')
-            # if False: # get current qsos in progress # don't care about these, historical is good enough.
-            #     users = sections[0].split('\t')
-            #     for user in users:
-            #         qso = {}
-            #         items = user.split('\013')
-            #         for i in range(0, len(datalabels)):
-            #             qso[datalabels[i]] = items[i]
-            #         # print(qso)
-            #         parse_call(qso)
-            #         print(qso)
-            #         log_call2(qso)
-            #         print('--')
-            #         qsos.append(qso)
-
             stuff = sections[1].split('\t')
             for s in stuff:
                 sections = s.split('\013')
@@ -219,6 +207,7 @@ def parse_call_data(call):
     logging.debug('stuff: {} :'.format(len(stuff)) + str(stuff))
     if len(stuff) == 1:
         more_stuff = stuff[0].split('-')
+        logging.debug('more_stuff: {} '.format(len(more_stuff)) + str(more_stuff))
         if len(more_stuff) == 1:
             call['peer_id'] = safe_int(more_stuff[0].strip())
             call['peer_callsign'] = 'n/a'
@@ -229,6 +218,11 @@ def parse_call_data(call):
             call['peer_name'] = more_stuff[1].strip()
             if call['peer_callsign'] == 'BM':
                 call['peer_id'] = 0 - safe_int(call['peer_name'])  # non-cbridge peer ID
+            if call['peer_name'] == 'HotSpot':
+                even_more_stuff = call['site'].split('-')
+                logging.debug('even_more_stuff: {} : '.format(len(even_more_stuff)) + str(even_more_stuff))
+                if len(even_more_stuff) == 3:
+                    call['peer_id'] = 0 - safe_int(even_more_stuff[2])
         elif len(more_stuff) == 3:
             call['peer_id'] = more_stuff[2].strip()
             call['peer_callsign'] = more_stuff[0].strip()
@@ -258,6 +252,8 @@ def parse_call_data(call):
         call['peer_id'] = safe_int(call['sourcepeer'])
     logging.debug('peer_id: {}, peer_callsign: {}, peer_name: {}'.format(call['peer_id'], call['peer_callsign'],
                                                                          call['peer_name']))
+    #if call['peer_id'] == 'n/a':
+    #    logging.warning(str(call))
     # print(call)
 
 
@@ -286,7 +282,7 @@ def main():
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
             write_files = False
-            #logging.basicConfig(level=logging.DEBUG)
+            # logging.basicConfig(level=logging.DEBUG)
             #logging.root.level = logging.DEBUG
 
     update_number = 0
@@ -333,7 +329,7 @@ def main():
                 for call in ignored_calls:
                     s = format_call(call)
                     logging.info('not logged: ' + s)
-        logging.info("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
+        # logging.info("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
         next_poll = next_poll + update_interval
         try:
             while time.time() < next_poll:

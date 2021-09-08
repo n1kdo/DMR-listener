@@ -5,7 +5,8 @@ import logging
 import sys
 import time
 
-from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping
+from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping, \
+    remap_map
 from common import repeaters
 from common import interesting_peer_ids
 from common import filter_talk_group_name
@@ -54,7 +55,7 @@ def read_file(filename):
 def read_log(filename, start, end):
     calls = []
     fields = ['timestamp', 'site', 'dest', 'peer_id', 'peer_callsign', 'peer_name',
-              'radio_id', 'radio_name', 'radio_username', 'duration']
+              'radio_id', 'radio_name', 'radio_username', 'duration', 'source_peer']
 
     rows = 0
     with open(filename, 'r') as datafile:
@@ -90,8 +91,11 @@ def read_log(filename, start, end):
                 if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
                     continue
                 # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
-                if talk_group == 'Local8' and peer_id == 311637:
-                    talk_group = 'ATL Metro'
+                remap_list = remap_map.get(peer_id)
+                if remap_list is not None:
+                    for remap in remap_list:
+                        if remap['tg_name_old'] == talk_group:
+                            talk_group = remap['tg_name_new']
                 row['talk_group'] = talk_group
             calls.append(row)
 
