@@ -339,7 +339,12 @@ TABLE, TH, TD {
         htmlfile.write('<tr class="header-row"><th>Peer ID</th><th>Callsign</th><th>Peer Name</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
         for peer in peers_list:
             htmlfile.write('<tr class="peer-row">')
-            htmlfile.write('<td class="right">{:6d}</td>'.format(peer['peer_id']))
+            peer_id = peer['peer_id']
+            if peer_id > 0:
+                peer_str = '{:6d}'.format(peer_id)
+            else:
+                peer_str = peer.get('peer_name') or 'unknown'
+            htmlfile.write('<td class="right">{}</td>'.format(peer_str))
             htmlfile.write('<td>' + peer['peer_callsign'] + '</td>')
             htmlfile.write('<td>' + peer['peer_name'] + '</td>')
             htmlfile.write('<td class="right">' + str(peer['count']) + '</td>')
@@ -370,26 +375,27 @@ def validate_repeater_data(repeaters_list, peers_list):
     logging.info('validating talkgroup lists...')
     for peer in peers_list:
         peer_id = peer['peer_id']
-        repeater_found = False
-        for repeater in repeaters_list:
-            if int(repeater['peer_id']) == peer_id:
-                repeater_talk_groups = repeater['talk_groups']
-                peer_talk_groups = peer['talk_groups']
-                for peer_talk_group in peer_talk_groups:
-                    ptgn = peer_talk_groups[peer_talk_group]['talk_group_number']
-                    if ptgn < 1:
-                        continue
-                    talk_group_found = False
-                    for repeater_talk_group in repeater_talk_groups:
-                        rtgn = repeater_talk_group[0]
-                        if ptgn == rtgn:
-                            talk_group_found = True
-                    if not talk_group_found:
-                        if ptgn != 16777215:
-                            logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
-                repeater_found = True
-        if not repeater_found:
-            logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))
+        if 310000 <= peer_id <= 319999:
+            repeater_found = False
+            for repeater in repeaters_list:
+                if int(repeater['peer_id']) == peer_id:
+                    repeater_talk_groups = repeater['talk_groups']
+                    peer_talk_groups = peer['talk_groups']
+                    for peer_talk_group in peer_talk_groups:
+                        ptgn = peer_talk_groups[peer_talk_group]['talk_group_number']
+                        if ptgn < 1:
+                            continue
+                        talk_group_found = False
+                        for repeater_talk_group in repeater_talk_groups:
+                            rtgn = repeater_talk_group[0]
+                            if ptgn == rtgn:
+                                talk_group_found = True
+                        if not talk_group_found:
+                            if ptgn != 16777215:
+                                logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
+                    repeater_found = True
+            if not repeater_found:
+                logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))
 
 
 def update_usage(a_dict, call):
@@ -433,16 +439,19 @@ def update_peer(a_dict, call):
     peer_id = call.get('peer_id') or 0
     peer_callsign = call.get('peer_callsign')
     peer_name = call.get('peer_name')
+    radio_id = call['radio_id'] or 0
+    radio_name = call.get('radio_name') or 'unknown'
     if peer_id == -1:
-        peer_name = 'Brandmeister Network'  # more horribleness HACK HACK
-        peer_callsign = 'Brandmeister'
+        if peer_callsign == radio_name:
+            peer_id = radio_id
+        peer_name = call.get('site') or 'unknown site'
     if peer_name == 'n/a':
-        peer_name = '{}'.format(peer_id)
-    if peer_callsign == 'n/a':
-        if peer_name != 'n/a':
-            peer_callsign = peer_name
-        else:
-            peer_callsign = 'unknown peer'
+        peer_name = call.get('site') or 'unknown site'
+    if peer_callsign == 'n/a' and 310000000 < peer_id < 319999999:
+        if int(peer_id/100) == radio_id:
+            sub_peer = peer_id - radio_id * 100
+            peer_callsign = '{}-{}'.format(radio_name, sub_peer)
+
     peer = a_dict.get(peer_id)
     if peer is None:
         peer = {'peer_id': peer_id,
@@ -904,7 +913,8 @@ def main():
         update_usage(user, call)
         update_peer(user['peers'], call)
 
-        if peer_id in interesting_peer_ids:
+        #  if peer_id in interesting_peer_ids:
+        if True:
             update_peer(peers, call)
 
         if not talk_group_name.lower().startswith('unknown'):

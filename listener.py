@@ -217,9 +217,13 @@ def parse_call_data(call):
             call['peer_name'] = 'n/a'
         elif len(more_stuff) == 2:
             call['peer_id'] = 'n/a'
-            call['peer_callsign'] = more_stuff[0].strip()
+            callsign = more_stuff[0].strip()
+            if callsign == 'BM':  # hack hack
+                call['peer_callsign'] = stuff[0]
+            else:
+                call['peer_callsign'] = callsign
             call['peer_name'] = more_stuff[1].strip()
-            if call['peer_callsign'] == 'BM':
+            if 'BM-' in call['peer_callsign']:
                 call['peer_id'] = 0 - safe_int(call['peer_name'])  # non-cbridge peer ID
             if call['peer_name'] == 'HotSpot':
                 even_more_stuff = call['site'].split('-')
