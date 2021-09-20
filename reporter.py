@@ -91,11 +91,19 @@ def read_log(filename, start, end):
                 if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
                     continue
                 # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
+                remap_list = remap_map.get(0)  # 0 is global remap.
+                if remap_list is not None:
+                    for remap in remap_list:
+                        if remap['tg_name_old'] == talk_group:
+                            talk_group = remap['tg_name_new']
+
                 remap_list = remap_map.get(peer_id)
                 if remap_list is not None:
                     for remap in remap_list:
                         if remap['tg_name_old'] == talk_group:
                             talk_group = remap['tg_name_new']
+                if 'Vdalia' in talk_group:
+                    logging.warning('{}: {}'.format(talk_group, str(row)))
                 row['talk_group'] = talk_group
             calls.append(row)
 

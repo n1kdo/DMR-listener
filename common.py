@@ -50,15 +50,19 @@ interesting_peer_ids = [
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
 remap_map = {
     -1: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    0: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],  # 0 will always remap.
     -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310592: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
+    311307: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311350: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312284: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312485: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
 }
 
 
@@ -153,7 +157,7 @@ talk_groups['DMR-SE'] = [
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
     {'name': 'Vidalia Net', 'tg': 310592, 'description': 'Vidalia Net', },
-    {'name': 'Vdalia Net', 'tg': 310592, 'description': 'Vidalia Net', }, # typo!
+    {'name': 'Vdalia Net', 'tg': 310592, 'description': 'Vidalia Net', },  # typo!
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
