@@ -1,9 +1,10 @@
+import logging
 import re
 
 # all traffic to these talk groups will be logged.
 interesting_talk_group_names = [
     'ATL Metro',
-    'Bridge'
+    #  'Bridge',
     'GAstate',
     'GA ARES',
     'GA North',
@@ -40,6 +41,7 @@ interesting_peer_ids = [
     312284,  # KD4IEZ Dublin
     312288,  # AF1G   Kathleen
     312384,  # KZ4FOX Athens
+    312391,  # KE4PMP Cochran
     312429,  # KE4RJI Tifton
     312444,  # KZ4FOX Athens
     312477,  # WX4EMA Macon
@@ -51,17 +53,18 @@ remap_map = {
     -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310592: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     311350: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312284: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
 }
 
 
-def filter_talk_group_name(s):
+def filter_talk_group_name(tg_name):
     # Strip "CC" and everything after it.
-    s = re.sub(r' CC.*', '', s)
+    s = re.sub(r' CC.*', '', tg_name)
     # strip "CC" alone
     s = re.sub(r' CC', '', s)
     # strip out number-number-number
@@ -69,6 +72,9 @@ def filter_talk_group_name(s):
     # strip out number-number
     s = re.sub(r' \d+-\d+', '', s)
     # print("%s | %s" % (s, old_s))
+    s = s.strip()
+    if len(s) < 2:
+        logging.warning('talkgroup name filter problem: {} -> {}',format(tg_name, s))
     return s
 
 
@@ -390,8 +396,11 @@ repeaters = [
     {'peer_id': '310969', 'call': 'W4KST', 'input': '448.275', 'output': '443.275', 'color_code': '7',
      'location': 'KSU Campus Marietta GA', 'network': 'K4USD',
      'talk_groups': [
+         (2, 2, 0),
+         (9, 2, 0),
          (3113, 2, 0),  # maybe there are more?
      ], },
+    # TODO 310996 KM4EYX Douglas GA
     # 311313 W8RED Snellville
     {'peer_id': '311313', 'call': 'W8RED', 'input': '447.6000', 'output': '442.6000', 'color_code': '3',
      'location': 'Snellville, GA', 'network': 'K4USD',
@@ -534,8 +543,6 @@ repeaters = [
          (31139, 2, 1),
          (31665, 2, 1),
      ], },
-    # 311326 AI1U Lawrenceville
-    # TODO fill this in.
     # 311337 WA4ASI Covington
     {'peer_id': '311337', 'call': 'WA4ASI', 'input': '449.800', 'output': '444.800', 'color_code': '2',
      'location': 'Covington', 'network': 'Brandmeister',
@@ -660,6 +667,7 @@ repeaters = [
          (3113, 2, 0),
          (310592, 2, 0),
      ], },
+    # TODO 311617 KE4PMP Parrot GA
     # 311637 NG4RF sawnee/cumming
     {'peer_id': '311637', 'call': 'NG4RF', 'input': '449.6260', 'output': '444.6250', 'color_code': '1',
      'location': 'Sawnee Mountain GA', 'network': 'K4USD',
@@ -737,6 +745,7 @@ repeaters = [
          (31130, 2, 1),
          (310592, 2, 0),
      ], },
+    # TODO 312391 KE4PMP Cochran GA
     # 312444  KZ4FOZ Athens
     {'peer_id': '312444', 'call': 'KZ4FOX', 'input': '445.6625', 'output': '440.6625', 'color_code': '5',
      'location': 'Athens GA', 'network': 'Brandmeister',
@@ -752,6 +761,7 @@ repeaters = [
      'talk_groups': [
          (1, 1, 1),
          (3, 1, 1),
+         (8, 1, 1),
          (9, 2, 0),
          (10, 1, 1),
          (13, 1, 1),
@@ -766,6 +776,7 @@ repeaters = [
          (319, 2, 1),
          (1776, 2, 1),
          (3100, 2, 1),
+         (3112, 2, 1),
          (3113, 2, 0),
          (3169, 2, 1),
          (3172, 2, 1),
@@ -775,10 +786,11 @@ repeaters = [
          (3176, 2, 1),
          (3177, 2, 1),
          (31012, 2, 1),
+         (31121, 2, 1),
          (31130, 2, 1),
          (31139, 2, 1),
          (31665, 2, 1),
-         (310592,2, 1),
+         (310592, 2, 1),
      ], },
 ]
 

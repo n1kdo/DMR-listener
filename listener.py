@@ -141,6 +141,7 @@ def call_cbridge(**params):
             e = sys.exc_info()[0]
             print('Problem with web query:')
             print(e)
+            print(ex)
         result['qsos'] = qsos
         result['calls'] = calls
         if updatenumber != 0:
@@ -200,14 +201,16 @@ def parse_call_data(call):
         print(call)
 
     logging.debug(
-        'radio_id: {}, radio_callsign: {}, radio_username: {}'.format(call['radio_id'], call['radio_callsign'],
-                                                                      call['radio_username']))
+        'sourceradio stuff: {}, radio_id: {}, radio_callsign: {}, radio_username: {}'.format(str(stuff),
+                                                                                      call['radio_id'],
+                                                                                      call['radio_callsign'],
+                                                                                      call['radio_username']))
 
     stuff = call['sourcepeer'].split('--')
-    logging.debug('stuff: {} :'.format(len(stuff)) + str(stuff))
+    # logging.debug('sourcepeer stuff: ' + str(stuff))
     if len(stuff) == 1:
         more_stuff = stuff[0].split('-')
-        logging.debug('more_stuff: {} '.format(len(more_stuff)) + str(more_stuff))
+        # logging.debug('more_stuff: {} '.format(len(more_stuff)) + str(more_stuff))
         if len(more_stuff) == 1:
             call['peer_id'] = safe_int(more_stuff[0].strip())
             call['peer_callsign'] = 'n/a'
@@ -220,7 +223,7 @@ def parse_call_data(call):
                 call['peer_id'] = 0 - safe_int(call['peer_name'])  # non-cbridge peer ID
             if call['peer_name'] == 'HotSpot':
                 even_more_stuff = call['site'].split('-')
-                logging.debug('even_more_stuff: {} : '.format(len(even_more_stuff)) + str(even_more_stuff))
+                # logging.debug('even_more_stuff: {} : '.format(len(even_more_stuff)) + str(even_more_stuff))
                 if len(even_more_stuff) == 3:
                     call['peer_id'] = 0 - safe_int(even_more_stuff[2])
         elif len(more_stuff) == 3:
@@ -250,8 +253,10 @@ def parse_call_data(call):
             call['peer_name'] = 'unknown'
     else:
         call['peer_id'] = safe_int(call['sourcepeer'])
-    logging.debug('peer_id: {}, peer_callsign: {}, peer_name: {}'.format(call['peer_id'], call['peer_callsign'],
-                                                                         call['peer_name']))
+    logging.debug('sourcepeer stuff: {} peer_id: {}, peer_callsign: {}, peer_name: {}'.format(str(stuff),
+                                                                                              call['peer_id'],
+                                                                                              call['peer_callsign'],
+                                                                                              call['peer_name']))
     #if call['peer_id'] == 'n/a':
     #    logging.warning(str(call))
     # print(call)
@@ -282,7 +287,8 @@ def main():
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
             write_files = False
-            # logging.basicConfig(level=logging.DEBUG)
+            logging.basicConfig(level=logging.INFO)
+            #logging.basicConfig(level=logging.DEBUG)
             #logging.root.level = logging.DEBUG
 
     update_number = 0
@@ -300,6 +306,7 @@ def main():
         for call in calls:
             # print(call)
             fdest = call['filtered_dest']
+            peer_id = call.get('peer_id') or -1
             # if fdest.startswith('UnKnown'):
             #    ignored_calls.append(call)
             #    continue
@@ -307,9 +314,8 @@ def main():
                     'unknown'):
                 new_talk_groups.add(fdest)
                 print("new talk group: %s" % fdest)
-            if fdest in interesting_talk_group_names or call['peer_id'] in interesting_peer_ids:
+            if fdest in interesting_talk_group_names or peer_id in interesting_peer_ids:
                 calls_to_log.append(call)
-                # print_call(call)
             else:
                 ignored_calls.append(call)
         if len(new_talk_groups) > 0:
@@ -323,13 +329,14 @@ def main():
             if len(calls_to_log):
                 for call in calls_to_log:
                     s = format_call(call)
-                    logging.info(s)
+                    logging.info('logging  : {}'.format(s))
         if False:
             if len(ignored_calls):
                 for call in ignored_calls:
                     s = format_call(call)
                     logging.info('not logged: ' + s)
-        # logging.info("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
+                    logging.info(str(call))
+        logging.debug("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
         next_poll = next_poll + update_interval
         try:
             while time.time() < next_poll:
