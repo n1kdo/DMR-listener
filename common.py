@@ -10,8 +10,8 @@ interesting_talk_group_names = [
     'GA North',
     'GA Skywarn',
     "SEreg",
-    "Vdalia Net",
-    "Vidalia Net",
+    #"Vdalia Net",
+    #"Vidalia Net",
 ]
 
 # all traffic from the interesting peers will be logged.  Best to not turn on brandmeister.
@@ -84,6 +84,12 @@ def filter_talk_group_name(tg_name):
 
 networks = ['Brandmeister', 'DMR-SE', 'K4USD']
 
+site_name_to_network_map = {'BM-US-3102': 'Brandmeister',
+                            'DMR-SE': 'DMR-SE',
+                            'K4USD Network': 'K4USD',
+                            'K4USD-2 Network': 'K4USD',
+                            }
+
 """ 
 mapping of C-bridge talkgroup name to talkgroup number to description
 """
@@ -91,7 +97,8 @@ talk_groups = {}
 
 talk_groups['DMR-SE'] = [
     {'name': 'DMR-MARC NA', 'tg': 1, 'description': 'DMR-MARC North America', },
-    {'name': 'Local2', 'tg': 2, 'description': 'Local 2', },
+    #  {'name': 'Local2', 'tg': 2, 'description': 'Local 2', },
+    {'name': 'First Coast', 'tg': 2, 'description': 'First Coast', },
     {'name': 'DMR-MARC WW', 'tg': 3, 'description': 'DMR-MARC World-wide', },
     {'name': 'ATL Metro', 'tg': 8, 'description': 'Atlanta Metro', },
     {'name': 'Local8', 'tg': 8, 'description': 'Local 8', },
@@ -149,9 +156,9 @@ talk_groups['DMR-SE'] = [
     {'name': 'TAC1', 'tg': 8951, 'description': 'TAC1', },
     {'name': 'Parrot', 'tg': 9998, 'description': 'Parrot', },
     {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
-    {'name': 'First Coast', 'tg': 31121, 'description': 'First Coast', },
+    #  {'name': 'First Coast', 'tg': 31121, 'description': 'First Coast', },
     {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
-    {'name': 'ATL Metro BM', 'tg': 31131, 'description': 'Atlanta Metro BM', },
+    {'name': 'ATL Metro', 'tg': 31131, 'description': 'Atlanta Metro', },
     {'name': 'GA North', 'tg': 31134, 'description': 'Georgia North', },
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
@@ -278,7 +285,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
     {'name': 'First Coast', 'tg': 31121, 'description': 'First Coast', },
     {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
-    {'name': 'ATL Metro BM', 'tg': 31131, 'description': 'Atlanta Metro BM', },
+    {'name': 'ATL Metro', 'tg': 31131, 'description': 'Atlanta Metro', },
     {'name': 'GA North', 'tg': 31134, 'description': 'Georgia North', },
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
@@ -394,6 +401,7 @@ repeaters = [
          (3, 1, 1),
          (3113, 2, 0),
          (31130, 2, 1),
+         (31131, 2, 1),
          (310592, 2, 0),
      ], },
     # 310969 W4KST Marietta
@@ -464,9 +472,12 @@ repeaters = [
      ], },
     # 311318 K4QHR Kingsland
     {'peer_id': '311318', 'call': 'K4QHR', 'input': '447.1125', 'output': '442.1125', 'color_code': '7',
-     'location': 'Canton GA', 'network': 'DMR-SE', 'notes': '',
+     'location': 'Kingsland GA', 'network': 'DMR-SE', 'notes': '',
      'talk_groups': [
+         (1, 1, 1),
+         (3112, 2, 1),
          (3113, 2, 0),
+         (310592, 2, 0),
      ], },
     # 311321 N4TAW Between
     {'peer_id': '311321', 'call': 'N4TAW', 'input': '448.7375', 'output': '443.7375', 'color_code': '3',
@@ -739,12 +750,14 @@ repeaters = [
          (3147, 2, 1),
          (3155, 2, 1),
          (31121, 2, 1),
+         (31131, 2, 1),
          (31665, 2, 1),
      ], },
     # 312284 442.2375 KD4IEZ Dublin
     {'peer_id': '312284', 'call': 'KD4IEZ', 'input': '449.7875', 'output': '444.7875', 'color_code': '1',
      'location': 'Dublin GA', 'network': 'DMR-SE',
      'talk_groups': [
+         (1, 1, 1),
          (3113, 2, 0),
          (31130, 2, 1),
          (310592, 2, 0),
@@ -753,11 +766,13 @@ repeaters = [
     # 312444  KZ4FOZ Athens
     {'peer_id': '312444', 'call': 'KZ4FOX', 'input': '445.6625', 'output': '440.6625', 'color_code': '5',
      'location': 'Athens GA', 'network': 'Brandmeister',
-     'notes': 'Any Brandmeister talk group may be activated on Time Slot 1',
+     'notes': 'This is a full-time DMR repeater connected to the BrandMeister network. Both time slots can access any talk group connected to that network.',
      'talk_groups': [
          (8, 1, 1),
          (91, 1, 1),
+         (3100, 2, 0),
          (3113, 2, 0),
+         (31131, 2, 1),
      ], },
     {'peer_id': '312477', 'call': 'WX4EMA', 'input': '448.075', 'output': '443.075', 'color_code': '7',
      'location': 'Macon GA', 'network': 'K4USD',
@@ -782,6 +797,7 @@ repeaters = [
          (3100, 2, 1),
          (3112, 2, 1),
          (3113, 2, 0),
+         (3148, 2, 1),
          (3169, 2, 1),
          (3172, 2, 1),
          (3173, 2, 1),

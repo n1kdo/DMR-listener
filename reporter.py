@@ -6,7 +6,7 @@ import sys
 import time
 
 from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping, \
-    remap_map
+    remap_map, site_name_to_network_map
 from common import repeaters
 from common import interesting_peer_ids
 from common import filter_talk_group_name
@@ -401,6 +401,10 @@ def validate_repeater_data(repeaters_list, peers_list):
 def update_usage(a_dict, call):
     talk_group_name = call.get('talk_group')
     timestamp = call['timestamp']
+    network_name = site_name_to_network_map.get(call.get('site')) or 'unknown'
+    if network_name == 'unknown':
+        #  logging.warning('unknown network for site {}'.format(call.get('site')))
+        network_name = 'K4USD'
     try:
         duration = float(call.get('duration')) or 0.0
     except Exception as e:
@@ -409,7 +413,7 @@ def update_usage(a_dict, call):
         duration = 0.0
     usage_dict = a_dict['talk_groups'].get(talk_group_name)
     if usage_dict is None:
-        talk_group_data = talk_group_name_to_number_mapping['K4USD'].get(talk_group_name)
+        talk_group_data = talk_group_name_to_number_mapping[network_name].get(talk_group_name)
         if talk_group_data is None:
             if talk_group_name.startswith('UnKnown Ipsc '):
                 invalid_number = safe_int(talk_group_name[13:])
@@ -441,10 +445,10 @@ def update_peer(a_dict, call):
     peer_name = call.get('peer_name')
     radio_id = call['radio_id'] or 0
     radio_name = call.get('radio_name') or 'unknown'
-    if peer_id == -1:
-        if peer_callsign == radio_name:
-            peer_id = radio_id
-        peer_name = call.get('site') or 'unknown site'
+    #if peer_id == -1:
+    #    if peer_callsign == radio_name:
+    #        peer_id = radio_id
+    #    peer_name = call.get('site') or 'unknown site'
     if peer_name == 'n/a':
         peer_name = call.get('site') or 'unknown site'
     if peer_callsign == 'n/a' and 310000000 < peer_id < 319999999:
