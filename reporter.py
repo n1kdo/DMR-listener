@@ -379,20 +379,21 @@ def validate_repeater_data(repeaters_list, peers_list):
             repeater_found = False
             for repeater in repeaters_list:
                 if int(repeater['peer_id']) == peer_id:
-                    repeater_talk_groups = repeater['talk_groups']
-                    peer_talk_groups = peer['talk_groups']
-                    for peer_talk_group in peer_talk_groups:
-                        ptgn = peer_talk_groups[peer_talk_group]['talk_group_number']
-                        if ptgn < 1:
-                            continue
-                        talk_group_found = False
-                        for repeater_talk_group in repeater_talk_groups:
-                            rtgn = repeater_talk_group[0]
-                            if ptgn == rtgn:
-                                talk_group_found = True
-                        if not talk_group_found:
-                            if ptgn != 16777215:
-                                logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
+                    if repeater['network'] != 'Brandmeister':
+                        repeater_talk_groups = repeater['talk_groups']
+                        peer_talk_groups = peer['talk_groups']
+                        for peer_talk_group in peer_talk_groups:
+                            ptgn = peer_talk_groups[peer_talk_group]['talk_group_number']
+                            if ptgn < 1:
+                                continue
+                            talk_group_found = False
+                            for repeater_talk_group in repeater_talk_groups:
+                                rtgn = repeater_talk_group[0]
+                                if ptgn == rtgn:
+                                    talk_group_found = True
+                            if not talk_group_found:
+                                if ptgn != 16777215:
+                                    logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
                     repeater_found = True
             if not repeater_found:
                 logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))

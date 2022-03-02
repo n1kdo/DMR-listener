@@ -200,11 +200,12 @@ def parse_call_data(call):
             call['radio_username'] = more_stuff[1].strip()
         print(call)
 
-    logging.debug(
-        'sourceradio stuff: {}, radio_id: {}, radio_callsign: {}, radio_username: {}'.format(str(stuff),
-                                                                                      call['radio_id'],
-                                                                                      call['radio_callsign'],
-                                                                                      call['radio_username']))
+    if False:
+        logging.debug(
+            'sourceradio stuff: {}, radio_id: {}, radio_callsign: {}, radio_username: {}'.format(str(stuff),
+                                                                                          call['radio_id'],
+                                                                                          call['radio_callsign'],
+                                                                                          call['radio_username']))
 
     stuff = call['sourcepeer'].split('--')
     # logging.debug('sourcepeer stuff: ' + str(stuff))
@@ -257,10 +258,11 @@ def parse_call_data(call):
             call['peer_name'] = 'unknown'
     else:
         call['peer_id'] = safe_int(call['sourcepeer'])
-    logging.debug('sourcepeer stuff: {} peer_id: {}, peer_callsign: {}, peer_name: {}'.format(str(stuff),
-                                                                                              call['peer_id'],
-                                                                                              call['peer_callsign'],
-                                                                                              call['peer_name']))
+    if False:
+        logging.debug('sourcepeer stuff: {} peer_id: {}, peer_callsign: {}, peer_name: {}'.format(str(stuff),
+                                                                                                  call['peer_id'],
+                                                                                                  call['peer_callsign'],
+                                                                                                  call['peer_name']))
     #if call['peer_id'] == 'n/a':
     #    logging.warning(str(call))
     # print(call)
@@ -291,9 +293,9 @@ def main():
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
             write_files = False
-            logging.basicConfig(level=logging.INFO)
-            #logging.basicConfig(level=logging.DEBUG)
-            #logging.root.level = logging.DEBUG
+            #logging.basicConfig(level=logging.INFO)
+            logging.basicConfig(level=logging.DEBUG)
+            logging.root.level = logging.DEBUG
 
     update_number = 0
     seen_talk_groups_filename = 'seen_talk_groups.txt'
@@ -334,12 +336,12 @@ def main():
                 for call in calls_to_log:
                     s = format_call(call)
                     logging.info('logging  : {}'.format(s))
-        if False:
+        if not write_files:
             if len(ignored_calls):
                 for call in ignored_calls:
                     s = format_call(call)
                     logging.info('not logged: ' + s)
-                    logging.info(str(call))
+                    # logging.info(str(call))
         logging.debug("logged %d, ignored %d, update # %d" % (len(calls_to_log), len(ignored_calls), update_number))
         next_poll = next_poll + update_interval
         try:

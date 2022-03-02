@@ -398,6 +398,7 @@ repeaters = [
     {'peer_id': '310592', 'call': 'KG4BKO', 'input': '449.9875', 'output': '444.9875', 'color_code': '1',
      'location': 'Atlanta GA', 'network': 'DMR-SE',
      'talk_groups': [
+         (1, 1, 1),
          (3, 1, 1),
          (3113, 2, 0),
          (31130, 2, 1),
@@ -413,6 +414,19 @@ repeaters = [
          (3113, 2, 0),  # maybe there are more?
      ], },
     # TODO 310996 KM4EYX Douglas GA
+    # 311307 W1KFR Kingsland
+    {'peer_id': '311307', 'call': 'W1KFR', 'input': '449.625', 'output': '444.625', 'color_code': '3',
+     'location': 'Kingsland GA', 'network': 'DMR-SE', 'notes': '',
+     'talk_groups': [
+         (2, 2, 0),
+         (3, 1, 0),
+         (9, 1, 0),
+         (3112, 1, 1),
+         (3113, 1, 0),
+         (3174, 1, 0),
+         (31128, 1, 0),
+         (311307, 1, 0),
+     ], },
     # 311313 W8RED Snellville
     {'peer_id': '311313', 'call': 'W8RED', 'input': '447.6000', 'output': '442.6000', 'color_code': '3',
      'location': 'Snellville, GA', 'network': 'K4USD',
@@ -510,6 +524,7 @@ repeaters = [
          (9998, 2, 1),
          (31012, 2, 1),
          (31130, 2, 1),
+         (31139, 2, 1),
          (31665, 2, 1),
      ], },
     # 311322 KA4JIJ Gainesville
@@ -679,12 +694,15 @@ repeaters = [
      'location': 'Waycross, GA', 'network': 'DMR-SE',
      'notes': '',
      'talk_groups': [
+         (3, 1, 1),
+         (13, 1, 1),
+         (3112, 2, 1),
          (3113, 2, 0),
          (310592, 2, 0),
      ], },
     # TODO 311617 KE4PMP Parrot GA
     # 311637 NG4RF sawnee/cumming
-    {'peer_id': '311637', 'call': 'NG4RF', 'input': '449.6260', 'output': '444.6250', 'color_code': '1',
+    {'peer_id': '311637', 'call': 'NG4RF', 'input': '447.1125', 'output': '442.1125', 'color_code': '1',
      'location': 'Sawnee Mountain GA', 'network': 'K4USD',
      'talk_groups': [
          (1, 1, 1),
@@ -759,7 +777,7 @@ repeaters = [
      'talk_groups': [
          (1, 1, 1),
          (3113, 2, 0),
-         (31130, 2, 1),
+         (31131, 2, 1),
          (310592, 2, 0),
      ], },
     # TODO 312391 KE4PMP Cochran GA
@@ -797,6 +815,7 @@ repeaters = [
          (3100, 2, 1),
          (3112, 2, 1),
          (3113, 2, 0),
+         (3147, 2, 1),
          (3148, 2, 1),
          (3169, 2, 1),
          (3172, 2, 1),
