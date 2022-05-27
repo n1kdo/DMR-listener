@@ -82,9 +82,11 @@ def filter_talk_group_name(tg_name):
     return s
 
 
-networks = ['Brandmeister', 'DMR-SE', 'K4USD']
+networks = ['Brandmeister', 'DMR-MARC', 'DMR-SE', 'K4USD']
 
 site_name_to_network_map = {'BM-US-3102': 'Brandmeister',
+                            'DMR-MARC-CCEAST': 'DMR-MARC',
+                            'DMR-MARC-CCWEST': 'DMR-MARC',
                             'DMR-SE': 'DMR-SE',
                             'K4USD Network': 'K4USD',
                             'K4USD-2 Network': 'K4USD',
@@ -94,6 +96,13 @@ site_name_to_network_map = {'BM-US-3102': 'Brandmeister',
 mapping of C-bridge talkgroup name to talkgroup number to description
 """
 talk_groups = {}
+
+talk_groups['DMR-MARC'] = [
+    {'name': 'DMR-MARC NA', 'tg': 1, 'description': 'DMR-MARC North America', },
+    {'name': 'DMR-MARC WW', 'tg': 3, 'description': 'DMR-MARC World-wide', },
+    {'name': 'DMR-MARC WWE', 'tg': 13, 'description': 'World-wide English', },
+    {'name': 'DMR-MARC SEreg', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
+]
 
 talk_groups['DMR-SE'] = [
     {'name': 'DMR-MARC NA', 'tg': 1, 'description': 'DMR-MARC North America', },
@@ -144,7 +153,7 @@ talk_groups['DMR-SE'] = [
     {'name': 'MWreg', 'tg': 3169, 'description': 'Midwest Region ND SD NE MN IA MO WI IL MI IN OH', },
     {'name': 'NEreg', 'tg': 3172, 'description': 'Northeast Region NY NJ VT MA CT NH RI ME', },
     {'name': 'MAreg', 'tg': 3173, 'description': 'Mid-Atlantic Region PA WV VA MD DE DC', },
-    {'name': 'SEreg', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
+    {'name': 'DMR-MARC SEreg', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
     {'name': 'SPreg', 'tg': 3175, 'description': 'Southern Plains Region KS OK TX', },
     {'name': 'SWreg', 'tg': 3176, 'description': 'Southwest Region CA NV AZ NM HI', },
     {'name': 'MTreg', 'tg': 3177, 'description': 'Mountain Region AK WA OR ID MT WY UT CO', },
@@ -155,16 +164,23 @@ talk_groups['DMR-SE'] = [
     {'name': 'Crossroads', 'tg': 8710, 'description': 'Crossroads Indiana', },
     {'name': 'TAC1', 'tg': 8951, 'description': 'TAC1', },
     {'name': 'Parrot', 'tg': 9998, 'description': 'Parrot', },
+    {'name': 'NE Region BM', 'tg': 13172, 'description': 'NE Region BM', },
+    {'name': 'SE Region BM', 'tg': 13174, 'description': 'SE Region BM', },
     {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
     #  {'name': 'First Coast', 'tg': 31121, 'description': 'First Coast', },
+    {'name': 'NE FL ARES', 'tg': 31128, 'description': 'NE FL ARES', },
     {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
     {'name': 'ATL Metro', 'tg': 31131, 'description': 'Atlanta Metro', },
+    {'name': 'GA South', 'tg': 31132, 'description': 'Georgia South', },
     {'name': 'GA North', 'tg': 31134, 'description': 'Georgia North', },
+    {'name': 'Kingsland Digital', 'tg': 31137, 'description': 'Kingsland Digital', },
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
     {'name': 'Vidalia Net', 'tg': 310592, 'description': 'Vidalia Net', },
     {'name': 'Vdalia Net', 'tg': 310592, 'description': 'Vidalia Net', },  # typo!
+    {'name': 'Kingsland 9', 'tg': 311307, 'description': 'Kingland Local 9', },
+    {'name': 'Waycross 9', 'tg': 311350, 'description': 'Waycross Local 9', },
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
@@ -294,6 +310,7 @@ talk_groups['Brandmeister'] = [
 ]
 
 repeaters = [
+    # 310293 W4BOC Stone Mountain K4USD
     {'peer_id': '310293', 'call': 'W4BOC', 'input': '446.8125', 'output': '441.8125', 'color_code': '1',
      'location': 'Stone Mountain GA', 'network': 'K4USD',
      'talk_groups': [
@@ -320,6 +337,7 @@ repeaters = [
          (3100, 2, 1),
          (3112, 2, 1),
          (3113, 2, 0),
+         (3126, 2, 1),
          (3139, 2, 1),
          (3147, 2, 1),
          (3172, 2, 1),
@@ -388,11 +406,43 @@ repeaters = [
          (31012, 2, 1),
          (31121, 2, 1),
          (31130, 2, 1),
+         (31131, 2, 1),
          (31134, 2, 1),
          (31139, 2, 1),
          (31665, 2, 1),
          (31990, 2, 1),
          (314710, 2, 1),
+     ], },
+    # 310466 K4VYX Savannah
+    {'peer_id': '310466', 'call': 'K4VYX', 'input': '447.8125', 'output': '442.8125', 'color_code': '3',
+     'location': 'Savannah GA', 'network': 'DMR-SE', 'notes': '',
+     'talk_groups': [
+         (1, 1, 1),
+         (2, 2, 0),
+         (3, 1, 0),
+         (9, 1, 0),
+         (9, 2, 0),
+         (13, 1, 1),
+         (91, 1, 1),
+         (93, 1, 1),
+         (312, 1, 1),
+         (317, 1, 1),
+         (3100, 1, 1),
+         (3112, 1, 1),
+         (3113, 1, 0),
+         (3139, 1, 1),
+         (3147, 1, 1),
+         (3174, 1, 0),
+         (8951, 1, 1),
+         (9998, 1, 1),
+         (13172, 1, 1),
+         (13174, 1, 1),
+         (31130, 1, 1),
+         (31131, 1, 1),
+         (31132, 1, 1),
+         (31137, 1, 1),
+         (310592, 1, 1),
+         (311350, 1, 1),
      ], },
     # 310592 444.825 KG4BKO Vidalia
     {'peer_id': '310592', 'call': 'KG4BKO', 'input': '449.9875', 'output': '444.9875', 'color_code': '1',
@@ -425,6 +475,7 @@ repeaters = [
          (3113, 1, 0),
          (3174, 1, 0),
          (31128, 1, 0),
+         (31131, 1, 1),
          (311307, 1, 0),
      ], },
     # 311313 W8RED Snellville
@@ -694,10 +745,14 @@ repeaters = [
      'location': 'Waycross, GA', 'network': 'DMR-SE',
      'notes': '',
      'talk_groups': [
-         (3, 1, 1),
+         (1, 1, 0),
+         (2, 2, 0),
+         (3, 1, 0),
+         (9, 1, 0),
          (13, 1, 1),
-         (3112, 2, 1),
-         (3113, 2, 0),
+         (3112, 1, 1),
+         (3113, 1, 0),
+         (3174, 1, 0),
          (310592, 2, 0),
      ], },
     # TODO 311617 KE4PMP Parrot GA
@@ -792,6 +847,7 @@ repeaters = [
          (3113, 2, 0),
          (31131, 2, 1),
      ], },
+    # 312477 WX4EMA Macon GA K4USD
     {'peer_id': '312477', 'call': 'WX4EMA', 'input': '448.075', 'output': '443.075', 'color_code': '7',
      'location': 'Macon GA', 'network': 'K4USD',
      'notes': '',
@@ -803,6 +859,7 @@ repeaters = [
          (10, 1, 1),
          (13, 1, 1),
          (14, 1, 1),
+         (91, 1, 1),
          (93, 1, 1),
          (133, 1, 1),
          (310, 2, 1),
@@ -815,6 +872,7 @@ repeaters = [
          (3100, 2, 1),
          (3112, 2, 1),
          (3113, 2, 0),
+         (3118, 2, 1),
          (3147, 2, 1),
          (3148, 2, 1),
          (3169, 2, 1),

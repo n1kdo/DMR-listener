@@ -404,7 +404,7 @@ def update_usage(a_dict, call):
     timestamp = call['timestamp']
     network_name = site_name_to_network_map.get(call.get('site')) or 'unknown'
     if network_name == 'unknown':
-        #  logging.warning('unknown network for site {}'.format(call.get('site')))
+        logging.warning('unknown network for site {}'.format(call.get('site')))
         network_name = 'K4USD'
     try:
         duration = float(call.get('duration')) or 0.0
@@ -414,16 +414,27 @@ def update_usage(a_dict, call):
         duration = 0.0
     usage_dict = a_dict['talk_groups'].get(talk_group_name)
     if usage_dict is None:
-        talk_group_data = talk_group_name_to_number_mapping[network_name].get(talk_group_name)
+        tg_group_name_to_number_map = talk_group_name_to_number_mapping.get(network_name)
+        if not tg_group_name_to_number_map:
+            logging.warning('no group name to number map for network {}, shit.'.format(network_name))
+            tg_group_name_to_number_map = {}
+        talk_group_data = tg_group_name_to_number_map.get(talk_group_name)
         if talk_group_data is None:
-            if talk_group_name.startswith('UnKnown Ipsc '):
+            if talk_group_name.lower().startswith('unknown ipsc '):
                 invalid_number = safe_int(talk_group_name[13:])
+                talk_group_number = -invalid_number
+            elif talk_group_name.lower().startswith('unknown bridge group '):
+                invalid_number = safe_int(talk_group_name[21:])
                 talk_group_number = -invalid_number
             elif talk_group_name.startswith('UnKnown Analog '):
                 invalid_number = safe_int(talk_group_name[15:])
                 talk_group_number = -invalid_number
             else:
                 talk_group_number = 0
+                logging.warning('unknown talk group {} on network {} for site {}'.format(
+                    talk_group_name,
+                    network_name,
+                    call.get('site')))
         else:
             talk_group_number = talk_group_data['tg']
         usage_dict = {'talk_group': talk_group_name,
