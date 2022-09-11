@@ -259,7 +259,7 @@ input {
             htmlfile.write('<table class="talk-groups-table">\n')
             info = '{} {} {} {} CC {} {}'.format(repeater['call'], repeater['location'], repeater['output'], repeater['input'], repeater['color_code'], repeater['network'])
             htmlfile.write('<tr><th colspan="4" class="rptr-info">{}</th></tr>'.format(info))
-            talk_groups = repeater['talk_groups']
+            talk_groups = sorted(repeater['talk_groups'], key=lambda item: item[0])
             htmlfile.write('<tr><th>Talk Group Name</th><th>TG #</th><th>TS #<br>#</th><th>Notes</th></tr>\n')
             for ts in [1, 2]:
                 for talk_group in talk_groups:
@@ -269,7 +269,7 @@ input {
                     talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
                     if talk_group_data is None:
                         logging.warning('missing talk group data for tg {}'.format(tg_number))
-                        break
+                        talk_group_data = {'description': 'unknown talk group'}
                     if tg_timeslot == ts:
                         if tg_mode == 0:
                             notes = 'static'
@@ -827,187 +827,190 @@ def main():
     # end_time = datetime.datetime.strptime('2020-02-29 23:59:59', '%Y-%m-%d %H:%M:%S')
 
     calls = read_log('logged_calls.txt', start_time, end_time)
-    # show a sample row of data
-    logging.info('first record: {}'.format(calls[0]['timestamp']))
-    logging.info(' last record: {}'.format(calls[-1]['timestamp']))
-    date_header = 'From {} to {}'.format(calls[0]['timestamp'], calls[-1]['timestamp'])
 
-    talk_groups = {}
-    users = {}
-    peers = {}
+    if len(calls) > 0:
+        # show a sample row of data
+        logging.info('first record: {}'.format(calls[0]['timestamp']))
+        logging.info(' last record: {}'.format(calls[-1]['timestamp']))
+        date_header = 'From {} to {}'.format(calls[0]['timestamp'], calls[-1]['timestamp'])
 
-    timeseries = {}
-    chart_talk_groups = {}
+        talk_groups = {}
+        users = {}
+        peers = {}
 
-    # crunch data, assume it is clean
-    num_days = (end_time - start_time).days
-    if num_days <= 7:
-        bin_hours = 1
-        bins_start = start_time.replace(minute=0, second=0, microsecond=0)
-        bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
-    elif num_days <= 30:
-        bin_hours = 3
-        bins_start = start_time.replace(minute=0, second=0, microsecond=0)
-        h = bins_start.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
-        bins_start = bins_start.replace(hour=h)
-        bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
-        bins_end = bins_end.replace(hour=h)
-    else:
-        bin_hours = 24
-        bins_start = start_time.date()
-        bins_end = end_time.date() + datetime.timedelta(days=1)
+        timeseries = {}
+        chart_talk_groups = {}
 
-    this_bin_key = bins_start
-    while this_bin_key <= bins_end:
-        timeseries[this_bin_key] = {'date': this_bin_key}
-        this_bin_key = this_bin_key + datetime.timedelta(hours=bin_hours)
-
-    for call in calls:
-        ts = call.get('timestamp')
+        # crunch data, assume it is clean
+        num_days = (end_time - start_time).days
         if num_days <= 7:
-            dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
+            bin_hours = 1
+            bins_start = start_time.replace(minute=0, second=0, microsecond=0)
+            bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
         elif num_days <= 30:
-            dt = ts.replace(minute=0, second=0, microsecond=0)
-            h = ts.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
-            dt = dt.replace(hour=h)
+            bin_hours = 3
+            bins_start = start_time.replace(minute=0, second=0, microsecond=0)
+            h = bins_start.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
+            bins_start = bins_start.replace(hour=h)
+            bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
+            bins_end = bins_end.replace(hour=h)
         else:
-            dt = ts.date()  # this forces bins into days
+            bin_hours = 24
+            bins_start = start_time.date()
+            bins_end = end_time.date() + datetime.timedelta(days=1)
 
-        radio_id = call.get('radio_id') or 0
-        radio_name = call.get('radio_name')
-        radio_username = call.get('radio_username')
-        talk_group_name = call.get('talk_group') or 'unknown'
-        peer_id = call.get('peer_id') or 0
-        try:
-            duration = float(call.get('duration')) or 0.0
-        except Exception as e:
-            print(e)
-            print(call)
-        # build/add to timeseries
-        this_bin = timeseries.get(dt)
-        if this_bin is None:
-            this_bin = {'date': dt}
-            timeseries[dt] = this_bin
-        # if talk_group_name in interesting_talk_group_names:
-        if True:
-            this_bin_tg = this_bin.get(talk_group_name)
-            if this_bin_tg is None:
-                this_bin_tg = {'count': 0, 'duration': 0.0}
-                this_bin[talk_group_name] = this_bin_tg
-            this_bin_tg['count'] += 1
-            this_bin_tg['duration'] += duration
-            chart_talk_group = chart_talk_groups.get(talk_group_name)
-            if chart_talk_group is None:
-                chart_talk_groups[talk_group_name] = {'talk_group': talk_group_name, 'duration': 0.0}
+        this_bin_key = bins_start
+        while this_bin_key <= bins_end:
+            timeseries[this_bin_key] = {'date': this_bin_key}
+            this_bin_key = this_bin_key + datetime.timedelta(hours=bin_hours)
 
-            chart_talk_groups[talk_group_name]['duration'] += duration
-            # if duration > chart_talk_groups[talk_group_name]['duration']:
-            #    chart_talk_groups[talk_group_name]['duration'] = duration
+        for call in calls:
+            ts = call.get('timestamp')
+            if num_days <= 7:
+                dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
+            elif num_days <= 30:
+                dt = ts.replace(minute=0, second=0, microsecond=0)
+                h = ts.hour // bin_hours * bin_hours  # bin into 24 / bin_hours bins
+                dt = dt.replace(hour=h)
+            else:
+                dt = ts.date()  # this forces bins into days
 
-        if radio_id < 1000000:
-            # print('unknown radio id {}'.format(rid))
-            continue
-        if radio_name == 'N/A':
-            continue
+            radio_id = call.get('radio_id') or 0
+            radio_name = call.get('radio_name')
+            radio_username = call.get('radio_username')
+            talk_group_name = call.get('talk_group') or 'unknown'
+            peer_id = call.get('peer_id') or 0
+            try:
+                duration = float(call.get('duration')) or 0.0
+            except Exception as e:
+                print(e)
+                print(call)
+            # build/add to timeseries
+            this_bin = timeseries.get(dt)
+            if this_bin is None:
+                this_bin = {'date': dt}
+                timeseries[dt] = this_bin
+            # if talk_group_name in interesting_talk_group_names:
+            if True:
+                this_bin_tg = this_bin.get(talk_group_name)
+                if this_bin_tg is None:
+                    this_bin_tg = {'count': 0, 'duration': 0.0}
+                    this_bin[talk_group_name] = this_bin_tg
+                this_bin_tg['count'] += 1
+                this_bin_tg['duration'] += duration
+                chart_talk_group = chart_talk_groups.get(talk_group_name)
+                if chart_talk_group is None:
+                    chart_talk_groups[talk_group_name] = {'talk_group': talk_group_name, 'duration': 0.0}
 
-        user = users.get(radio_id)
-        if user is None:
-            user = {'radio_id': radio_id,
-                    'radio_name': radio_name,
-                    'radio_username': radio_username,
-                    'count': 0,
-                    'total_elapsed': 0,
-                    'peers': {},
-                    'talk_groups': {},
-                    'last_heard': None}
-            users[radio_id] = user
-        else:
-            if user['radio_name'] == 'N/A':
-                user['radio_name'] = radio_name
-            if user['radio_username'] == 'N/A':
-                user['radio_username'] = radio_username
-        update_usage(user, call)
-        update_peer(user['peers'], call)
+                chart_talk_groups[talk_group_name]['duration'] += duration
+                # if duration > chart_talk_groups[talk_group_name]['duration']:
+                #    chart_talk_groups[talk_group_name]['duration'] = duration
 
-        #  if peer_id in interesting_peer_ids:
-        if True:
-            update_peer(peers, call)
+            if radio_id < 1000000:
+                # print('unknown radio id {}'.format(rid))
+                continue
+            if radio_name == 'N/A':
+                continue
 
-        if not talk_group_name.lower().startswith('unknown'):
-            talk_group = talk_groups.get(talk_group_name)
-            if talk_group is None:
-                talk_group = {'talk_group': talk_group_name,
-                              'count': 0,
-                              'total_elapsed': 0,
-                              'last_heard': None
-                              }
-                talk_groups[talk_group_name] = talk_group
-            talk_group['count'] += 1
-            talk_group['total_elapsed'] += duration
-            talk_group['last_heard'] = None
+            user = users.get(radio_id)
+            if user is None:
+                user = {'radio_id': radio_id,
+                        'radio_name': radio_name,
+                        'radio_username': radio_username,
+                        'count': 0,
+                        'total_elapsed': 0,
+                        'peers': {},
+                        'talk_groups': {},
+                        'last_heard': None}
+                users[radio_id] = user
+            else:
+                if user['radio_name'] == 'N/A':
+                    user['radio_name'] = radio_name
+                if user['radio_username'] == 'N/A':
+                    user['radio_username'] = radio_username
+            update_usage(user, call)
+            update_peer(user['peers'], call)
 
-    all_talkgroups = list(talk_groups.values())
-    sorted_talkgroups = sorted(all_talkgroups, key=lambda tg: tg['total_elapsed'], reverse=True)
-    # print()
-    # print_talkgroups(sorted_talkgroups)
-    # print()
+            #  if peer_id in interesting_peer_ids:
+            if True:
+                update_peer(peers, call)
 
-    all_peers = []
-    for peer_id in peers:
-        peer = peers[peer_id]
-        if peer['count'] > 2 and peer['total_elapsed'] > 5:
-            all_peers.append(peer)
+            if not talk_group_name.lower().startswith('unknown'):
+                talk_group = talk_groups.get(talk_group_name)
+                if talk_group is None:
+                    talk_group = {'talk_group': talk_group_name,
+                                  'count': 0,
+                                  'total_elapsed': 0,
+                                  'last_heard': None
+                                  }
+                    talk_groups[talk_group_name] = talk_group
+                talk_group['count'] += 1
+                talk_group['total_elapsed'] += duration
+                talk_group['last_heard'] = None
 
-    all_peers = sorted(all_peers, key=lambda peer: peer['total_elapsed'], reverse=True)
+        all_talkgroups = list(talk_groups.values())
+        sorted_talkgroups = sorted(all_talkgroups, key=lambda tg: tg['total_elapsed'], reverse=True)
+        # print()
+        # print_talkgroups(sorted_talkgroups)
+        # print()
 
-    # print()
-    # print_peers(all_peers)
-    # print()
+        all_peers = []
+        for peer_id in peers:
+            peer = peers[peer_id]
+            if peer['count'] > 2 and peer['total_elapsed'] > 5:
+                all_peers.append(peer)
 
-    all_users = []
-    # narrow users into all_users.
-    min_count = 5
-    min_time = 10
-    # min_mean_duration = 1
-    discounted_users = 0
-    for userkey in users:
-        user = users[userkey]
-        if user['count'] >= min_count and user['total_elapsed'] >= min_time:
-            all_users.append(user)
-        else:
-            discounted_users += 1
-    logging.info('(ignored {} users due to low count or low time.)'.format(discounted_users))
+        all_peers = sorted(all_peers, key=lambda peer: peer['total_elapsed'], reverse=True)
 
-    all_users = sorted(all_users, key=lambda user: user['total_elapsed'], reverse=True)
+        # print()
+        # print_peers(all_peers)
+        # print()
 
-    write_users_html(all_users, heading='Usage ' + date_header)
+        all_users = []
+        # narrow users into all_users.
+        min_count = 5
+        min_time = 10
+        # min_mean_duration = 1
+        discounted_users = 0
+        for userkey in users:
+            user = users[userkey]
+            if user['count'] >= min_count and user['total_elapsed'] >= min_time:
+                all_users.append(user)
+            else:
+                discounted_users += 1
+        logging.info('(ignored {} users due to low count or low time.)'.format(discounted_users))
 
-    # print_users_detail(all_users)
-    # print()
-    top_users = all_users[0:200]
-    # top_users = all_users
-    top_users = sorted(top_users, key=lambda user: user['radio_name'])
+        all_users = sorted(all_users, key=lambda user: user['total_elapsed'], reverse=True)
 
-    # print_users_summary(top_users)
+        write_users_html(all_users, heading='Usage ' + date_header)
 
-    write_users_summary_html(top_users, heading='Top Users ' + date_header)
+        # print_users_detail(all_users)
+        # print()
+        top_users = all_users[0:200]
+        # top_users = all_users
+        top_users = sorted(top_users, key=lambda user: user['radio_name'])
 
-    contact_list = sorted(all_users, key=lambda user: user['radio_id'])
-    write_csv_contacts(contact_list)
-    write_csv_moto_contacts(contact_list)
+        # print_users_summary(top_users)
+
+        write_users_summary_html(top_users, heading='Top Users ' + date_header)
+
+        contact_list = sorted(all_users, key=lambda user: user['radio_id'])
+        write_csv_contacts(contact_list)
+        write_csv_moto_contacts(contact_list)
+        write_peers_html(all_peers, heading='Peer Usage ' + date_header)
+
+        validate_repeater_data(repeaters, all_peers)
+
+        results = []
+        for key in sorted(timeseries.keys()):
+            # if key >= start_date and key <= end_date:
+            results.append(timeseries[key])
+
+        chart_date_header = 'From {} to {}'.format(results[0]['date'], results[-1]['date'])
+        # charts.plot_activity(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
+        charts.plot_activity_stackbar(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
+
     write_repeater_html()
-    write_peers_html(all_peers, heading='Peer Usage ' + date_header)
-
-    validate_repeater_data(repeaters, all_peers)
-
-    results = []
-    for key in sorted(timeseries.keys()):
-        # if key >= start_date and key <= end_date:
-        results.append(timeseries[key])
-
-    chart_date_header = 'From {} to {}'.format(results[0]['date'], results[-1]['date'])
-    # charts.plot_activity(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
-    charts.plot_activity_stackbar(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
 
 
 if __name__ == '__main__':
