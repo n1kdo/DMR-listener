@@ -13,6 +13,8 @@ from common import interesting_talk_group_names
 from common import interesting_peer_ids
 from common import filter_talk_group_name
 
+DATA_URL = 'http://w0yc.stu.umn.edu:42420/data.txt'
+
 logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
 logging.Formatter.converter = time.gmtime
@@ -99,7 +101,7 @@ def call_cbridge(**params):
     if params.get('url'):
         url = params.pop('url')
     else:
-        url = 'http://cbridge.k4usd.org:42420/data.txt'
+        url = DATA_URL
 
     data = urllib.parse.urlencode(params)
     req = urllib.request.Request(url + '?' + data,
@@ -269,7 +271,7 @@ def parse_call_data(call):
 
 
 def do_poll(update_number):
-    params = {'param': 'ajaxcallwatch', 'url': 'http://cbridge.k4usd.org:42420/data.txt'}
+    params = {'param': 'ajaxcallwatch', 'url': DATA_URL}
     if update_number != 0:
         params['updatenumber'] = '%d' % update_number
     try:
