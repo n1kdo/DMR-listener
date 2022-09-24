@@ -123,10 +123,11 @@ def mqtt(data):
                     'radio_callsign': source_call,
                     'radio_username': source_name,
                     'duration': elapsed,
+                    'sourcepeer': '{} -- {}'.format(link_call, context_id)
                 }
                 calls_to_log.append(call)
                 print(raw_data)
-                print(call)
+                #print(call)
                 #print()
     except KeyError as ke:
         print(ke)
