@@ -2,13 +2,18 @@
 
 import datetime
 import json
+import logging
 import socketio
+import sys
+import time
 
 
 URL = 'https://api.brandmeister.network'
 SIO_PATH = '/lh/socket.io'
 INTERESTING_TALKGROUPS = [3113, 31130, 31131, 31132, 31133, 31134, 31135, 31136, 31137, 31138, 31139, 311340, 3113090, ]
 LOGGED_CALLS_FILENAME = 'bm_logged_calls.txt'
+
+write_files = True
 
 # all traffic from the interesting peers will be logged.  Best to not turn on brandmeister.
 INTERESTING_PEERS = [
@@ -38,15 +43,16 @@ INTERESTING_PEERS = [
     312429,  # KE4RJI Tifton
     312444,  # KZ4FOX Athens
     312477,  # WX4EMA Macon
+    312779,  # WY4EMA Kathleen
 ]
 
 DESTINATION_REMAP = {
-    'Georgia - 10 Minute Limit': 'GAState Brandmeister',
+    'Georgia - 10 Minute Limit': 'GaState',
 }
 
 
 def append_logged_calls(filename, new_calls):
-    if new_calls is not None and len(new_calls) > 0:
+    if write_files and new_calls is not None and len(new_calls) > 0:
         with open(filename, 'a') as datafile:
             for stuff in new_calls:
                 line = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s' % (stuff['timestamp'],
@@ -103,8 +109,9 @@ def mqtt(data):
                 destination_name = raw_data['DestinationName']
                 if destination_name in DESTINATION_REMAP:
                     destination_name = DESTINATION_REMAP[destination_name]
+
                 destination_id = raw_data['DestinationID']
-                if len(destination_name.strip()) == 0:
+                if len(destination_name.strip()) == 0 or destination_name == 'Cluster':
                     destination_name = str(destination_id)
                 source_id = raw_data['SourceID']
                 source_call = raw_data['SourceCall']
@@ -126,9 +133,10 @@ def mqtt(data):
                     'sourcepeer': '{} -- {}'.format(link_call, context_id)
                 }
                 calls_to_log.append(call)
-                print(raw_data)
-                #print(call)
-                #print()
+                if not write_files:
+                    print(raw_data)
+                    print(call)
+                    print()
     except KeyError as ke:
         print(ke)
         print(raw_data)
@@ -143,11 +151,22 @@ def disconnect():
 
 
 def main():
+    global write_files
     print('starting')
+    write_files = True
+    if len(sys.argv) > 1:
+        if sys.argv[1].lower() == 'test':
+            write_files = False
+            print('NOT writing files -- debug mode.')
+            logging.basicConfig(level=logging.DEBUG)
+            logging.root.level = logging.DEBUG
     sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
     sio.wait()
 
 
 if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.INFO)
+    logging.Formatter.converter = time.gmtime
     main()
 
