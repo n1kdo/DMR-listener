@@ -77,8 +77,8 @@ def filter_talk_group_name(tg_name):
     s = re.sub(r' \d+-\d+', '', s)
     # print("%s | %s" % (s, old_s))
     s = s.strip()
-    if len(s) < 2:
-        logging.warning('talkgroup name filter problem: {} -> {}',format(tg_name, s))
+    if len(s) < 1:
+        logging.warning('talkgroup name filter problem: {} -> {}'.format(tg_name, s))
     return s
 
 
@@ -544,30 +544,12 @@ repeaters = [
      ], },
     # 311314 KD4KHO Canton
     {'peer_id': '311314', 'call': 'KD4KHO', 'input': '439.400', 'output': '434.400', 'color_code': '3',
-     'location': 'Canton GA', 'network': 'K4USD', 'notes': 'limited coverage',
+     'location': 'Canton GA', 'network': 'Brandmeister', 'notes': 'limited coverage',
      'talk_groups': [
-         (1, 1, 1),
-         (2, 2, 0),
-         (3, 1, 1),
-         (8, 1, 0),
-         (9, 2, 0),
-         (10, 1, 0),
-         (93, 1, 1),
-         (310, 2, 1),
-         (311, 2, 1),
-         (312, 2, 1),
-         (314, 2, 1),
-         (318, 2, 1),
-         (3100, 2, 1),
-         (3112, 2, 1),
-         (3113, 2, 0),
-         (3145, 2, 1),
-         (3147, 2, 1),
-         (8951, 2, 1),
-         (9998, 2, 1),
-         (31121, 2, 1),
-         (31134, 2, 1),
-         (31665, 2, 1),
+         (3113, 1, 0),
+         (31130, 2, 0),
+         (31131, 2, 0),
+         (31134, 2, 0),
      ], },
     # 311318 K4QHR Kingsland
     {'peer_id': '311318', 'call': 'K4QHR', 'input': '447.1125', 'output': '442.1125', 'color_code': '7',
@@ -822,6 +804,14 @@ repeaters = [
      ], },
     # 312477 WX4EMA Macon GA K4USD
     {'peer_id': '312477', 'call': 'WX4EMA', 'input': '448.075', 'output': '443.075', 'color_code': '7',
+     'location': 'Macon GA', 'network': 'Brandmeister',
+     'notes': '',
+     'talk_groups': [
+         (3113, 2, 0),
+         (31135, 1, 0),
+     ], },
+    # 312477 WXYEMA Macon GA K4USD
+    {'peer_id': '312779', 'call': 'WY4EMA', 'input': '445.575', 'output': '440.575', 'color_code': '1',
      'location': 'Macon GA', 'network': 'Brandmeister',
      'notes': '',
      'talk_groups': [
