@@ -266,11 +266,11 @@ def plot_activity_stackbar(time_series, title, filename=None, start_date=None, e
     y_max = (int(max_duration / y_axis_multiple) + 1) * y_axis_multiple
     ax.set_ylim(0, y_max)
     num_bins = len(data[0])
-    logging.debug('bins = {}'.format(num_bins))
-    if num_bins >= 365:
-        width = 0.60
+    logging.info('bins = {}'.format(num_bins))
+    if num_bins >= 240:
+        width = 0.10
     else:
-        width = 0.08
+        width = 0.025
     logging.debug('width = {}'.format(width))
 
     cmap = matplotlib.cm.get_cmap('tab10')

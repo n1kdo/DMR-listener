@@ -88,8 +88,8 @@ def read_log(filename, start, end):
                 talk_group = filter_talk_group_name(row['dest'])
                 peer_id = row.get('peer_id')
                 # filter out talk groups that are uninteresting
-                if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
-                    continue
+#                if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
+#                    continue
                 # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
                 remap_list = remap_map.get(0)  # 0 is global remap.
                 if remap_list is not None:
@@ -102,8 +102,6 @@ def read_log(filename, start, end):
                     for remap in remap_list:
                         if remap['tg_name_old'] == talk_group:
                             talk_group = remap['tg_name_new']
-                if 'Vdalia' in talk_group:
-                    logging.warning('{}: {}'.format(talk_group, str(row)))
                 row['talk_group'] = talk_group
             calls.append(row)
 
@@ -830,7 +828,13 @@ def main():
 
     if len(calls) > 0:
         # show a sample row of data
-        logging.info('first record: {}'.format(calls[0]['timestamp']))
+        first_date = calls[0]['timestamp']
+        logging.info('first record: {}'.format(first_date))
+
+        if first_date > start_time:
+            start_time = datetime.datetime(year=first_date.year, month=first_date.month, day=first_date.day)
+            logging.info('resetting start_time to {}'.format(start_time))
+
         logging.info(' last record: {}'.format(calls[-1]['timestamp']))
         date_header = 'From {} to {}'.format(calls[0]['timestamp'], calls[-1]['timestamp'])
 
@@ -844,7 +848,7 @@ def main():
         # crunch data, assume it is clean
         num_days = (end_time - start_time).days
         if num_days <= 7:
-            bin_hours = 1
+            bin_hours = 3
             bins_start = start_time.replace(minute=0, second=0, microsecond=0)
             bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
         elif num_days <= 30:
