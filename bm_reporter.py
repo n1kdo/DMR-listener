@@ -870,6 +870,11 @@ def main():
 
         for call in calls:
             ts = call.get('timestamp')
+            if type(ts) != datetime.datetime:
+                print(type(ts))
+                print('wtf')
+                print(call)
+                continue
             if num_days <= 7:
                 dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
             elif num_days <= 30:

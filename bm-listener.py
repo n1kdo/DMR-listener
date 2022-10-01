@@ -99,25 +99,23 @@ def mqtt(data):
     calls_to_log = []
     raw_data = json.loads(data['payload'])
     try:
-        if raw_data['Event'] == 'Session-Stop':
+        if raw_data['Event'].strip() == 'Session-Stop':
             destination_id = safe_int(raw_data['DestinationID'])
             context_id = safe_int(raw_data['ContextID'])
             if destination_id in INTERESTING_TALKGROUPS or context_id in INTERESTING_PEERS:
                 start = safe_int(raw_data['Start'])
                 end = safe_int(raw_data['Stop'])
                 elapsed = end - start
-                destination_name = raw_data['DestinationName']
-                if destination_name in DESTINATION_REMAP:
-                    destination_name = DESTINATION_REMAP[destination_name]
-
+                destination_name = raw_data['DestinationName'].strip()
+                destination_name = destination_name.replace(' - 10 Minute Limit','')
                 destination_id = raw_data['DestinationID']
                 if len(destination_name.strip()) == 0 or destination_name == 'Cluster':
                     destination_name = str(destination_id)
                 source_id = raw_data['SourceID']
-                source_call = raw_data['SourceCall']
-                source_name = raw_data['SourceName']
-                link_call = raw_data['LinkCall']
-                link_name = raw_data['LinkName']
+                source_call = raw_data['SourceCall'].strip()
+                source_name = raw_data['SourceName'].strip()
+                link_call = raw_data['LinkCall'].strip()
+                link_name = raw_data['LinkName'].strip()
 
                 call = {
                     'timestamp': convert_brandmeister_timestamp(end),
