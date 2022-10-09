@@ -268,10 +268,10 @@ def plot_activity_stackbar(time_series, title, filename=None, start_date=None, e
     num_bins = len(data[0])
     logging.info('bins = {}'.format(num_bins))
     if num_bins >= 240:
-        width = 0.10
+        width = 0.08
     else:
         width = 0.025
-    logging.debug('width = {}'.format(width))
+    logging.info('width = {}'.format(width))
 
     cmap = matplotlib.cm.get_cmap('tab10')
     bar_offset = np.zeros((len(dates)), dtype=np.float_)

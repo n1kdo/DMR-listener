@@ -26,6 +26,7 @@ interesting_peer_ids = [
     310969,  # W4KST  Marietta
     310996,  # KM4EYX Douglas GA (NEW)
     311303,  # KE4OKD Sandy Springs
+    311307,  # w1kfr kingsland ga 444.625 cc 3
     311313,  # w8red  snellville
     311314,  # KD4KHO Canton
     311318,  # K4QHR  Kingsland
@@ -302,9 +303,12 @@ talk_groups['Brandmeister'] = [
     {'name': 'PAstate', 'tg': 3142, 'description': 'Pennsylvania State-wide', },
     {'name': 'South Carolina', 'tg': 3145, 'description': 'South Carolina State-wide', },
     {'name': 'TNstate', 'tg': 3147, 'description': 'Tennessee State-wide', },
-    {'name': 'TXstate', 'tg': 3148, 'description': 'Texas State-wide', },
+    {'name': 'Texas', 'tg': 3148, 'description': 'Texas State-wide', },
     {'name': 'VAstate', 'tg': 3151, 'description': 'Virginia State-wide', },
     {'name': 'WIstate', 'tg': 3155, 'description': 'Wisconsin State-wide', },
+    {'name': 'Wyoming', 'tg': 3156, 'description': 'Wyoming State-wide', },
+    {'name': 'SE Wyoming chat', 'tg': 31560, 'description': 'SE Wyoming chat', },
+    {'name': 'Wyoming Severe WX', 'tg': 31563, 'description': 'Wyoming Severe WX', },
     {'name': 'MWreg', 'tg': 3169, 'description': 'Midwest Region ND SD NE MN IA MO WI IL MI IN OH', },
     {'name': 'NEreg', 'tg': 3172, 'description': 'Northeast Region NY NJ VT MA CT NH RI ME', },
     {'name': 'MAreg', 'tg': 3173, 'description': 'Mid-Atlantic Region PA WV VA MD DE DC', },
@@ -322,6 +326,8 @@ talk_groups['Brandmeister'] = [
     {'name': 'PAPA Bridge', 'tg': 31078, 'description': 'Papa Bridge', },
     {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
     {'name': 'First Coast DMR', 'tg': 31121, 'description': 'First Coast', },
+    {'name': 'FL State ARES', 'tg': 31127, 'description': 'FL State ARES', },
+    {'name': 'KSC Kennedy Space Center', 'tg': 311274, 'description': 'KSC Kennedy Space Center', },
     {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
     {'name': 'Georgia ARES', 'tg': 31130, 'description': 'Georgia ARES', },
     {'name': 'Atlanta Metro', 'tg': 31131, 'description': 'Atlanta Metro', },
@@ -331,6 +337,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Southwest GA', 'tg': 31136, 'description': 'Southwest Georgia', },
     {'name': 'KingsLand Digital', 'tg': 31137, 'description': 'Kingsland Digital', },
     {'name': 'Georgia Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
+    {'name': 'NY-NJ-PA TriState', 'tg': 31360, 'description': 'NY-NJ-PA TriState', },
     {'name': 'America-Link', 'tg': 31656, 'description': 'America Link', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
@@ -342,16 +349,76 @@ talk_groups['Brandmeister'] = [
 ]
 
 talk_groups['Ham Digital'] = [
+    {'name': 'DMR-MARC NA', 'tg': 1, 'description': 'DMR-MARC North America', },
+    {'name': 'Local2', 'tg': 2, 'description': 'Local 2', },
+    {'name': 'DMR-MARC WW', 'tg': 3, 'description': 'DMR-MARC World-wide', },
     {'name': 'ATL Metro', 'tg': 8, 'description': 'Atlanta Metro', },
+    {'name': 'Local9', 'tg': 9, 'description': 'Local 9', },
+    {'name': 'WWGC', 'tg': 10, 'description': 'World-wide German', },
+    {'name': 'DMR-MARC WWE', 'tg': 13, 'description': 'World-wide English', },
+    {'name': 'BM-WW', 'tg': 91, 'description': 'Brandmeister Worldwide', },
+    {'name': 'BM-NA', 'tg': 93, 'description': 'Brandmeister North America', },
+    {'name': 'DMRpUSA', 'tg': 133, 'description': 'DMR+ USA', },
+    {'name': 'TAC310', 'tg': 310, 'description': 'TAC310', },
+    {'name': 'TAC311', 'tg': 311, 'description': 'TAC311', },
+    {'name': 'TAC312', 'tg': 312, 'description': 'TAC312', },
+    {'name': 'TAC313', 'tg': 313, 'description': 'TAC313', },
+    {'name': 'TAC314', 'tg': 314, 'description': 'TAC314', },
+    {'name': 'TAC315', 'tg': 315, 'description': 'TAC315', },
+    {'name': 'TAC316', 'tg': 316, 'description': 'TAC316', },
+    {'name': 'TAC317', 'tg': 317, 'description': 'TAC317', },
+    {'name': 'TAC318', 'tg': 318, 'description': 'TAC318', },
+    {'name': 'TAC319', 'tg': 319, 'description': 'TAC319', },
     {'name': 'JOTA', 'tg': 907, 'description': 'Georgia State-wide', },
+    {'name': 'USA', 'tg': 1776, 'description': 'USA 1776', },
+    {'name': 'Bridge', 'tg': 3100, 'description': 'Bridge 3100', },
+    {'name': 'DEstate', 'tg': 3110, 'description': 'Delaware State-wide', },
+    {'name': 'DCstate', 'tg': 3111, 'description': 'District of Columbia', },
+    {'name': 'FLstate', 'tg': 3112, 'description': 'Florida State-wide', },
     {'name': 'GAstate', 'tg': 3113, 'description': 'Georgia State-wide', },
+    {'name': 'INstate', 'tg': 3118, 'description': 'Indiana State-wide', },
+    {'name': 'KYstate', 'tg': 3121, 'description': 'Kentucky State-wide', },
+    {'name': 'MDstate', 'tg': 3124, 'description': 'Maryland State-wide', },
+    {'name': 'MAstate', 'tg': 3125, 'description': 'Massachusetts State-wide', },
+    {'name': 'MIstate', 'tg': 3126, 'description': 'Michigan State-wide', },
+    {'name': 'MNstate', 'tg': 3127, 'description': 'Minnesota State-wide', },
+    {'name': 'NHstate', 'tg': 3133, 'description': 'New Hampshire State-wide', },
+    {'name': 'NYstate', 'tg': 3136, 'description': 'New York State-wide', },
+    {'name': 'NCstate', 'tg': 3137, 'description': 'North Carolina State-Wide', },
+    {'name': 'OHstate', 'tg': 3139, 'description': 'Ohio State-wide', },
+    {'name': 'PAstate', 'tg': 3142, 'description': 'Pennsylvania State-wide', },
+    {'name': 'SCstate', 'tg': 3145, 'description': 'South Carolina State-wide', },
+    {'name': 'TNstate', 'tg': 3147, 'description': 'Tennessee State-wide', },
+    {'name': 'TXstate', 'tg': 3148, 'description': 'Texas State-wide', },
+    {'name': 'VAstate', 'tg': 3151, 'description': 'Virginia State-wide', },
+    {'name': 'WIstate', 'tg': 3155, 'description': 'Wisconsin State-wide', },
+    {'name': 'MWreg', 'tg': 3169, 'description': 'Midwest Region ND SD NE MN IA MO WI IL MI IN OH', },
+    {'name': 'NEreg', 'tg': 3172, 'description': 'Northeast Region NY NJ VT MA CT NH RI ME', },
+    {'name': 'MAreg', 'tg': 3173, 'description': 'Mid-Atlantic Region PA WV VA MD DE DC', },
+    {'name': 'SEreg', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
+    {'name': 'SPreg', 'tg': 3175, 'description': 'Southern Plains Region KS OK TX', },
+    {'name': 'SWreg', 'tg': 3176, 'description': 'Southwest Region CA NV AZ NM HI', },
+    {'name': 'MTreg', 'tg': 3177, 'description': 'Mountain Region AK WA OR ID MT WY UT CO', },
+    {'name': 'Fusion', 'tg': 3182, 'description': 'Fusion', },
+    {'name': 'Cactus', 'tg': 3185, 'description': 'Cactus', },
+    {'name': 'TAC1', 'tg': 8951, 'description': 'TAC1', },
+    {'name': 'Parrot', 'tg': 9998, 'description': 'Parrot', },
+    {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
+    {'name': 'First Coast', 'tg': 31121, 'description': 'First Coast', },
+    {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
+    {'name': 'ATL Metro BM', 'tg': 31131, 'description': 'Atlanta Metro BM', },
+    {'name': 'GA North', 'tg': 31134, 'description': 'Georgia North', },
+    {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
+    {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
+    {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
+    {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
 repeaters = [
     # 310293 W4BOC Stone Mountain K4USD
     {'peer_id': '313142', 'call': 'W4BOC', 'input': '446.8125', 'output': '441.8125', 'color_code': '1',
-     'location': 'Stone Mountain GA', 'network': 'K4USD',
+     'location': 'Stone Mountain GA', 'network': 'Ham Digital',
      'talk_groups': [
          (1, 1, 1),
          (2, 2, 0),
@@ -411,7 +478,7 @@ repeaters = [
      ], },
     # 310371 444.825 W4DOC Atlanta
     {'peer_id': '310371', 'call': 'W4DOC', 'input': '449.8250', 'output': '444.8250', 'color_code': '10',
-     'location': 'Atlanta GA', 'network': 'K4USD',
+     'location': 'Atlanta GA', 'network': 'Ham Digital',
      'talk_groups': [
          (1, 1, 1),
          (2, 2, 0),
@@ -568,7 +635,7 @@ repeaters = [
      ], },
     # 311321 N4TAW Between
     {'peer_id': '311321', 'call': 'N4TAW', 'input': '448.7375', 'output': '443.7375', 'color_code': '3',
-     'location': 'Between GA', 'network': 'K4USD',
+     'location': 'Between GA', 'network': 'Ham Digital',
      'talk_groups': [
          (1, 1, 1),
          (2, 2, 0),
@@ -719,7 +786,7 @@ repeaters = [
     # TODO 311617 KE4PMP Parrot GA
     # 311637 NG4RF sawnee/cumming
     {'peer_id': '311637', 'call': 'NG4RF', 'input': '447.1125', 'output': '442.1125', 'color_code': '1',
-     'location': 'Sawnee Mountain GA', 'network': 'K4USD',
+     'location': 'Sawnee Mountain GA', 'network': 'Ham Digital',
      'talk_groups': [
          (1, 1, 1),
          (2, 2, 0),

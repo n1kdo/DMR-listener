@@ -242,11 +242,20 @@ def parse_call_data(call):
             call['peer_callsign'] = 'n/a'
             call['peer_name'] = 'n/a'
     elif len(stuff) == 2:
-        call['peer_id'] = safe_int(stuff[1].strip())
+        peer_id = safe_int(stuff[1].strip())
+        call['peer_id'] = peer_id
         more_stuff = stuff[0].split('-')
         if len(more_stuff) == 1:
-            call['peer_callsign'] = 'n/a'
-            call['peer_name'] = more_stuff[0].strip()
+            peer_name = more_stuff[0].strip()
+            if peer_name == 'BM':
+                call['peer_name'] = 'Brandmeister'
+                if 393100 <= peer_id <= 393109:
+                    call['peer_callsign'] = 'BM{}'.format(peer_id - 390000)
+                else:
+                    call['peer_callsign'] = 'n/a'
+            else:
+                call['peer_callsign'] = 'n/a'
+                call['peer_name'] = more_stuff[0].strip()
         elif len(more_stuff) == 2:
             call['peer_callsign'] = more_stuff[0].strip()
             call['peer_name'] = more_stuff[1].strip()

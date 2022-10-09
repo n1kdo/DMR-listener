@@ -267,7 +267,7 @@ input {
                     talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
                     if talk_group_data is None:
                         logging.warning('missing talk group data for tg {}'.format(tg_number))
-                        talk_group_data = {'description': 'unknown talk group'}
+                        talk_group_data = {'description': 'unknown talk group', 'tg': str(tg_number)}
                     if tg_timeslot == ts:
                         if tg_mode == 0:
                             notes = 'static'
@@ -398,6 +398,7 @@ def validate_repeater_data(repeaters_list, peers_list):
 
 
 def update_usage(a_dict, call):
+    global unknown_talkgroups
     talk_group_name = call.get('talk_group')
     timestamp = call['timestamp']
     network_name = site_name_to_network_map.get(call.get('site')) or 'unknown'
@@ -429,10 +430,13 @@ def update_usage(a_dict, call):
                 talk_group_number = -invalid_number
             else:
                 talk_group_number = 0
-                logging.warning('unknown talk group {} on network {} for site {}'.format(
-                    talk_group_name,
-                    network_name,
-                    call.get('site')))
+                key = talk_group_name + ' - ' + network_name
+                if key not in unknown_talkgroups:
+                    logging.warning('unknown talk group {} on network {} for site {}'.format(
+                                    talk_group_name,
+                                    network_name,
+                                    call.get('site')))
+                    unknown_talkgroups.append(key)
         else:
             talk_group_number = talk_group_data['tg']
         usage_dict = {'talk_group': talk_group_name,
@@ -804,6 +808,7 @@ def print_users_summary(users_list):
 
 
 def main():
+    global unknown_talkgroups
     now = datetime.datetime.utcnow()
     # start_time = now - datetime.timedelta(days=365)
     end_time = now
@@ -827,6 +832,8 @@ def main():
     calls = read_log('bm_logged_calls.txt', start_time, end_time)
 
     if len(calls) > 0:
+        unknown_talkgroups = []
+
         # show a sample row of data
         first_date = calls[0]['timestamp']
         logging.info('first record: {}'.format(first_date))
@@ -847,8 +854,8 @@ def main():
 
         # crunch data, assume it is clean
         num_days = (end_time - start_time).days
-        if num_days <= 7:
-            bin_hours = 3
+        if num_days <= 14:
+            bin_hours = 1
             bins_start = start_time.replace(minute=0, second=0, microsecond=0)
             bins_end = end_time.replace(minute=0, second=0, microsecond=0) + datetime.timedelta(hours=1)
         elif num_days <= 30:
