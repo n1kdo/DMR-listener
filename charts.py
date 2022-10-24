@@ -268,7 +268,7 @@ def plot_activity_stackbar(time_series, title, filename=None, start_date=None, e
     num_bins = len(data[0])
     logging.info('bins = {}'.format(num_bins))
     if num_bins >= 240:
-        width = 0.08
+        width = 0.025
     else:
         width = 0.025
     logging.info('width = {}'.format(width))

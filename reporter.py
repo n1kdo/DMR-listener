@@ -32,8 +32,17 @@ def convert_elapsed(elapsed):
 
 
 def convert_iso_timestamp(s):
+    ls = len(s)
     try:
-        return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+        if ls == 19:  # iso-8601 no time zone
+            s += "-05:00"  # force CDT
+            ls = len(s)
+            # return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+            # return dt
+        if ls == 25:  # iso-8601 plus 4-digit timezone
+            return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S%z')
+        else:
+            return None
     except ValueError:
         return None
 
@@ -58,54 +67,61 @@ def read_log(filename, start, end):
               'radio_id', 'radio_name', 'radio_username', 'duration', 'source_peer']
 
     rows = 0
-    with open(filename, 'r') as datafile:
-        csvreader = csv.DictReader(datafile, fields)
-        for row in csvreader:
-            rows += 1
-            tss = row.get('timestamp')
-            if tss is None:
-                continue
-            ts = convert_iso_timestamp(tss)
-            if ts is not None:
-                row['timestamp'] = ts
-                if start is not None and ts < start or end is not None and ts > end:
+    try:
+        with open(filename, 'r') as datafile:
+            csvreader = csv.DictReader(datafile, fields)
+            for row in csvreader:
+                rows += 1
+                tss = row.get('timestamp')
+                if tss is None:
+                    continue
+                ts = convert_iso_timestamp(tss)
+                if ts is not None:
+                    row['timestamp'] = ts
+                    if start is not None and ts < start or end is not None and ts > end:
+                        continue
+                else:
+                    print('oh shit.')
                     continue
 
-            duration = row.get('duration') or '0'
-            if duration is not None:
-                try:
-                    row['duration'] = float(duration)
-                except Exception as e:
-                    print(e)
-                    print(row)
-            else:
-                row['duration'] = 0.0
-            if row.get('peer_id') is not None:
-                row['peer_id'] = safe_int(row['peer_id'])
-            if row.get('radio_id') is not None:
-                row['radio_id'] = safe_int(row['radio_id'])
-            if row.get('dest') is not None:
-                talk_group = filter_talk_group_name(row['dest'])
-                peer_id = row.get('peer_id')
-                # filter out talk groups that are uninteresting
-                if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
-                    continue
-                # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
-                remap_list = remap_map.get(0)  # 0 is global remap.
-                if remap_list is not None:
-                    for remap in remap_list:
-                        if remap['tg_name_old'] == talk_group:
-                            talk_group = remap['tg_name_new']
+                duration = row.get('duration') or '0'
+                if duration is not None:
+                    try:
+                        row['duration'] = float(duration)
+                    except Exception as e:
+                        print(e)
+                        print(row)
+                else:
+                    row['duration'] = 0.0
+                if row.get('peer_id') is not None:
+                    row['peer_id'] = safe_int(row['peer_id'])
+                if row.get('radio_id') is not None:
+                    row['radio_id'] = safe_int(row['radio_id'])
+                if row.get('dest') is not None:
+                    talk_group = filter_talk_group_name(row['dest'])
+                    peer_id = row.get('peer_id')
+                    # filter out talk groups that are uninteresting
+                    if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
+                        continue
+                    # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
+                    remap_list = remap_map.get(0)  # 0 is global remap.
+                    if remap_list is not None:
+                        for remap in remap_list:
+                            if remap['tg_name_old'] == talk_group:
+                                talk_group = remap['tg_name_new']
 
-                remap_list = remap_map.get(peer_id)
-                if remap_list is not None:
-                    for remap in remap_list:
-                        if remap['tg_name_old'] == talk_group:
-                            talk_group = remap['tg_name_new']
-                if 'Vdalia' in talk_group:
-                    logging.warning('{}: {}'.format(talk_group, str(row)))
-                row['talk_group'] = talk_group
-            calls.append(row)
+                    remap_list = remap_map.get(peer_id)
+                    if remap_list is not None:
+                        for remap in remap_list:
+                            if remap['tg_name_old'] == talk_group:
+                                talk_group = remap['tg_name_new']
+                    if 'Vdalia' in talk_group:
+                        logging.warning('{}: {}'.format(talk_group, str(row)))
+                    row['talk_group'] = talk_group
+                calls.append(row)
+    except Exception as e:
+        print(e)
+        raise e
 
     logging.info('read        {} rows'.format(rows))
     logging.info('filtered to {} records'.format(len(calls)))
@@ -806,13 +822,13 @@ def print_users_summary(users_list):
 
 
 def main():
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc)
     # start_time = now - datetime.timedelta(days=365)
     end_time = now
     if len(sys.argv) >= 2:
         if sys.argv[1].lower() == '--all':
             logging.info('selected all data.')
-            start_time = datetime.datetime.strptime('2019-12-01 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
+            start_time = datetime.datetime.strptime('2019-12-01 00:00:00+00:00', '%Y-%m-%d %H:%M:%S%z') #  first date in current file
         elif sys.argv[1].lower() == '--year':
             logging.info('selected the last year\'s data.')
             start_time = now - datetime.timedelta(days=365)
@@ -867,6 +883,9 @@ def main():
         for call in calls:
             ts = call.get('timestamp')
             if num_days <= 7:
+                #ts.minute = 0
+                #ts.second = 0
+                #ts.microsecond = 0
                 dt = ts.replace(minute=0, second=0, microsecond=0)  # bin into hours
             elif num_days <= 30:
                 dt = ts.replace(minute=0, second=0, microsecond=0)

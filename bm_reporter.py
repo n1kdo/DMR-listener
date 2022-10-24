@@ -6,7 +6,7 @@ import sys
 import time
 
 from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping, \
-    remap_map, site_name_to_network_map
+    remap_map, site_name_to_network_map, talk_group_network_number_to_name_dict
 from common import repeaters
 from common import interesting_peer_ids
 from common import filter_talk_group_name
@@ -32,8 +32,10 @@ def convert_elapsed(elapsed):
 
 
 def convert_iso_timestamp(s):
+    if len(s) == 19:
+        s += '+00:00'
     try:
-        return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+        return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S%z')
     except ValueError:
         return None
 
@@ -809,13 +811,13 @@ def print_users_summary(users_list):
 
 def main():
     global unknown_talkgroups
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc)
     # start_time = now - datetime.timedelta(days=365)
     end_time = now
     if len(sys.argv) >= 2:
         if sys.argv[1].lower() == '--all':
             logging.info('selected all data.')
-            start_time = datetime.datetime.strptime('2019-12-01 00:00:00', '%Y-%m-%d %H:%M:%S') #  first date in current file
+            start_time = datetime.datetime.strptime('2019-12-01 00:00:00+00:00', '%Y-%m-%d %H:%M:%S%z')
         elif sys.argv[1].lower() == '--year':
             logging.info('selected the last year\'s data.')
             start_time = now - datetime.timedelta(days=365)
@@ -839,7 +841,10 @@ def main():
         logging.info('first record: {}'.format(first_date))
 
         if first_date > start_time:
-            start_time = datetime.datetime(year=first_date.year, month=first_date.month, day=first_date.day)
+            start_time = datetime.datetime(year=first_date.year,
+                                           month=first_date.month,
+                                           day=first_date.day,
+                                           tzinfo=first_date.tzinfo)
             logging.info('resetting start_time to {}'.format(start_time))
 
         logging.info(' last record: {}'.format(calls[-1]['timestamp']))

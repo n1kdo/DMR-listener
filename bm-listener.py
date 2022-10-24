@@ -7,46 +7,22 @@ import socketio
 import sys
 import time
 
+from common import interesting_peer_ids
+from common import talk_group_alias_to_number_dict
+from common import talk_group_number_to_name_dict
+from common import talk_group_network_number_to_name_dict
 
 URL = 'https://api.brandmeister.network'
 SIO_PATH = '/lh/socket.io'
 INTERESTING_TALKGROUPS = [3113, 31130, 31131, 31132, 31133, 31134, 31135, 31136, 31137, 31138, 31139, 311340, 3113090, ]
 LOGGED_CALLS_FILENAME = 'bm_logged_calls.txt'
+DUPLICATES_LIST_SIZE = 50
 
 write_files = True
-last_ten = []  # this is used to help prevent duplicate records.
+most_recent_calls = []  # this is used to help prevent duplicate records.
+missing_destinations = []
 
-# all traffic from the interesting peers will be logged.
-INTERESTING_PEERS = [
-    310293,  # w4boc  stone mountain
-    313132,  # w4boc  stone mountain
-    310371,  # w4doc  atlanta
-    #  310466,  # k4vyx  savannah
-    #  310592,  # KG4BKO vidalia
-    310969,  # W4KST  Marietta
-    310996,  # KM4EYX Douglas GA (NEW)
-    311303,  # KE4OKD Sandy Springs
-    311313,  # w8red  snellville
-    311314,  # KD4KHO Canton
-    #311318,  # K4QHR  Kingsland
-    311320,  # w4cba  cumming
-    311321,  # n4taw  between
-    311322,  # ka3jij gainesville
-    #311337,  # wa4asi covington
-    311338,  # kd4z   sweat mountain
-    #311350,  # km4dnd waycross
-    #311617,  # ke4pmp Parrot GA
-    311637,  # NG4RF  Cumming
-    312243,  # WA4OKJ Rome
-    #312284,  # KD4IEZ Dublin
-    #312288,  # AF1G   Kathleen
-    #312384,  # KZ4FOX Athens
-    #312391,  # KE4PMP Cochran
-    #312429,  # KE4RJI Tifton
-    #312444,  # KZ4FOX Athens
-    #312477,  # WX4EMA Macon
-    #312779,  # WY4EMA Kathleen
-]
+# this is a terrible hack to get some cruft out of the brandmeister talk group names.
 
 tg_remap = {
     'Tac 310 NOT A CALL CHANNEL': 'TAC310',
@@ -60,6 +36,7 @@ tg_remap = {
     'TAC 318 USA NO NETS!!!': 'TAC318',
     'TAC 319 USA NO NETS!!!': 'TAC319',
 }
+
 
 def append_logged_calls(filename, new_calls):
     if write_files and new_calls is not None and len(new_calls) > 0:
@@ -89,10 +66,11 @@ def safe_int(s, default=-1):
 
 def convert_brandmeister_timestamp(s):
     try:
-        dt = datetime.datetime.fromtimestamp(s)
+        dt = datetime.datetime.fromtimestamp(s, tz=datetime.timezone.utc)
         return dt.isoformat()
     except ValueError as e:
-        print(e)
+        logging.error(exc_info=e)
+        # print(e)
         return None
 
 
@@ -101,34 +79,53 @@ sio = socketio.Client()
 
 @sio.event
 def connect():
-    print('connected')
+    logging.info('connected')
 
 
 @sio.on('mqtt')
 def mqtt(data):
-    global last_ten
+    global most_recent_calls
+    global missing_destinations
     global write_files
     calls_to_log = []
     raw_data = json.loads(data['payload'])
     try:
         if raw_data.get('Event', '').strip() == 'Session-Stop':
-            destination_id = safe_int(raw_data.get('DestinationID', '-1'))
-            context_id = safe_int(raw_data.get('ContextID', '-1'))
-            if destination_id in INTERESTING_TALKGROUPS or context_id in INTERESTING_PEERS:
+            destination_id = raw_data.get('DestinationID', -1)
+            context_id = raw_data.get('ContextID', -1)
+            if destination_id in INTERESTING_TALKGROUPS or context_id in interesting_peer_ids:
                 #  print('len(last_ten)={}'.format(len(last_ten)))
-                if raw_data in last_ten:
-                    print('duplicate!', raw_data)
+                if raw_data in most_recent_calls:
+                    logging.debug('duplicate!' + str(raw_data))
                 else:
-                    last_ten.insert(0, raw_data)
-                    if len(last_ten) > 10:
-                        last_ten = last_ten[:10]
+                    if destination_id not in talk_group_number_to_name_dict:
+                        if destination_id not in missing_destinations:
+                            missing_destinations.append(destination_id)
+                            logging.warning('cannot lookup destination id {}'.format(destination_id))
+
+                    most_recent_calls.insert(0, raw_data)
+                    if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
+                        most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
                     start = safe_int(raw_data.get('Start', '0'))
                     end = safe_int(raw_data.get('Stop', '0'))
                     elapsed = end - start
                     destination_name = raw_data.get('DestinationName', '').strip()
+
+                    if destination_name not in talk_group_alias_to_number_dict['Brandmeister']:
+                        old_destination_name = destination_name
+                        destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id,
+                                                                              '({})'.format(destination_id))
+                        #destination_name = talk_group_number_to_name_dict.get(destination_id,
+                        #                                                      '({})'.format(destination_id))
+                        logging.warning('could not find destination name "{}", will use "{}".'.format(old_destination_name,
+                                                                                                       destination_name))
+
                     destination_name = destination_name.replace(' - 10 Minute Limit', '')
                     destination_name = tg_remap.get(destination_name, destination_name)
                     destination_id = raw_data.get('DestinationID', -1)
+                    slot = raw_data.get('Slot', -1)
+                    if slot == -1:
+                        print(raw_data)
                     if len(destination_name) == 0 or destination_name == 'Cluster':
                         destination_name = str(destination_id)
                     source_id = raw_data.get('SourceID', 0)
@@ -143,12 +140,16 @@ def mqtt(data):
                     total_count = safe_int(raw_data.get('TotalCount', '0'))
 
                     if elapsed < 1 and total_count < 5:
-                        print('Kerchunk! start: {} end:{} elapsed: {} total_count: {} destination: {} sourcecall: {}'.format(start, end, elapsed, total_count, destination_name, source_call))
+                        logging.debug(
+                            'Kerchunk! start: {} end:{} elapsed: {} total_count: {} destination: {} sourcecall: {}'.format(
+                                start, end, elapsed, total_count, destination_name, source_call))
 
                     call = {
                         'timestamp': convert_brandmeister_timestamp(end),
                         'site': link_name,
                         'dest': destination_name,
+                        'dest_id': destination_id,  # NEW NEW NEW
+                        'slot': slot,  # NEW NEW NEW
                         'peer_id': context_id,
                         'peer_callsign': link_call,
                         'peer_name': link_name,
@@ -159,27 +160,30 @@ def mqtt(data):
                         'sourcepeer': '{} -- {}'.format(link_call, context_id)
                     }
 
-                    line = '{},{},{},{},{},{},{},{},{},{},{}'.format(convert_brandmeister_timestamp(end),
-                                                                     link_name,
-                                                                     destination_name,
-                                                                     context_id,
-                                                                     link_call,
-                                                                     link_name,
-                                                                     source_id,
-                                                                     source_call,
-                                                                     source_name,
-                                                                     elapsed,
-                                                                     '{} -- {}'.format(link_call, context_id),
-                                                                     )
-
+                    line = '{},{},{},{},{},{},{},{},{},{},{},{},{}'.format(convert_brandmeister_timestamp(end),
+                                                                           link_name,
+                                                                           slot,  # NEW NEW NEW
+                                                                           destination_name,
+                                                                           destination_id,  # NEW NEW NEW
+                                                                           context_id,
+                                                                           link_call,
+                                                                           link_name,
+                                                                           source_id,
+                                                                           source_call,
+                                                                           source_name,
+                                                                           elapsed,
+                                                                           '{} -- {}'.format(link_call, context_id),
+                                                                           )
                     calls_to_log.append(call)
                     if not write_files:
-                        print(raw_data)
-                        print(line)
-                        print()
+                        logging.info(line)
+                        if len(link_call) == 0 or len(link_name) == 0:
+                            logging.warning('no link data')
+                            logging.warning(str(raw_data))
+
     except KeyError as ke:
-        print(ke)
-        print(raw_data)
+        logging.error('KeyError: ' + str(ke))
+        logging.error(str(raw_data))
 
     if len(calls_to_log) > 0:
         append_logged_calls(LOGGED_CALLS_FILENAME, calls_to_log)
@@ -188,19 +192,23 @@ def mqtt(data):
 
 @sio.event
 def disconnect():
-    print('disconnected')
+    logging.info('disconnected')
 
 
 def main():
     global write_files
-    global last_ten
-    print('starting')
+    global most_recent_calls
+    global missing_destinations
+    logging.info('starting')
     write_files = True
-    last_ten = []
+    most_recent_calls = []
+    missing_destinations = []
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
+            INTERESTING_TALKGROUPS.extend([310, 311, 312, 313, 314, 315, 316, 317, 318, 319])
+            # INTERESTING_TALKGROUPS.append(3100)  # lots of traffic
             write_files = False
-            print('NOT writing files -- debug mode.')
+            logging.info('NOT writing files -- debug mode.')
             logging.basicConfig(level=logging.DEBUG)
             logging.root.level = logging.DEBUG
     sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
@@ -208,8 +216,9 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:{}',
-                        level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:{}',
+                        level=logging.INFO,
+                        stream=sys.stdout)
     logging.Formatter.converter = time.gmtime
     main()
-

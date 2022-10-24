@@ -1,4 +1,5 @@
 import logging
+import json
 import re
 
 # all traffic to these talk groups will be logged.
@@ -15,38 +16,41 @@ interesting_talk_group_names = [
 ]
 
 # all traffic from the interesting peers will be logged.  Best to not turn on brandmeister.
-interesting_peer_ids = [
-    #-1,      # brandmeister
-    #-3102,   # brandmeister
-    #-3104,   # brandmeister
-    310293,  # w4boc  stone mountain
-    310371,  # w4doc  atlanta
-    310466,  # k4vyx  savannah
-    310592,  # KG4BKO vidalia
-    310969,  # W4KST  Marietta
-    310996,  # KM4EYX Douglas GA (NEW)
-    311303,  # KE4OKD Sandy Springs
-    311307,  # w1kfr kingsland ga 444.625 cc 3
-    311313,  # w8red  snellville
-    311314,  # KD4KHO Canton
-    311318,  # K4QHR  Kingsland
-    311320,  # w4cba  cumming
-    311321,  # n4taw  between
-    311322,  # ka3jij gainesville
-    311337,  # wa4asi covington
-    311338,  # kd4z   sweat mountain
-    311350,  # km4dnd waycross
-    311617,  # ke4pmp Parrot GA
-    311637,  # NG4RF  Cumming
-    312243,  # WA4OKJ Rome
-    312284,  # KD4IEZ Dublin
-    312288,  # AF1G   Kathleen
-    312384,  # KZ4FOX Athens
-    312391,  # KE4PMP Cochran
-    312429,  # KE4RJI Tifton
-    312444,  # KZ4FOX Athens
-    312477,  # WX4EMA Macon
-]
+interesting_peers = {
+    310293: 'W4BOC Stone Mountain',
+    310371: 'W4DOC Atlanta',
+    310466: 'K4VYX Savannah',
+    310592: 'KG4BKO Vdalia',
+    310969: 'W4KST Marietta',
+    310996: 'KM4EYX Douglas',
+    311303: 'KE4OKD Sandy Springs',
+    311307: 'W1KFR Kingsland',
+    311313: 'W8RED Snellville',
+    311314: 'KD4KHO Canton',
+    311318: 'K4KHR Kingsland',
+    311319: 'KD4GGY Jesup',
+    311320: 'W4CBA Cumming',
+    311321: 'N4TAW  Between',
+    311322: 'KA3JIJ Gainesville',
+    311337: 'WA4ASI Covington',
+    311338: 'KD4Z Roswell',
+    311350: 'KM4DND Waycross',
+    311617: 'KE4PMP Parrot GA',
+    311637: 'NG4RF Cumming',
+    312243: 'WA4OKJ Rome',
+    312284: 'KD4IEZ Dublin',
+    312288: 'AF1G Kathleen',
+    312384: 'KZ4FOX Athens',
+    312391: 'KE4PMP Cochrane',
+    312429: 'KE4RJI Tifton',
+    312444: 'KZ4FOX Athens',
+    312477: 'WX4EMA Macon',
+    312779: 'WY4EMY Kathleen',
+    313132: 'W4BOC Stone Mountain',
+    }
+
+interesting_peer_ids = interesting_peers.keys()
+
 
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
 remap_map = {
@@ -268,45 +272,44 @@ talk_groups['Brandmeister'] = [
     {'name': 'Local8', 'tg': 8, 'description': 'Local 8', },
     {'name': 'Regional', 'tg': 8, 'description': 'Local 8', },
     {'name': 'Local', 'tg': 9, 'description': 'Local 9', },
-    {'name': 'BM-WW', 'tg': 91, 'description': 'World-wide', },
     {'name': 'World-wide', 'tg': 91, 'description': 'World-wide', },
-    {'name': 'BM-NA', 'tg': 93, 'description': 'North America', },
+    {'name': 'North America', 'tg': 93, 'description': 'North America', },
     {'name': 'TAC310', 'tg': 310, 'description': 'TAC310', },
+    {'name': 'Tac 310 NOT A CALL CHANNEL', 'tg': 310, 'description': 'TAC310', },
     {'name': 'TAC311', 'tg': 311, 'description': 'TAC311', },
+    {'name': 'TAC 311 USA NO NETS!!!', 'tg': 311, 'description': 'TAC311', },
     {'name': 'TAC312', 'tg': 312, 'description': 'TAC312', },
-    {'name': 'TAC312', 'tg': 313, 'description': 'TAC314', },
-    {'name': 'TAC312', 'tg': 314, 'description': 'TAC314', },
-    {'name': 'TAC312', 'tg': 315, 'description': 'TAC315', },
-    {'name': 'TAC312', 'tg': 316, 'description': 'TAC316', },
-    {'name': 'TAC312', 'tg': 317, 'description': 'TAC317', },
-    {'name': 'TAC312', 'tg': 318, 'description': 'TAC318', },
-    {'name': 'TAC312', 'tg': 319, 'description': 'TAC319', },
+    {'name': 'TAC 312 USA NO NETS!!!', 'tg': 312, 'description': 'TAC312', },
+    {'name': 'TAC313', 'tg': 313, 'description': 'TAC314', },
+    {'name': 'TAC 313 USA NO NETS!!!', 'tg': 313, 'description': 'TAC314', },
+    {'name': 'TAC314', 'tg': 314, 'description': 'TAC314', },
+    {'name': 'TAC 314 USA NO NETS!!!', 'tg': 314, 'description': 'TAC314', },
+    {'name': 'TAC315', 'tg': 315, 'description': 'TAC315', },
+    {'name': 'TAC 315 USA NO NETS!!!', 'tg': 315, 'description': 'TAC315', },
+    {'name': 'TAC316', 'tg': 316, 'description': 'TAC316', },
+    {'name': 'TAC 316 USA NO NETS!!!', 'tg': 316, 'description': 'TAC316', },
+    {'name': 'TAC317', 'tg': 317, 'description': 'TAC317', },
+    {'name': 'TAC 317 USA NO NETS!!!', 'tg': 317, 'description': 'TAC318', },
+    {'name': 'TAC318', 'tg': 318, 'description': 'TAC318', },
+    {'name': 'TAC 318 USA NO NETS!!!', 'tg': 318, 'description': 'TAC318', },
+    {'name': 'TAC319', 'tg': 319, 'description': 'TAC319', },
+    {'name': 'TAC 319 USA NO NETS!!!', 'tg': 319, 'description': 'TAC319', },
     {'name': 'USA', 'tg': 1776, 'description': 'USA 1776', },
     {'name': '1776', 'tg': 1776, 'description': 'USA 1776', },
     {'name': 'Bridge', 'tg': 3100, 'description': 'Bridge', },
     {'name': 'USA Bridge', 'tg': 3100, 'description': 'Bridge', },
-    {'name': 'DEstate', 'tg': 3110, 'description': 'Delaware State-wide', },
-    {'name': 'DCstate', 'tg': 3111, 'description': 'District of Columbia', },
-    {'name': 'FLstate', 'tg': 3112, 'description': 'Florida State-wide', },
-    {'name': 'GAstate', 'tg': 3113, 'description': 'Georgia State-wide', },
+    {'name': 'Florida - 10 Minute Limit', 'tg': 3112, 'description': 'Florida State-wide', },
     {'name': 'Georgia', 'tg': 3113, 'description': 'Georgia State-wide', },
-    {'name': 'INstate', 'tg': 3118, 'description': 'Indiana State-wide', },
-    {'name': 'KYstate', 'tg': 3121, 'description': 'Kentucky State-wide', },
-    {'name': 'MDstate', 'tg': 3124, 'description': 'Maryland State-wide', },
-    {'name': 'MAstate', 'tg': 3125, 'description': 'Massachusetts State-wide', },
-    {'name': 'MIstate', 'tg': 3126, 'description': 'Michigan State-wide', },
-    {'name': 'MNstate', 'tg': 3127, 'description': 'Minnesota State-wide', },
-    {'name': 'NHstate', 'tg': 3133, 'description': 'New Hampshire State-wide', },
-    {'name': 'NYstate', 'tg': 3136, 'description': 'New York State-wide', },
-    {'name': 'NCstate', 'tg': 3137, 'description': 'North Carolina State-Wide', },
-    {'name': 'OHstate', 'tg': 3139, 'description': 'Ohio State-wide', },
-    {'name': 'PAstate', 'tg': 3142, 'description': 'Pennsylvania State-wide', },
-    {'name': 'South Carolina', 'tg': 3145, 'description': 'South Carolina State-wide', },
-    {'name': 'TNstate', 'tg': 3147, 'description': 'Tennessee State-wide', },
+    {'name': 'Georgia - 10 Minute Limit', 'tg': 3113, 'description': 'Georgia State-wide', },
+    {'name': 'Maryland - 10 Minute Limit', 'tg': 3124, 'description': 'Maryland State-wide', },
+    {'name': 'South Carolina - 10 Minute Limit', 'tg': 3145, 'description': 'South Carolina State-wide', },
+    {'name': 'North Carolina - 10 Minute Limit', 'tg': 3137, 'description': 'North Carolina State-Wide', },
+    {'name': 'Tennessee - 10 Minute Limit', 'tg': 3147, 'description': 'Tennessee State-wide', },
     {'name': 'Texas', 'tg': 3148, 'description': 'Texas State-wide', },
+    {'name': 'Texas - 10 Minute Limit', 'tg': 3148, 'description': 'Texas State-wide', },
     {'name': 'VAstate', 'tg': 3151, 'description': 'Virginia State-wide', },
     {'name': 'WIstate', 'tg': 3155, 'description': 'Wisconsin State-wide', },
-    {'name': 'Wyoming', 'tg': 3156, 'description': 'Wyoming State-wide', },
+    {'name': 'Wyoming - 10 Minute Limit', 'tg': 3156, 'description': 'Wyoming State-wide', },
     {'name': 'SE Wyoming chat', 'tg': 31560, 'description': 'SE Wyoming chat', },
     {'name': 'Wyoming Severe WX', 'tg': 31563, 'description': 'Wyoming Severe WX', },
     {'name': 'MWreg', 'tg': 3169, 'description': 'Midwest Region ND SD NE MN IA MO WI IL MI IN OH', },
@@ -323,6 +326,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Disconnect', 'tg': 4000, 'description': 'Brandmeister Disconnect', },
     {'name': 'Parrot - Private Call ONLY', 'tg': 9990, 'description': 'Parrot - Private Call ONLY', },
     {'name': '9990', 'tg': 9990, 'description': 'Parrot - Private Call ONLY', },
+    {'name': 'FlexRadio SIG', 'tg': 30234, 'description': 'FlexRadio SIG', },
     {'name': 'PAPA Bridge', 'tg': 31078, 'description': 'Papa Bridge', },
     {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
     {'name': 'First Coast DMR', 'tg': 31121, 'description': 'First Coast', },
@@ -331,7 +335,8 @@ talk_groups['Brandmeister'] = [
     {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
     {'name': 'Georgia ARES', 'tg': 31130, 'description': 'Georgia ARES', },
     {'name': 'Atlanta Metro', 'tg': 31131, 'description': 'Atlanta Metro', },
-    {'name': 'South Georgia', 'tg': 31132, 'description': 'Soutth Georgia', },
+    {'name': 'South Georgia', 'tg': 31132, 'description': 'South Georgia', },
+    {'name': 'SETN NWGA', 'tg': 31133, 'description': 'SE Tennessee/NW Georgia', },
     {'name': 'North Georgia', 'tg': 31134, 'description': 'North Georgia', },
     {'name': 'Central GA', 'tg': 31135, 'description': 'Central Georgia', },
     {'name': 'Southwest GA', 'tg': 31136, 'description': 'Southwest Georgia', },
@@ -345,6 +350,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Reddit', 'tg': 98003, 'description': 'Reddit', },
     {'name': 'BSRG', 'tg': 311340, 'description': 'BSRG', },
     {'name': '311340', 'tg': 311340, 'description': 'BSRG', },
+    {'name': 'N1KDO Group', 'tg': 3113090, 'description': 'N1KDO Group Call', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
@@ -414,6 +420,49 @@ talk_groups['Ham Digital'] = [
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
+
+new_master_dict = {}
+for network in networks:
+    for talk_group in talk_groups[network]:
+        tg = talk_group['tg']
+        tg_name = talk_group['name']
+        if tg not in new_master_dict:
+            new_master_dict[tg] = {'name': tg_name,
+                                   'desc': talk_group['description'],
+                                   'aliases': {network: [tg_name]},
+                                   }
+        else:
+            new_master_tg_dict = new_master_dict[tg]
+            aliases = new_master_tg_dict['aliases']
+            if network not in aliases:
+                aliases[network] = [tg_name]
+            else:
+                aliases[network].append(tg_name)
+
+with open('talkgroups.json', 'w') as outfile:
+    json.dump(new_master_dict, outfile, indent=2)
+
+talk_group_alias_to_number_dict = {}
+talk_group_number_to_name_dict = {}
+talk_group_network_number_to_name_dict = {}
+
+for k, v in new_master_dict.items():
+    aliases_dict = v.get('aliases', {})
+    for network, aliases in aliases_dict.items():
+        if network not in talk_group_alias_to_number_dict:
+            talk_group_alias_to_number_dict[network] = {}
+        if network not in talk_group_network_number_to_name_dict:
+            talk_group_network_number_to_name_dict[network] = {}
+        for alias in aliases:
+            if alias not in talk_group_alias_to_number_dict[network]:
+                talk_group_alias_to_number_dict[network][alias] = k
+        talk_group_network_number_to_name_dict[network][k] = aliases[0]
+
+    talk_group_number_to_name_dict[k] = v.get('name', str(k))
+
+#print(talk_group_alias_to_number_dict)
+#print(talk_group_number_to_name_dict)
+#exit(1)
 
 repeaters = [
     # 310293 W4BOC Stone Mountain K4USD
@@ -692,6 +741,7 @@ repeaters = [
          (319, 2, 1),
          (1776, 2, 1),
          (3100, 2, 1),
+         (3112, 2, 1),
          (3113, 2, 0),
          (3121, 2, 1),
          (3125, 2, 1),

@@ -151,19 +151,34 @@ def call_cbridge(**params):
     return result
 
 
+month_name_to_number_dict = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+                             'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
+
+
 def convert_cbridge_timestamp(s):
     try:
         ss = s.split(' ')
         tm = ss[0][0:8]
         year = datetime.datetime.now().year
-        dt = '{} {} {} {}'.format(tm, ss[1], ss[2], year)
-        return datetime.datetime.strptime(dt, "%H:%M:%S %b %d %Y").isoformat()
+        month = month_name_to_number_dict.get(ss[1][:3].lower(), -1)
+        day = safe_int(ss[2])
+        zone = '-0500'
+        dt = '{:4d}-{:02d}-{:02d}T{}{}'.format(year, month, day, tm, zone)
+        #return dt
+        # dy = datetime.datetime.fromisoformat(dt)
+        dy = datetime.datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S%z')
+        dx = dy.astimezone(tz=datetime.timezone.utc)
+        return dx.isoformat()
+        #ts = datetime.datetime.strptime('%Y-%m-%dT%H:%M:%S%z', dt)
+        #return dt
+        #return ty.isoformat()
     except ValueError as e:
         print(e)
         return None
 
 
 def parse_call_data(call):
+    #print(call)
     call['timestamp'] = convert_cbridge_timestamp(call['time'])
     call['filtered_dest'] = filter_talk_group_name(call['dest'])
     call['radio_callsign'] = ''
