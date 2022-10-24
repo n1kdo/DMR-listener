@@ -34,16 +34,18 @@ def convert_elapsed(elapsed):
 def convert_iso_timestamp(s):
     ls = len(s)
     try:
-        if ls == 19:  # iso-8601 no time zone
+        if len(s) == 19:  # iso-8601 no time zone
             s += "-05:00"  # force CDT
-            ls = len(s)
-            # return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
-            # return dt
-        if ls == 25:  # iso-8601 plus 4-digit timezone
+        if len(s) == 25:  # iso-8601 plus 4-digit timezone
+            # this is an evil hack for python 3.6 back-compatibility.
+            s = s.replace('-05:00', '-0500')
+            s = s.replace('+00:00', '+0000')
             return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S%z')
         else:
+            print(s)
             return None
-    except ValueError:
+    except ValueError as ve:
+        print(str(ve))
         return None
 
 

@@ -107,7 +107,10 @@ talk_groups['DMR-MARC'] = [
     {'name': 'DMR-MARC NA', 'tg': 1, 'description': 'DMR-MARC North America', },
     {'name': 'DMR-MARC WW', 'tg': 3, 'description': 'DMR-MARC World-wide', },
     {'name': 'DMR-MARC WWE', 'tg': 13, 'description': 'World-wide English', },
+    {'name': 'DMR-MARC MWreg', 'tg': 3169, 'description': 'Midwest Region ND SD NE MN IA MO WI IL MI IN OH', },
     {'name': 'DMR-MARC SEreg', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
+    {'name': 'DMR-MARC SPreg', 'tg': 3175, 'description': 'Southern Plains Region KS OK TX', },
+    {'name': 'DMR-MARC SWreg', 'tg': 3176, 'description': 'Southwest Region CA NV AZ NM HI', },
 ]
 
 talk_groups['DMR-SE'] = [
@@ -709,6 +712,7 @@ repeaters = [
          (3145, 2, 1),
          (3147, 2, 1),
          (3174, 2, 1),
+         (3175, 2, 1),
          (8951, 2, 1),
          (9998, 2, 1),
          (31012, 2, 1),
@@ -871,6 +875,7 @@ repeaters = [
          (3147, 2, 1),
          (3148, 2, 1),
          (3155, 2, 1),
+         (3169, 2, 1),
          (3172, 2, 1),
          (3174, 2, 1),
          (3175, 2, 1),
