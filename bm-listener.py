@@ -69,7 +69,7 @@ def convert_brandmeister_timestamp(s):
         dt = datetime.datetime.fromtimestamp(s, tz=datetime.timezone.utc)
         return dt.isoformat()
     except ValueError as e:
-        logging.error(exc_info=e)
+        logging.error('bad timestamp', exc_info=e)
         # print(e)
         return None
 
@@ -114,11 +114,13 @@ def mqtt(data):
                     if destination_name not in talk_group_alias_to_number_dict['Brandmeister']:
                         old_destination_name = destination_name
                         destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id,
-                                                                              '({})'.format(destination_id))
-                        #destination_name = talk_group_number_to_name_dict.get(destination_id,
+                                                                                                      '({})'.format(
+                                                                                                          destination_id))
+                        # destination_name = talk_group_number_to_name_dict.get(destination_id,
                         #                                                      '({})'.format(destination_id))
-                        logging.warning('could not find destination name "{}", will use "{}".'.format(old_destination_name,
-                                                                                                       destination_name))
+                        logging.warning(
+                            'could not find destination name "{}", will use "{}".'.format(old_destination_name,
+                                                                                          destination_name))
 
                     destination_name = destination_name.replace(' - 10 Minute Limit', '')
                     destination_name = tg_remap.get(destination_name, destination_name)
@@ -187,7 +189,6 @@ def mqtt(data):
 
     if len(calls_to_log) > 0:
         append_logged_calls(LOGGED_CALLS_FILENAME, calls_to_log)
-        calls_to_log = []
 
 
 @sio.event

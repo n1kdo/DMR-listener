@@ -268,7 +268,8 @@ input {
                     tg_mode = talk_group[2]
                     talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
                     if talk_group_data is None:
-                        logging.warning('missing talk group data for tg {}'.format(tg_number))
+                        if tg_number < 99999:
+                            logging.warning('missing talk group data for tg {}'.format(tg_number))
                         talk_group_data = {'description': 'unknown talk group', 'tg': str(tg_number)}
                     if tg_timeslot == ts:
                         if tg_mode == 0:
