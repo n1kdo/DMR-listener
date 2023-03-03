@@ -162,7 +162,7 @@ def convert_cbridge_timestamp(s):
         year = datetime.datetime.now().year
         month = month_name_to_number_dict.get(ss[1][:3].lower(), -1)
         day = safe_int(ss[2])
-        zone = '-0500'
+        zone = '-0600'
         dt = '{:4d}-{:02d}-{:02d}T{}{}'.format(year, month, day, tm, zone)
         #return dt
         # dy = datetime.datetime.fromisoformat(dt)

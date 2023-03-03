@@ -308,7 +308,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Georgia', 'tg': 3113, 'description': 'Georgia State-wide', },
     {'name': 'Georgia - 10 Minute Limit', 'tg': 3113, 'description': 'Georgia State-wide', },
     {'name': 'Idaho', 'tg': 3116, 'description': 'Idaho State-wide', },
-    {'name': 'Idaho - 10 Minute Limit', 'tg': 3113, 'description': 'Idaho State-wide', },
+    {'name': 'Idaho - 10 Minute Limit', 'tg': 3116, 'description': 'Idaho State-wide', },
     {'name': 'Maryland - 10 Minute Limit', 'tg': 3124, 'description': 'Maryland State-wide', },
     {'name': 'Maryland', 'tg': 3124, 'description': 'Maryland State-wide', },
     {'name': 'South Carolina - 10 Minute Limit', 'tg': 3145, 'description': 'South Carolina State-wide', },
