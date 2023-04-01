@@ -34,9 +34,13 @@ def convert_elapsed(elapsed):
 def convert_iso_timestamp(s):
     if len(s) == 19:
         s += '+00:00'
+    if sys.version_info[1] < 7 and len(s) == 25:
+        # python 3.6 issue, %z cannot tolerate a colon in the zone offset.
+        s = s[0:20] + '0000'
     try:
         return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S%z')
-    except ValueError:
+    except ValueError as ve:
+        print('value error ' + str(ve))
         return None
 
 
@@ -147,6 +151,8 @@ def write_repeater_html(filename='repeaters.html'):
     """
     header_lines = read_file('log_analytics_fragment.html')
     title = 'Metro Atlanta Area DMR Repeaters'
+    now = datetime.datetime.now()
+    disclaimer = f'Generated {now.strftime("%Y-%m-%d %H:%M")}<br>Corrections and suggestions are appreciated.'
     with open(filename, 'w') as htmlfile:
         htmlfile.write('<html lang="i-klingon">\n<head>\n')
         htmlfile.write('<title>' + title + '</title>\n')
@@ -159,11 +165,6 @@ BODY {
     margin: 0;
     border: 0;
     font-family: sans-serif;
-}
-.notes {
-    font-size: 1em;
-    text-align: center;
-    color: #ff8;
 }
 TABLE, TH, TR, TD {
     border: solid black 1px; 
@@ -243,10 +244,25 @@ input {
     font-size: 2em;
     font-weight: bold;
 }
+.disclaimer {
+    text-align: center;
+    font-size: 1em;
+}
+.notes {
+    font-size: 1em;
+    text-align: center;
+    color: #ff8;
+}
+.last_heard {
+    font-size: 1em;
+    text-align: center;
+    color: #ff8;
+}
   </style>
 """)
         htmlfile.write('</head>\n<body>\n')
         htmlfile.write('<div class="heading">' + title + '</div>\n')
+        htmlfile.write('<div class="disclaimer">' + disclaimer + '</div>\n')
         htmlfile.write('<div class="tabs">\n')
         ctr = 1
         sorted_repeaters = sorted(repeaters, key=lambda repeater: repeater['call'])
@@ -259,6 +275,10 @@ input {
             htmlfile.write('<table class="talk-groups-table">\n')
             info = '{} {} {} {} CC {} {}'.format(repeater['call'], repeater['location'], repeater['output'], repeater['input'], repeater['color_code'], repeater['network'])
             htmlfile.write('<tr><th colspan="4" class="rptr-info">{}</th></tr>'.format(info))
+            last_heard = repeater.get('last_heard')
+            if last_heard is not None:
+                last_heard = 'Last Heard ' + last_heard.strftime("%Y-%m-%d %H:%M:%S")
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-last-heard">{last_heard}</th></tr>')
             talk_groups = sorted(repeater['talk_groups'], key=lambda item: item[0])
             htmlfile.write('<tr><th>Talk Group Name</th><th>TG #</th><th>TS #<br>#</th><th>Notes</th></tr>\n')
             for ts in [1, 2]:
@@ -373,7 +393,7 @@ TABLE, TH, TD {
 
 
 def validate_repeater_data(repeaters_list, peers_list):
-    logging.info('validating talkgroup lists...')
+    logging.info('validating repeater data...')
     for peer in peers_list:
         peer_id = peer['peer_id']
         if 310000 <= peer_id <= 319999:
@@ -396,6 +416,7 @@ def validate_repeater_data(repeaters_list, peers_list):
                                 if ptgn != 16777215:
                                     logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
                     repeater_found = True
+                    repeater['last_heard'] = peer.get('last_heard')
             if not repeater_found:
                 logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))
 

@@ -688,7 +688,7 @@ repeaters = [
      ], },
     # 311318 K4QHR Kingsland
     {'peer_id': '311318', 'call': 'K4QHR', 'input': '447.1125', 'output': '442.1125', 'color_code': '7',
-     'location': 'Kingsland GA', 'network': 'DMR-SE', 'notes': '',
+     'location': 'Kingsland GA', 'network': 'Brandmeister', 'notes': '',
      'talk_groups': [
          (1, 1, 1),
          (3112, 2, 1),
@@ -732,7 +732,7 @@ repeaters = [
      ], },
     # 311322 KA4JIJ Gainesville
     {'peer_id': '311322', 'call': 'KA3JIJ', 'input': '449.9500', 'output': '444.9500', 'color_code': '1',
-     'location': 'Gainesville GA', 'network': 'K4USD',
+     'location': 'Gainesville GA', 'network': 'Brandmeister',
      'talk_groups': [
          (1, 1, 1),
          (2, 2, 0),
