@@ -1,14 +1,15 @@
 #!/bin/python3
 import csv
 import datetime
+import json
 import logging
 import sys
 import time
 
 from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping, \
     remap_map, site_name_to_network_map, talk_group_network_number_to_name_dict
-from common import repeaters
-from common import interesting_peer_ids
+# from common import repeaters
+# from common import interesting_peer_ids
 from common import filter_talk_group_name
 
 import charts
@@ -144,7 +145,7 @@ def write_csv_moto_contacts(users):
             datafile.write(line + '\n')
 
 
-def write_repeater_html(filename='repeaters.html'):
+def write_repeater_html(repeaters, filename='repeaters.html'):
     """
     write data for web
     :return:
@@ -253,10 +254,14 @@ input {
     text-align: center;
     color: #ff8;
 }
-.last_heard {
+.rtpr-last-heard {
     font-size: 1em;
     text-align: center;
     color: #ff8;
+}
+.rptr-not-heard {
+    color: red;
+    font-weight: bold;
 }
   </style>
 """)
@@ -279,17 +284,19 @@ input {
             if last_heard is not None:
                 last_heard = 'Last Heard ' + last_heard.strftime("%Y-%m-%d %H:%M:%S")
                 htmlfile.write(f'<tr><th colspan="4" class="rptr-last-heard">{last_heard}</th></tr>')
-            talk_groups = sorted(repeater['talk_groups'], key=lambda item: item[0])
+            elif repeater.get('network') == 'Brandmeister':
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-not-heard">Not Heard</th></tr>')
+            talk_groups = sorted(repeater['talk_groups'], key=lambda item: item['talkgroup'])
             htmlfile.write('<tr><th>Talk Group Name</th><th>TG #</th><th>TS #<br>#</th><th>Notes</th></tr>\n')
             for ts in [1, 2]:
                 for talk_group in talk_groups:
-                    tg_number = talk_group[0]
-                    tg_timeslot = talk_group[1]
-                    tg_mode = talk_group[2]
+                    tg_number = safe_int(talk_group['talkgroup'])
+                    tg_timeslot = talk_group['slot']
+                    tg_mode = talk_group['mode']
                     talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
                     if talk_group_data is None:
                         if tg_number < 99999:
-                            logging.warning('missing talk group data for tg {}'.format(tg_number))
+                            logging.warning(f'missing talk group data for tg {tg_number} on peer {repeater["peer_id"]}')
                         talk_group_data = {'description': 'unknown talk group', 'tg': str(tg_number)}
                     if tg_timeslot == ts:
                         if tg_mode == 0:
@@ -416,7 +423,9 @@ def validate_repeater_data(repeaters_list, peers_list):
                                 if ptgn != 16777215:
                                     logging.warning('Did not find matching tg {} on repeater {}'.format(ptgn, peer_id))
                     repeater_found = True
+                    # print(f'peer_id={peer_id}, last_heard = {peer.get("last_heard")}')
                     repeater['last_heard'] = peer.get('last_heard')
+
             if not repeater_found:
                 logging.warning('Could not find a repeater with peer_id {}'.format(peer_id))
 
@@ -853,6 +862,29 @@ def main():
     # end_time = datetime.datetime.strptime('2020-01-31 23:59:59', '%Y-%m-%d %H:%M:%S')
     # end_time = datetime.datetime.strptime('2020-02-29 23:59:59', '%Y-%m-%d %H:%M:%S')
 
+    emit_repeaters = False
+    if emit_repeaters:
+        repeaters = []
+        for repeater in repeaters:
+            talkgroups = repeater.get('talk_groups')
+            talk_groups = []
+            for talkgroup in talkgroups:
+                talk_groups.append({'number': talkgroup[0],
+                                    'slot': talkgroup[1],
+                                    'static': talkgroup[2]
+                                    })
+            repeater['talk_groups'] = talk_groups
+
+        with open('repeaters.json', 'w') as data_file:
+            json.dump(repeaters, data_file, indent=2)
+
+        sys.exit(0)
+
+    with open('repeaters.json', 'rb') as repeaters_data_file:
+        repeaters = json.load(repeaters_data_file)
+
+    logging.info(f'loaded {len(repeaters)} repeaters from file.')
+
     calls = read_log('bm_logged_calls.txt', start_time, end_time)
 
     if len(calls) > 0:
@@ -1000,7 +1032,7 @@ def main():
         all_peers = []
         for peer_id in peers:
             peer = peers[peer_id]
-            if peer['count'] > 2 and peer['total_elapsed'] > 5:
+            if peer['count']: #  > 2: #  and peer['total_elapsed'] > 5:
                 all_peers.append(peer)
 
         all_peers = sorted(all_peers, key=lambda peer: peer['total_elapsed'], reverse=True)
@@ -1053,7 +1085,7 @@ def main():
         # charts.plot_activity(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
         charts.plot_activity_stackbar(results, 'Talkgroup Activity ' + chart_date_header, filename='activity.png')
 
-    write_repeater_html()
+    write_repeater_html(repeaters)
 
 
 if __name__ == '__main__':

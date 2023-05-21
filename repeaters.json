@@ -1,0 +1,1735 @@
+[
+  {
+    "peer_id": "313142",
+    "call": "W4BOC",
+    "input": "446.8125",
+    "output": "441.8125",
+    "color_code": "1",
+    "location": "Stone Mountain GA",
+    "network": "Ham Digital",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 133,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 313,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 315,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 316,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 317,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 318,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 319,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1776,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3126,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3147,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3172,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8951,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31012,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31121,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31665,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31990,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
+    "peer_id": "310295",
+    "call": "W4KIP",
+    "input": "146.130",
+    "output": "146.730",
+    "color_code": "1",
+    "location": "Sweat Mountain, Marietta GA",
+    "network": "Brandmeister",
+    "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 311340,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "310371",
+    "call": "W4DOC",
+    "input": "449.8250",
+    "output": "444.8250",
+    "color_code": "10",
+    "location": "Atlanta GA",
+    "network": "Ham Digital",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 133,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 313,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 315,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 316,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 317,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 318,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 319,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 907,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1776,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3147,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3148,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8951,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31012,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31121,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31665,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31990,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314710,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
+    "peer_id": "310466",
+    "call": "K4VYX",
+    "input": "447.8125",
+    "output": "442.8125",
+    "color_code": "3",
+    "location": "Savannah GA",
+    "network": "DMR-SE",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 317,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3139,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3147,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 8951,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 13172,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 13174,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31132,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31137,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310592,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311350,
+        "slot": 1,
+        "mode": 1
+      }
+    ]
+  },
+  {
+    "peer_id": "310592",
+    "call": "KG4BKO",
+    "input": "449.9875",
+    "output": "444.9875",
+    "color_code": "1",
+    "location": "Atlanta GA",
+    "network": "DMR-SE",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310592,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "310969",
+    "call": "W4KST",
+    "input": "448.275",
+    "output": "443.275",
+    "color_code": "7",
+    "location": "KSU Campus Marietta GA",
+    "network": "K4USD",
+    "talk_groups": [
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311307",
+    "call": "W1KFR",
+    "input": "449.625",
+    "output": "444.625",
+    "color_code": "3",
+    "location": "Kingsland GA",
+    "network": "DMR-SE",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31128,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311307,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311313",
+    "call": "W8RED",
+    "input": "447.6000",
+    "output": "442.6000",
+    "color_code": "3",
+    "location": "Snellville, GA",
+    "network": "K4USD",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 10,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 133,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 315,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 317,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 319,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1776,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8951,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31012,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31665,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314710,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
+    "peer_id": "311314",
+    "call": "KD4KHO",
+    "input": "439.400",
+    "output": "434.400",
+    "color_code": "3",
+    "location": "Canton GA",
+    "network": "Brandmeister",
+    "notes": "limited coverage",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311318",
+    "call": "K4QHR",
+    "input": "447.1125",
+    "output": "442.1125",
+    "color_code": "7",
+    "location": "Kingsland GA",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 31121,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 310592,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 311291,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 311307,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311321",
+    "call": "N4TAW",
+    "input": "448.7375",
+    "output": "443.7375",
+    "color_code": "3",
+    "location": "Between GA",
+    "network": "Ham Digital",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 10,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1776,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3125,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3136,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3142,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3145,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3147,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3175,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8951,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31012,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31665,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
+    "peer_id": "311322",
+    "call": "KA3JIJ",
+    "input": "449.9500",
+    "output": "444.9500",
+    "color_code": "1",
+    "location": "Gainesville GA",
+    "network": "Brandmeister",
+    "talk_groups": [
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 311322,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311337",
+    "call": "WA4ASI",
+    "input": "449.800",
+    "output": "444.800",
+    "color_code": "2",
+    "location": "Covington",
+    "network": "Brandmeister",
+    "notes": "Any Brandmeister talk group may be activated on Time Slot  1 or 2",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311338",
+    "call": "KD4Z",
+    "input": "447.9750",
+    "output": "442.9750",
+    "color_code": "1",
+    "location": "Sweat Mountain GA",
+    "network": "Brandmeister",
+    "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 311340,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311340",
+    "call": "W4KIP",
+    "input": "449.775",
+    "output": "444.775",
+    "color_code": "1",
+    "location": "Sweat Mountain, Marietta GA",
+    "network": "Brandmeister",
+    "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 311340,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311343",
+    "call": "W4KIP",
+    "input": "449.050",
+    "output": "444.050",
+    "color_code": "1",
+    "location": "Pine Log Mountain, Waleska, GA",
+    "network": "Brandmeister",
+    "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
+    "talk_groups": [
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9990,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9990,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311350",
+    "call": "KM4DND",
+    "input": "449.025",
+    "output": "444.025",
+    "color_code": "3",
+    "location": "Waycross, GA",
+    "network": "DMR-SE",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 310592,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "311637",
+    "call": "NG4RF",
+    "input": "447.1125",
+    "output": "442.1125",
+    "color_code": "1",
+    "location": "Sawnee Mountain GA",
+    "network": "Ham Digital",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 10,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 13,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 133,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 313,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 315,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 316,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 317,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 318,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 319,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1776,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3121,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3125,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3127,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3133,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3145,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3147,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3148,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3155,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3169,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3172,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3175,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3176,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3182,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 8951,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31012,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31121,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31665,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314710,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
+    "peer_id": "312243",
+    "call": "WA4OKJ",
+    "input": "447.2375",
+    "output": "442.2375",
+    "color_code": "1",
+    "location": "Mt. Alto Rome GA",
+    "network": "Brandmeister",
+    "talk_groups": [
+      {
+        "talkgroup": 3101,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 314722,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "312284",
+    "call": "KD4IEZ",
+    "input": "449.7875",
+    "output": "444.7875",
+    "color_code": "1",
+    "location": "Dublin GA",
+    "network": "DMR-SE",
+    "talk_groups": [
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310592,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "312444",
+    "call": "KZ4FOX",
+    "input": "445.6625",
+    "output": "440.6625",
+    "color_code": "5",
+    "location": "Athens GA",
+    "network": "Brandmeister",
+    "notes": "This is a full-time DMR repeater connected to the BrandMeister network. Both time slots can access any talk group connected to that network.",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3171,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 98002,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 98003,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 310869,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 312384,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 312764,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 315518,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "313169",
+    "call": "W4CMB",
+    "input": "448.2",
+    "output": "443.2",
+    "color_code": "1",
+    "location": "Livonia GA",
+    "network": "Brandmeister",
+    "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
+    "talk_groups": [
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 312486,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 313169,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "312477",
+    "call": "WX4EMA",
+    "input": "448.075",
+    "output": "443.075",
+    "color_code": "7",
+    "location": "Macon GA",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31135,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": "312779",
+    "call": "WY4EMA",
+    "input": "445.575",
+    "output": "440.575",
+    "color_code": "1",
+    "location": "Kathleen GA",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31135,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  }
+]
