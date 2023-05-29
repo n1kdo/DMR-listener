@@ -1,0 +1,493 @@
+#!/bin/python3
+
+import datetime
+import json
+import asyncio
+import aiohttp
+import socketio
+import sys
+import logging
+import time
+
+from common import filter_talk_group_name
+from common import interesting_peer_ids
+from common import interesting_talk_group_names
+from common import less_interesting_talk_group_names
+from common import talk_group_alias_to_number_dict
+from common import talk_group_number_to_name_dict
+from common import talk_group_network_number_to_name_dict
+
+URL = 'https://api.brandmeister.network'
+SIO_PATH = '/lh/socket.io'
+INTERESTING_TALKGROUPS = [3113, 31130, 31131, 31132, 31133, 31134, 31135, 31136, 31137, 31138, 31139, 311340, 3113090, ]
+LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'
+DUPLICATES_LIST_SIZE = 50
+
+write_files = True
+most_recent_calls = []  # this is used to help prevent duplicate records.
+missing_destinations = []
+
+run_cbridge_poller = True
+
+# this is a terrible hack to get some cruft out of the brandmeister talk group names.
+
+tg_remap = {
+    'Tac 310 NOT A CALL CHANNEL': 'TAC310',
+    'TAC 311 USA NO NETS!!!': 'TAC311',
+    'TAC 312 USA NO NETS!!!': 'TAC312',
+    'TAC 313 USA NO NETS!!!': 'TAC313',
+    'TAC 314 USA NO NETS!!!': 'TAC314',
+    'TAC 315 USA NO NETS!!!': 'TAC315',
+    'TAC 316 USA NO NETS!!!': 'TAC316',
+    'TAC 317 USA NO NETS!!!': 'TAC317',
+    'TAC 318 USA NO NETS!!!': 'TAC318',
+    'TAC 319 USA NO NETS!!!': 'TAC319',
+}
+
+
+def append_logged_calls(filename, calls):
+    if calls is not None and len(calls) > 0:
+        if write_files:
+            with open(filename, 'a') as outfile:
+                for call in calls:
+                    line = '{},{},{},{},{},{},{},{},{},{},{}'.format(call['timestamp'],
+                                                                     call['site'],
+                                                                     call['dest'],
+                                                                     call['peer_id'],
+                                                                     call['peer_callsign'],
+                                                                     call['peer_name'],
+                                                                     call['radio_id'],
+                                                                     call['radio_callsign'],
+                                                                     call['radio_username'],
+                                                                     call['duration'],
+                                                                     call['sourcepeer'],
+                                                                     )
+                    outfile.write(line + '\n')
+                    print(line)
+        else:
+            for call in calls:
+                line = '{},{},{},{},{},{},{},{},{},{},{}'.format(call['timestamp'],
+                                                                 call['site'],
+                                                                 call['dest'],
+                                                                 call['peer_id'],
+                                                                 call['peer_callsign'],
+                                                                 call['peer_name'],
+                                                                 call['radio_id'],
+                                                                 call['radio_callsign'],
+                                                                 call['radio_username'],
+                                                                 call['duration'],
+                                                                 call['sourcepeer'],
+                                                                 )
+                print(line)
+
+
+def safe_int(s, default=-1):
+    if isinstance(s, int):
+        return s
+    try:
+        return int(s)
+    except ValueError:
+        return default
+
+
+def convert_brandmeister_timestamp(s):
+    try:
+        dt = datetime.datetime.fromtimestamp(s, tz=datetime.timezone.utc)
+        return dt.isoformat()
+    except ValueError as e:
+        logging.error('bad timestamp', exc_info=e)
+        # print(e)
+        return None
+
+
+sio = socketio.AsyncClient()
+
+
+@sio.event
+async def connect():
+    logging.info('connected')
+
+
+@sio.on('mqtt')
+async def mqtt(data):
+    global most_recent_calls
+    global missing_destinations
+    global write_files
+    calls_to_log = []
+    raw_data = json.loads(data['payload'])
+    try:
+        if raw_data.get('Event', '').strip() == 'Session-Stop':
+            destination_id = raw_data.get('DestinationID', -1)
+            context_id = raw_data.get('ContextID', -1)
+            if destination_id in INTERESTING_TALKGROUPS or context_id in interesting_peer_ids:
+                #  print('len(last_ten)={}'.format(len(last_ten)))
+                if raw_data in most_recent_calls:
+                    logging.debug('duplicate!' + str(raw_data))
+                else:
+                    if destination_id not in talk_group_number_to_name_dict:
+                        if destination_id not in missing_destinations:
+                            missing_destinations.append(destination_id)
+                            logging.warning('cannot lookup destination id {}'.format(destination_id))
+
+                    most_recent_calls.insert(0, raw_data)
+                    if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
+                        most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
+                    start = safe_int(raw_data.get('Start', '0'))
+                    end = safe_int(raw_data.get('Stop', '0'))
+                    elapsed = end - start
+                    destination_name = raw_data.get('DestinationName', '').strip()
+
+                    if destination_name not in talk_group_alias_to_number_dict['Brandmeister']:
+                        old_destination_name = destination_name
+                        destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id,
+                                                                                                      '({})'.format(
+                                                                                                          destination_id))
+                        # destination_name = talk_group_number_to_name_dict.get(destination_id,
+                        #                                                      '({})'.format(destination_id))
+                        logging.warning(
+                            'could not find destination name "{}", will use "{}".'.format(old_destination_name,
+                                                                                          destination_name))
+
+                    destination_name = destination_name.replace(' - 10 Minute Limit', '')
+                    destination_name = tg_remap.get(destination_name, destination_name)
+                    slot = raw_data.get('Slot', -1)
+                    if slot == -1:
+                        print(raw_data)
+                    if len(destination_name) == 0 or destination_name == 'Cluster':
+                        destination_name = str(destination_id)
+                    source_id = raw_data.get('SourceID', 0)
+                    source_call = raw_data.get('SourceCall', '').strip()
+                    source_name = raw_data.get('SourceName', '').strip()
+                    link_call = raw_data.get('LinkCall', '').strip()
+                    if link_call == '':
+                        if context_id == source_id:
+                            link_call = '({})'.format(source_call)
+
+                    link_name = raw_data.get('LinkName', '').strip()
+                    total_count = safe_int(raw_data.get('TotalCount', '0'))
+
+                    if elapsed < 1 and total_count < 5:
+                        logging.debug(
+                            'Kerchunk! start: {} end:{} elapsed: {} total_count: {} destination: {} sourcecall: {}'.format(
+                                start, end, elapsed, total_count, destination_name, source_call))
+
+                    call = {
+                        'timestamp': convert_brandmeister_timestamp(end),
+                        'site': link_name,  # no.
+                        'dest': destination_name,
+                        'dest_id': destination_id,  # NEW NEW NEW
+                        'slot': slot,  # NEW NEW NEW
+                        'peer_id': context_id,
+                        'peer_callsign': link_call,
+                        'peer_name': link_name,
+                        'radio_id': source_id,
+                        'radio_callsign': source_call,
+                        'radio_username': source_name,
+                        'duration': elapsed,
+                        'sourcepeer': '{} -- {}'.format(link_call, context_id)
+                    }
+
+                    line = '{},{},{},{},{},{},{},{},{},{},{},{},{}'.format(convert_brandmeister_timestamp(end),
+                                                                           link_name,
+                                                                           slot,  # NEW NEW NEW
+                                                                           destination_name,
+                                                                           destination_id,  # NEW NEW NEW
+                                                                           context_id,
+                                                                           link_call,
+                                                                           link_name,
+                                                                           source_id,
+                                                                           source_call,
+                                                                           source_name,
+                                                                           elapsed,
+                                                                           '{} -- {}'.format(link_call, context_id),
+                                                                           )
+                    # test the call here, do not want to log traffic from a C-Bridge
+                    print(f'link_name = {link_name}')
+                    calls_to_log.append(call)
+                    if not write_files:
+                        logging.info(line)
+                        if len(link_call) == 0 or len(link_name) == 0:
+                            logging.warning('no link data')
+                            logging.warning(str(raw_data))
+
+    except KeyError as ke:
+        logging.error('KeyError: ' + str(ke))
+        logging.error(str(raw_data))
+
+    if len(calls_to_log) > 0:
+        append_logged_calls(LOGGED_CALLS_FILENAME, calls_to_log)
+
+
+@sio.event
+async def disconnect():
+    logging.info('disconnected')
+
+
+# CBridge stuff
+month_name_to_number_dict = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+                             'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
+
+
+def convert_cbridge_timestamp(s):
+    try:
+        ss = s.split(' ')
+        if len(ss) < 3:
+            print(f'oopsy. s={s}')
+            return None
+        tm = ss[0][0:8]
+        year = datetime.datetime.now().year
+        month = month_name_to_number_dict.get(ss[1][:3].lower(), -1)
+        day = safe_int(ss[2])
+        zone = '-0000'
+        dt = '{:4d}-{:02d}-{:02d}T{}{}'.format(year, month, day, tm, zone)
+        # return dt
+        # dy = datetime.datetime.fromisoformat(dt)
+        dy = datetime.datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S%z')
+        dx = dy.astimezone(tz=datetime.timezone.utc)
+        return dx.isoformat()
+
+    except ValueError as e:
+        print(e)
+        return None
+
+
+def parse_call_data(call):
+    # print(call)
+    call['timestamp'] = convert_cbridge_timestamp(call['time'])
+    filtered_dest = filter_talk_group_name(call['dest'])
+    call['dest'] = filtered_dest
+    call['radio_callsign'] = ''
+    call['radio_username'] = ''
+    call['radio_id'] = 0
+    stuff = call['sourceradio'].split('--')
+    if len(stuff) == 1:
+        call['radio_id'] = safe_int(stuff[0].strip())
+        call['radio_callsign'] = 'N/A'
+        call['radio_username'] = 'N/A'
+    elif len(stuff) == 2:
+        call['radio_id'] = safe_int(stuff[1].strip())
+        more_stuff = stuff[0].split('-')
+        l = len(more_stuff)
+        if l == 3:
+            call['radio_callsign'] = more_stuff[0].strip()
+            call['radio_username'] = more_stuff[1].strip()
+        elif l == 4:
+            call['radio_callsign'] = more_stuff[0].strip()
+            call['radio_username'] = more_stuff[1].strip()
+    elif len(stuff) == 3:
+        call['radio_id'] = safe_int(stuff[2].strip())
+        more_stuff = stuff[0].split('-')
+        if len(more_stuff) == 3:
+            call['radio_callsign'] = more_stuff[0].strip()
+            call['radio_username'] = more_stuff[1].strip()
+    elif len(stuff) == 4:
+        call['radio_id'] = safe_int(stuff[3].strip())
+        more_stuff = stuff[0].split('-')
+        if len(more_stuff) == 3:
+            call['radio_callsign'] = more_stuff[0].strip()
+            call['radio_username'] = more_stuff[1].strip()
+    else:
+        print('=== len(stuff)=%d ===' % len(stuff))
+        print(stuff)
+        call['radio_id'] = safe_int(stuff[3].strip())
+        more_stuff = stuff[0].split('-')
+        if len(more_stuff) == 3:
+            call['radio_callsign'] = more_stuff[0].strip()
+            call['radio_username'] = more_stuff[1].strip()
+        print(call)
+
+    if False:
+        logging.debug(
+            'sourceradio stuff: {}, radio_id: {}, radio_callsign: {}, radio_username: {}'.format(str(stuff),
+                                                                                                 call['radio_id'],
+                                                                                                 call['radio_callsign'],
+                                                                                                 call[
+                                                                                                     'radio_username']))
+
+    stuff = call['sourcepeer'].split('--')
+    # logging.debug('sourcepeer stuff: ' + str(stuff))
+    if len(stuff) == 1:
+        more_stuff = stuff[0].split('-')
+        # logging.debug('more_stuff: {} '.format(len(more_stuff)) + str(more_stuff))
+        if len(more_stuff) == 1:
+            call['peer_id'] = safe_int(more_stuff[0].strip())
+            call['peer_callsign'] = 'n/a'
+            call['peer_name'] = 'n/a'
+        elif len(more_stuff) == 2:
+            call['peer_id'] = 'n/a'
+            callsign = more_stuff[0].strip()
+            if callsign == 'BM':  # hack hack
+                call['peer_callsign'] = stuff[0]
+            else:
+                call['peer_callsign'] = callsign
+            call['peer_name'] = more_stuff[1].strip()
+            if 'BM-' in call['peer_callsign']:
+                call['peer_id'] = 0 - safe_int(call['peer_name'])  # non-cbridge peer ID
+            if call['peer_name'] == 'HotSpot':
+                even_more_stuff = call['site'].split('-')
+                # logging.debug('even_more_stuff: {} : '.format(len(even_more_stuff)) + str(even_more_stuff))
+                if len(even_more_stuff) == 3:
+                    call['peer_id'] = 0 - safe_int(even_more_stuff[2])
+        elif len(more_stuff) == 3:
+            call['peer_id'] = more_stuff[2].strip()
+            call['peer_callsign'] = more_stuff[0].strip()
+            call['peer_name'] = more_stuff[1].strip()
+        else:
+            call['peer_id'] = safe_int(stuff[0].strip())
+            call['peer_callsign'] = 'n/a'
+            call['peer_name'] = 'n/a'
+    elif len(stuff) == 2:
+        peer_id = safe_int(stuff[1].strip())
+        call['peer_id'] = peer_id
+        more_stuff = stuff[0].split('-')
+        if len(more_stuff) == 1:
+            peer_name = more_stuff[0].strip()
+            if peer_name == 'BM':
+                call['peer_name'] = 'Brandmeister'
+                if 393100 <= peer_id <= 393109:
+                    call['peer_callsign'] = 'BM{}'.format(peer_id - 390000)
+                else:
+                    call['peer_callsign'] = 'n/a'
+            else:
+                call['peer_callsign'] = 'n/a'
+                call['peer_name'] = more_stuff[0].strip()
+        elif len(more_stuff) == 2:
+            call['peer_callsign'] = more_stuff[0].strip()
+            call['peer_name'] = more_stuff[1].strip()
+        elif len(more_stuff) == 3:
+            call['peer_callsign'] = more_stuff[0].strip().split(' ')[0]
+            call['peer_name'] = more_stuff[1].strip() + more_stuff[2].strip()
+        else:
+            print('=== len(more_stuff)=%d ===' % len(more_stuff))
+            print(more_stuff)
+            call['peer_callsign'] = 'unknown'
+            call['peer_name'] = 'unknown'
+    else:
+        call['peer_id'] = safe_int(call['sourcepeer'])
+    if False:
+        logging.debug('sourcepeer stuff: {} peer_id: {}, peer_callsign: {}, peer_name: {}'.format(str(stuff),
+                                                                                                  call['peer_id'],
+                                                                                                  call['peer_callsign'],
+                                                                                                  call['peer_name']))
+    # if call['peer_id'] == 'n/a':
+    #    logging.warning(str(call))
+    # print(call)
+
+
+async def cbridge_poller():
+    # DATA_URL = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
+    DATA_URL = 'https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+    data_labels = ['time', 'duration', 'sourcepeer', 'sourceradio', 'dest', 'rssi', 'site', 'lossrate']
+    update_number = 0
+    headers = {'User-Agent': 'N1KDO C-Bridge scraper, contact n1kdo to make it stop.'}
+
+    while run_cbridge_poller:
+        calls = []
+        if update_number > 0:
+            url = f'{DATA_URL}?param=ajaxcallwatch&updatenumber={update_number}'
+        else:
+            url = f'{DATA_URL}?param=ajaxcallwatch'
+
+        logging.info(f'polling {url}')
+
+        async with aiohttp.ClientSession(headers=headers) as session:
+            async with session.get(url) as response:
+                payload = await response.text('ISO-8859-1')
+                parts = payload.split('\t')
+                # logging.debug(f'got {len(parts)} rows of data...')
+                try:
+                    for line in parts:
+                        call = {}
+                        line = line.replace('&nbsp;', ' ')
+                        line = line.replace(',', '_')
+                        sections = line.split('\010')
+                        if len(sections) == 2:
+                            # logging.debug(f'sections[1]={sections[1]}')
+                            update_number = safe_int(sections[1])
+
+                        sections = sections[0].split('\013')
+                        if len(sections) != len(data_labels):
+                            print('something is not right!')
+                            print(sections)
+                            print('---')
+                            continue
+                        if sections[0].strip() == '':
+                            # logging.debug(f'empty row: {sections}')
+                            continue
+                        for i in range(0, len(data_labels)):
+                            if data_labels[i] == 'duration':
+                                try:
+                                    d = float(sections[i])
+                                except Exception as e:
+                                    print(e)
+                                    print(sections)
+                                    d = 0.0
+                                call['duration'] = d
+                            else:
+                                call[data_labels[i]] = sections[i]
+                        parse_call_data(call)
+                        site = call.get('site') or 'missing'
+                        if site[0:6] not in ['BM-US-', 'US-BM-']:
+                            dest = call.get('dest') or 'missing'
+                            peer_id = call.get('peer_id') or -1
+                            #print(f'site={site}, fdest={fdest}, peer_id={peer_id}')
+                            #print(f'fdest matches {fdest in interesting_talk_group_names}')
+                            #print(f'peer_id matches {peer_id in interesting_peer_ids}')
+                            if dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
+                                #print(f'call: {call}')
+                                calls.append(call)
+
+                except RuntimeError as ex:  # Exception as ex:
+                    print()
+                    print('...problem')
+                    print(line)
+                    e = sys.exc_info()[0]
+                    print('Problem with web query:')
+                    print(e)
+                    print(ex)
+                    raise ex
+        logging.info(f'done polling, collected {len(calls)} calls')
+        append_logged_calls(LOGGED_CALLS_FILENAME, calls)
+        await asyncio.sleep(30)
+
+
+async def main():
+    global run_cbridge_poller
+    global write_files
+    global most_recent_calls
+    global missing_destinations
+    logging.info('starting')
+    write_files = True
+    most_recent_calls = []
+    missing_destinations = []
+    if len(sys.argv) > 1:
+        if sys.argv[1].lower() == 'test':
+            INTERESTING_TALKGROUPS.extend([310, 311, 312, 313, 314, 315, 316, 317, 318, 319])
+            # INTERESTING_TALKGROUPS.append(3100)  # lots of traffic
+            interesting_talk_group_names.extend(less_interesting_talk_group_names)
+            write_files = False
+            logging.info('NOT writing files -- debug mode.')
+            logging.basicConfig(level=logging.DEBUG)
+            logging.root.level = logging.DEBUG
+
+    try:
+        poller = asyncio.create_task(cbridge_poller())
+
+        # await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
+        # await sio.wait()
+    except KeyboardInterrupt:
+        run_cbridge_poller = False
+
+    await poller
+    # await sio.close()
+
+    print('done')
+
+
+if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.WARNING,
+                        stream=sys.stdout)
+    logging.Formatter.converter = time.gmtime
+    asyncio.run(main())

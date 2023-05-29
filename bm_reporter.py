@@ -8,8 +8,7 @@ import time
 
 from common import interesting_talk_group_names, talk_group_name_to_number_mapping, talk_group_number_to_data_mapping, \
     remap_map, site_name_to_network_map, talk_group_network_number_to_name_dict
-# from common import repeaters
-# from common import interesting_peer_ids
+
 from common import filter_talk_group_name
 
 import charts
@@ -366,34 +365,36 @@ TABLE, TH, TD {
         htmlfile.write('<table class="peers-table">\n')
         htmlfile.write('<tr class="header-row"><th>Peer ID</th><th>Callsign</th><th>Peer Name</th><th>Count</th><th>Elapsed</th><th>Last Heard UTC</th></tr>\n')
         for peer in peers_list:
-            htmlfile.write('<tr class="peer-row">')
             peer_id = peer['peer_id']
-            if peer_id > 0:
-                peer_str = '{:6d}'.format(peer_id)
-            else:
-                peer_str = peer.get('peer_name') or 'unknown'
-            htmlfile.write('<td class="right">{}</td>'.format(peer_str))
-            htmlfile.write('<td>' + peer['peer_callsign'] + '</td>')
-            htmlfile.write('<td>' + peer['peer_name'] + '</td>')
-            htmlfile.write('<td class="right">' + str(peer['count']) + '</td>')
-            htmlfile.write('<td>' + convert_elapsed(peer['total_elapsed']) + '</td>')
-            htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(peer['last_heard']))
-            htmlfile.write('</tr>\n')
-            peer_talk_groups = peer['talk_groups']
-            all_talk_groups = list(peer_talk_groups.values())
-            sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
-            # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
-            for talk_group in sorted_talk_groups:
-                # print(talk_group['talk_group'])
-                if talk_group['talk_group'].lower().startswith('unknown'):
-                    continue
-                htmlfile.write('<tr class="talkgroup-row">')
-                htmlfile.write('<td colspan="2" class="right">{:6d}</td>'.format(talk_group['talk_group_number']))
-                htmlfile.write('<td>{:s}</td>'.format(talk_group['talk_group']))
-                htmlfile.write('<td class="right">{:5d}</td>'.format(talk_group['count']))
-                htmlfile.write('<td>' + convert_elapsed(talk_group['total_elapsed']) + '</td>')
-                htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(talk_group['last_heard']))
+            peer_id_int = safe_int(peer_id)
+            if 0 < peer_id_int < 1000000:
+                htmlfile.write('<tr class="peer-row">')
+                if peer_id > 0:
+                    peer_str = '{:6d}'.format(peer_id)
+                else:
+                    peer_str = peer.get('peer_name') or 'unknown'
+                htmlfile.write('<td class="right">{}</td>'.format(peer_str))
+                htmlfile.write('<td>' + peer['peer_callsign'] + '</td>')
+                htmlfile.write('<td>' + peer['peer_name'] + '</td>')
+                htmlfile.write('<td class="right">' + str(peer['count']) + '</td>')
+                htmlfile.write('<td>' + convert_elapsed(peer['total_elapsed']) + '</td>')
+                htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(peer['last_heard']))
                 htmlfile.write('</tr>\n')
+                peer_talk_groups = peer['talk_groups']
+                all_talk_groups = list(peer_talk_groups.values())
+                sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['total_elapsed'], reverse=True)
+                # sorted_talk_groups = sorted(all_talk_groups, key=lambda tg: tg['talk_group_number'])
+                for talk_group in sorted_talk_groups:
+                    # print(talk_group['talk_group'])
+                    if talk_group['talk_group'].lower().startswith('unknown'):
+                        continue
+                    htmlfile.write('<tr class="talkgroup-row">')
+                    htmlfile.write('<td colspan="2" class="right">{:6d}</td>'.format(talk_group['talk_group_number']))
+                    htmlfile.write('<td>{:s}</td>'.format(talk_group['talk_group']))
+                    htmlfile.write('<td class="right">{:5d}</td>'.format(talk_group['count']))
+                    htmlfile.write('<td>' + convert_elapsed(talk_group['total_elapsed']) + '</td>')
+                    htmlfile.write('<td>{:%Y-%m-%d %H:%M}</td>'.format(talk_group['last_heard']))
+                    htmlfile.write('</tr>\n')
         htmlfile.write('</table>\n')
         htmlfile.write('</div>\n')
         htmlfile.write('</body></html>\n')

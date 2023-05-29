@@ -5,14 +5,34 @@ import re
 # all traffic to these talk groups will be logged.
 interesting_talk_group_names = [
     'ATL Metro',
+    'Atlanta Metro',
     #  'Bridge',
     'GAstate',
+    'Georgia',
     'GA ARES',
+    'Georgia ARES',
     'GA North',
+    'North Georgia',
     'GA Skywarn',
+    'Georgia Skywarn'
     "SEreg",
     #"Vdalia Net",
     #"Vidalia Net",
+]
+
+less_interesting_talk_group_names = [  # for debugging with more volume
+    'TAC 310',
+    'TAC 311',
+    'TAC 312',
+    'TAC 313',
+    'TAC 314',
+    'TAC 315',
+    'TAC 316',
+    'TAC 317',
+    'TAC 318',
+    'TAC 319',
+    'BM USA Bridge',
+    'BM Worldwide',
 ]
 
 # all traffic from the interesting peers will be logged.  Best to not turn on brandmeister.
@@ -82,6 +102,10 @@ def filter_talk_group_name(tg_name):
     # strip out number-number
     s = re.sub(r' \d+-\d+', '', s)
     # print("%s | %s" % (s, old_s))
+    # remove trailing TG <number>
+    i = s.find(' TG ')
+    if i > 0:
+        s = s[0:i]
     s = s.strip()
     if len(s) < 1:
         logging.warning('talkgroup name filter problem: {} -> {}'.format(tg_name, s))
