@@ -5,7 +5,7 @@
     "input": "446.8125",
     "output": "441.8125",
     "color_code": "1",
-    "location": "Stone Mountain GA",
+    "location": "Stone Mountain, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
       {
@@ -201,7 +201,7 @@
     "input": "146.130",
     "output": "146.730",
     "color_code": "1",
-    "location": "Sweat Mountain, Marietta GA",
+    "location": "Sweat Mountain, Marietta, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
     "talk_groups": [
@@ -223,7 +223,7 @@
     "input": "449.8250",
     "output": "444.8250",
     "color_code": "10",
-    "location": "Atlanta GA",
+    "location": "Atlanta, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
       {
@@ -429,7 +429,7 @@
     "input": "447.8125",
     "output": "442.8125",
     "color_code": "3",
-    "location": "Savannah GA",
+    "location": "Savannah, Georgia",
     "network": "DMR-SE",
     "notes": "",
     "talk_groups": [
@@ -571,7 +571,7 @@
     "input": "449.9875",
     "output": "444.9875",
     "color_code": "1",
-    "location": "Atlanta GA",
+    "location": "Vidalia, Georgia",
     "network": "DMR-SE",
     "talk_groups": [
       {
@@ -612,7 +612,7 @@
     "input": "448.275",
     "output": "443.275",
     "color_code": "7",
-    "location": "KSU Campus Marietta GA",
+    "location": "KSU Campus, Marietta, Georgia",
     "network": "K4USD",
     "talk_groups": [
       {
@@ -638,7 +638,7 @@
     "input": "449.625",
     "output": "444.625",
     "color_code": "3",
-    "location": "Kingsland GA",
+    "location": "Kingsland, Georgia",
     "network": "DMR-SE",
     "notes": "",
     "talk_groups": [
@@ -690,148 +690,12 @@
     ]
   },
   {
-    "peer_id": "311313",
-    "call": "W8RED",
-    "input": "447.6000",
-    "output": "442.6000",
-    "color_code": "3",
-    "location": "Snellville, GA",
-    "network": "K4USD",
-    "talk_groups": [
-      {
-        "talkgroup": 1,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 2,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 9,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 10,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 13,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 91,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 93,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 133,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 310,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 311,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 312,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 315,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 317,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 319,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 1776,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3100,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3113,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3174,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8951,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 9998,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31012,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31665,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 314710,
-        "slot": 2,
-        "mode": 1
-      }
-    ]
-  },
-  {
     "peer_id": "311314",
     "call": "KD4KHO",
     "input": "439.400",
     "output": "434.400",
     "color_code": "3",
-    "location": "Canton GA",
+    "location": "Canton, Georgia",
     "network": "Brandmeister",
     "notes": "limited coverage",
     "talk_groups": [
@@ -863,7 +727,7 @@
     "input": "447.1125",
     "output": "442.1125",
     "color_code": "7",
-    "location": "Kingsland GA",
+    "location": "Kingsland, Georgia",
     "network": "Brandmeister",
     "notes": "",
     "talk_groups": [
@@ -895,7 +759,7 @@
     "input": "448.7375",
     "output": "443.7375",
     "color_code": "3",
-    "location": "Between GA",
+    "location": "Between, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
       {
@@ -1056,7 +920,7 @@
     "input": "449.9500",
     "output": "444.9500",
     "color_code": "1",
-    "location": "Gainesville GA",
+    "location": "Wauka Mountain, Clermont, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
       {
@@ -1087,7 +951,7 @@
     "input": "449.800",
     "output": "444.800",
     "color_code": "2",
-    "location": "Covington",
+    "location": "Covington, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot  1 or 2",
     "talk_groups": [
@@ -1109,7 +973,7 @@
     "input": "447.9750",
     "output": "442.9750",
     "color_code": "1",
-    "location": "Sweat Mountain GA",
+    "location": "Sweat Mountain, Marietta, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
     "talk_groups": [
@@ -1136,7 +1000,7 @@
     "input": "449.775",
     "output": "444.775",
     "color_code": "1",
-    "location": "Sweat Mountain, Marietta GA",
+    "location": "Sweat Mountain, Marietta, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
     "talk_groups": [
@@ -1158,7 +1022,7 @@
     "input": "449.050",
     "output": "444.050",
     "color_code": "1",
-    "location": "Pine Log Mountain, Waleska, GA",
+    "location": "Pine Log Mountain, Waleska, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
     "talk_groups": [
@@ -1230,7 +1094,7 @@
     "input": "449.025",
     "output": "444.025",
     "color_code": "3",
-    "location": "Waycross, GA",
+    "location": "Waycross, Georgia",
     "network": "DMR-SE",
     "notes": "",
     "talk_groups": [
@@ -1287,7 +1151,7 @@
     "input": "447.1125",
     "output": "442.1125",
     "color_code": "1",
-    "location": "Sawnee Mountain GA",
+    "location": "Sawnee Mountain, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
       {
@@ -1538,7 +1402,7 @@
     "input": "447.2375",
     "output": "442.2375",
     "color_code": "1",
-    "location": "Mt. Alto Rome GA",
+    "location": "Mt. Alto Rome, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
       {
@@ -1564,7 +1428,7 @@
     "input": "449.7875",
     "output": "444.7875",
     "color_code": "1",
-    "location": "Dublin GA",
+    "location": "Dublin, Georgia",
     "network": "DMR-SE",
     "talk_groups": [
       {
@@ -1595,7 +1459,7 @@
     "input": "445.6625",
     "output": "440.6625",
     "color_code": "5",
-    "location": "Athens GA",
+    "location": "Athens, Georgia",
     "network": "Brandmeister",
     "notes": "This is a full-time DMR repeater connected to the BrandMeister network. Both time slots can access any talk group connected to that network.",
     "talk_groups": [
@@ -1652,7 +1516,7 @@
     "input": "448.2",
     "output": "443.2",
     "color_code": "1",
-    "location": "Livonia GA",
+    "location": "Lavonia, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
     "talk_groups": [
@@ -1694,7 +1558,7 @@
     "input": "448.075",
     "output": "443.075",
     "color_code": "7",
-    "location": "Macon GA",
+    "location": "Macon, Georgia",
     "network": "Brandmeister",
     "notes": "",
     "talk_groups": [
@@ -1716,7 +1580,7 @@
     "input": "445.575",
     "output": "440.575",
     "color_code": "1",
-    "location": "Kathleen GA",
+    "location": "Kathleen, Georgia",
     "network": "Brandmeister",
     "notes": "",
     "talk_groups": [
