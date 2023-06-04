@@ -558,7 +558,9 @@ async def main():
         repeaters_by_id[repeater['peer_id']] = repeater
 
     try:
-        poller = asyncio.create_task(cbridge_poller())
+        aloop = asyncio.get_event_loop()
+        poller = aloop.create_task(cbridge_poller())
+        #poller = asyncio.create_task(cbridge_poller())
 
         await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
         await sio.wait()
@@ -577,4 +579,6 @@ if __name__ == '__main__':
                         level=logging.WARNING,
                         stream=sys.stderr)
     logging.Formatter.converter = time.gmtime
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+    # asyncio.run(main())

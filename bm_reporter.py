@@ -466,10 +466,10 @@ def update_usage(a_dict, call):
                 talk_group_number = 0
                 key = talk_group_name + ' - ' + network_name
                 if key not in unknown_talkgroups:
-                    logging.warning('unknown talk group {} on network {} for site {}'.format(
-                                    talk_group_name,
-                                    network_name,
-                                    call.get('site')))
+                    # logging.warning('unknown talk group {} on network {} for site {}'.format(
+                    #                talk_group_name,
+                    #                network_name,
+                    #                call.get('site')))
                     unknown_talkgroups.append(key)
         else:
             talk_group_number = talk_group_data['tg']
