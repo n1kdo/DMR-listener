@@ -9,8 +9,11 @@ import sys
 import logging
 import time
 
+import common
 from common import filter_talk_group_name
 from common import interesting_peer_ids
+from common import interesting_talk_groups
+from common import less_interesting_talk_groups
 from common import interesting_talk_group_names
 from common import less_interesting_talk_group_names
 from common import talk_group_alias_to_number_dict
@@ -19,13 +22,16 @@ from common import talk_group_network_number_to_name_dict
 
 URL = 'https://api.brandmeister.network'
 SIO_PATH = '/lh/socket.io'
-INTERESTING_TALKGROUPS = [3113, 31130, 31131, 31132, 31133, 31134, 31135, 31136, 31137, 31138, 31139, 311340, 3113090, ]
+
 LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'
 DUPLICATES_LIST_SIZE = 50
 
 write_files = True
 most_recent_calls = []  # this is used to help prevent duplicate records.
 missing_destinations = []
+
+repeaters = []
+repeaters_by_id = {}
 
 run_cbridge_poller = True
 
@@ -45,40 +51,106 @@ tg_remap = {
 }
 
 
+def validate_call_data(call):
+    # print(call)
+    dest_id = call.get('dest_id')
+    call_talk_group_name = call.get('filtered_dest') or call.get('dest') or '!no_dest!'
+    if call_talk_group_name[0] == '(' and call_talk_group_name[-1] == ')':
+        #logging.warning(f'Not a talk group name: {call_talk_group_name}, dest_id: {call.get("dest_id")}')
+        return False
+    if 'Unknown Ipsc' in call_talk_group_name:
+        return False
+    site = call.get('site') or '!no site!'
+    network_name = common.site_name_to_network_map.get(site)
+    if network_name is None:
+        logging.warning(f'No network for site {site} {call}')
+        return False
+    network_talk_groups = common.talk_groups.get(network_name)
+    if network_talk_groups is None:
+        logging.warning(f'No talk groups for network {network_name} {call}')
+        return False
+    found_talk_group = None
+    for talk_group in network_talk_groups:
+        if talk_group.get('name') == call_talk_group_name:
+            found_talk_group = talk_group
+            break
+    if found_talk_group is None:
+        logging.warning(f'Cannot find talk group {call_talk_group_name} in network {network_name} {call}')
+        return False
+
+    if dest_id is None:
+        dest_id = found_talk_group.get('tg')
+        call['dest_id'] = dest_id
+        logging.info(f'Added dest_id {dest_id}')
+    else:
+        if found_talk_group.get('tg') != dest_id:
+            logging.warning(f'Confused! dest_id {dest_id} does not match found tg: {found_talk_group} in call {call}')
+
+    if dest_id is not None:
+        peer_id = call.get('peer_id')
+        if peer_id is not None:
+            repeater = repeaters_by_id.get(peer_id)
+            if repeater is not None:
+                print(f'found repeater {repeater}')
+                repeater_talk_groups = repeater.get('talk_groups')
+                if repeater_talk_groups is not None:
+                    found_talk_group = None
+                    for talk_group in repeater_talk_groups:
+                        if dest_id == talk_group.get('talkgroup'):
+                            print(f'found matching talk group {talk_group}')
+                            found_talk_group = talk_group
+                    if found_talk_group is not None:
+                        found_slot = found_talk_group.get('slot')
+                        slot = call.get('slot')
+                        print(f'found_slot {found_slot}, slot {slot}')
+
+    return True
+
+
 def append_logged_calls(filename, calls):
+    fmt = '{},{},{},{},{},{},{},{},{},{},{},{},{}'
     if calls is not None and len(calls) > 0:
         if write_files:
             with open(filename, 'a') as outfile:
                 for call in calls:
-                    line = '{},{},{},{},{},{},{},{},{},{},{}'.format(call['timestamp'],
-                                                                     call['site'],
-                                                                     call['dest'],
-                                                                     call['peer_id'],
-                                                                     call['peer_callsign'],
-                                                                     call['peer_name'],
-                                                                     call['radio_id'],
-                                                                     call['radio_callsign'],
-                                                                     call['radio_username'],
-                                                                     call['duration'],
-                                                                     call['sourcepeer'],
-                                                                     )
+                    line = fmt.format(call['timestamp'],
+                                      call['site'],
+                                      call['dest'],
+                                      call['peer_id'],
+                                      call['peer_callsign'],
+                                      call['peer_name'],
+                                      call['radio_id'],
+                                      call['radio_callsign'],
+                                      call['radio_username'],
+                                      call['duration'],
+                                      call['sourcepeer'],
+                                      call.get('dest_id') or 0,
+                                      call.get('slot') or 0,
+                                      )
                     outfile.write(line + '\n')
                     print(line)
         else:
             for call in calls:
-                line = '{},{},{},{},{},{},{},{},{},{},{}'.format(call['timestamp'],
-                                                                 call['site'],
-                                                                 call['dest'],
-                                                                 call['peer_id'],
-                                                                 call['peer_callsign'],
-                                                                 call['peer_name'],
-                                                                 call['radio_id'],
-                                                                 call['radio_callsign'],
-                                                                 call['radio_username'],
-                                                                 call['duration'],
-                                                                 call['sourcepeer'],
-                                                                 )
-                print(line)
+                s = str(call)[1:-1]  # the curlies
+                s = s.replace(": ", ":")
+                s = s.replace(', ', ' ')
+                s = s.replace("'", "")
+                print(s)
+                line = fmt.format(call['timestamp'],
+                                  call['site'],
+                                  call['dest'],
+                                  call['peer_id'],
+                                  call['peer_callsign'],
+                                  call['peer_name'],
+                                  call['radio_id'],
+                                  call['radio_callsign'],
+                                  call['radio_username'],
+                                  call['duration'],
+                                  call['sourcepeer'],
+                                  call.get('dest_id') or 0,
+                                  call.get('slot') or 0,
+                                  )
+                print(f'not saved: {line}')
 
 
 def safe_int(s, default=-1):
@@ -119,37 +191,37 @@ async def mqtt(data):
         if raw_data.get('Event', '').strip() == 'Session-Stop':
             destination_id = raw_data.get('DestinationID', -1)
             context_id = raw_data.get('ContextID', -1)
-            if destination_id in INTERESTING_TALKGROUPS or context_id in interesting_peer_ids:
+            if destination_id in common.interesting_talk_groups or context_id in interesting_peer_ids:
                 #  print('len(last_ten)={}'.format(len(last_ten)))
                 if raw_data in most_recent_calls:
                     logging.debug('duplicate!' + str(raw_data))
                 else:
-                    if destination_id not in talk_group_number_to_name_dict:
+                    if destination_id < 999999 and destination_id not in talk_group_number_to_name_dict:
                         if destination_id not in missing_destinations:
                             missing_destinations.append(destination_id)
-                            logging.warning('cannot lookup destination id {}'.format(destination_id))
+                            logging.warning(f'Cannot lookup destination id {destination_id}')
 
                     most_recent_calls.insert(0, raw_data)
                     if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
                         most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
                     start = safe_int(raw_data.get('Start', '0'))
                     end = safe_int(raw_data.get('Stop', '0'))
-                    elapsed = end - start
-                    destination_name = raw_data.get('DestinationName', '').strip()
+                    elapsed = float(end - start)
+                    total_count = raw_data.get("TotalCount") or 0
+                    #  guess_count = int(elapsed * 16.6667)
+                    duration = round(total_count * 0.06, 1)  # guesstimate
+                    #  print(f'elapsed={elapsed}, total_count={total_count}, guess_count={guess_count}, duration={duration}')
+                    if duration != 0:
+                        elapsed = duration
 
+                    destination_name = raw_data.get('DestinationName', '!missing!').strip()
                     if destination_name not in talk_group_alias_to_number_dict['Brandmeister']:
                         old_destination_name = destination_name
-                        destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id,
-                                                                                                      '({})'.format(
-                                                                                                          destination_id))
-                        # destination_name = talk_group_number_to_name_dict.get(destination_id,
-                        #                                                      '({})'.format(destination_id))
-                        logging.warning(
-                            'could not find destination name "{}", will use "{}".'.format(old_destination_name,
-                                                                                          destination_name))
+                        destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id, f'({destination_id})')
+                        logging.info(f'Could not find destination name "{old_destination_name}", will use "{destination_name}".')
 
-                    destination_name = destination_name.replace(' - 10 Minute Limit', '')
-                    destination_name = tg_remap.get(destination_name, destination_name)
+                    #destination_name = destination_name.replace(' - 10 Minute Limit', '')
+                    #destination_name = tg_remap.get(destination_name, destination_name)
                     slot = raw_data.get('Slot', -1)
                     if slot == -1:
                         print(raw_data)
@@ -172,8 +244,8 @@ async def mqtt(data):
                                 start, end, elapsed, total_count, destination_name, source_call))
 
                     call = {
-                        'timestamp': convert_brandmeister_timestamp(end),
-                        'site': link_name,  # no.
+                        'timestamp': convert_brandmeister_timestamp(start),
+                        'site': 'Brandmeister',  # because this is all of brandmeister here...
                         'dest': destination_name,
                         'dest_id': destination_id,  # NEW NEW NEW
                         'slot': slot,  # NEW NEW NEW
@@ -201,14 +273,15 @@ async def mqtt(data):
                                                                            elapsed,
                                                                            '{} -- {}'.format(link_call, context_id),
                                                                            )
+                    if len(link_call) == 0 or len(link_name) == 0:
+                        logging.warning('no link data')
+                        logging.warning(str(raw_data))
                     # test the call here, do not want to log traffic from a C-Bridge
-                    print(f'link_name = {link_name}')
-                    calls_to_log.append(call)
-                    if not write_files:
-                        logging.info(line)
-                        if len(link_call) == 0 or len(link_name) == 0:
-                            logging.warning('no link data')
-                            logging.warning(str(raw_data))
+                    if link_name == 'CBridge CC-CC Link' and context_id == 111311:
+                        logging.warning(f'Not logging CBridge traffic for call: {call} from peer {context_id}')
+                    else:
+                        validate_call_data(call)
+                        calls_to_log.append(call)
 
     except KeyError as ke:
         logging.error('KeyError: ' + str(ke))
@@ -251,11 +324,11 @@ def convert_cbridge_timestamp(s):
         return None
 
 
-def parse_call_data(call):
+def parse_cbridge_call_data(call):
     # print(call)
     call['timestamp'] = convert_cbridge_timestamp(call['time'])
     filtered_dest = filter_talk_group_name(call['dest'])
-    call['dest'] = filtered_dest
+    call['filtered_dest'] = filtered_dest
     call['radio_callsign'] = ''
     call['radio_username'] = ''
     call['radio_id'] = 0
@@ -375,8 +448,10 @@ def parse_call_data(call):
 
 
 async def cbridge_poller():
-    # DATA_URL = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
-    DATA_URL = 'https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+    # data_url = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
+    data_url = 'https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+    site = 'Ham Digital'
+
     data_labels = ['time', 'duration', 'sourcepeer', 'sourceradio', 'dest', 'rssi', 'site', 'lossrate']
     update_number = 0
     headers = {'User-Agent': 'N1KDO C-Bridge scraper, contact n1kdo to make it stop.'}
@@ -384,9 +459,9 @@ async def cbridge_poller():
     while run_cbridge_poller:
         calls = []
         if update_number > 0:
-            url = f'{DATA_URL}?param=ajaxcallwatch&updatenumber={update_number}'
+            url = f'{data_url}?param=ajaxcallwatch&updatenumber={update_number}'
         else:
-            url = f'{DATA_URL}?param=ajaxcallwatch'
+            url = f'{data_url}?param=ajaxcallwatch'
 
         logging.info(f'polling {url}')
 
@@ -403,7 +478,11 @@ async def cbridge_poller():
                         sections = line.split('\010')
                         if len(sections) == 2:
                             # logging.debug(f'sections[1]={sections[1]}')
-                            update_number = safe_int(sections[1])
+                            if update_number == 0:
+                                update_number = safe_int(sections[1])
+                                break  # do not collect call data from our first call to the cbridge
+                            else:
+                                update_number = safe_int(sections[1])
 
                         sections = sections[0].split('\013')
                         if len(sections) != len(data_labels):
@@ -425,16 +504,16 @@ async def cbridge_poller():
                                 call['duration'] = d
                             else:
                                 call[data_labels[i]] = sections[i]
-                        parse_call_data(call)
-                        site = call.get('site') or 'missing'
-                        if site[0:6] not in ['BM-US-', 'US-BM-']:
-                            dest = call.get('dest') or 'missing'
+                        parse_cbridge_call_data(call)
+                        call_site = call.get('site') or 'missing'
+                        call['call_site'] = call_site
+                        call['site'] = site
+                        # validate_call_data(call)  # TODO FIXME don't do this too often
+                        if call_site[0:6] not in ['BM-US-', 'US-BM-']:
+                            filtered_dest = call.get('filtered_dest') or 'missing'
                             peer_id = call.get('peer_id') or -1
-                            #print(f'site={site}, fdest={fdest}, peer_id={peer_id}')
-                            #print(f'fdest matches {fdest in interesting_talk_group_names}')
-                            #print(f'peer_id matches {peer_id in interesting_peer_ids}')
-                            if dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
-                                #print(f'call: {call}')
+                            if filtered_dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
+                                validate_call_data(call)
                                 calls.append(call)
 
                 except RuntimeError as ex:  # Exception as ex:
@@ -456,30 +535,38 @@ async def main():
     global write_files
     global most_recent_calls
     global missing_destinations
+    global repeaters
+    global repeaters_by_id
     logging.info('starting')
     write_files = True
     most_recent_calls = []
     missing_destinations = []
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
-            INTERESTING_TALKGROUPS.extend([310, 311, 312, 313, 314, 315, 316, 317, 318, 319])
-            # INTERESTING_TALKGROUPS.append(3100)  # lots of traffic
+            interesting_talk_groups.extend(less_interesting_talk_groups)
             interesting_talk_group_names.extend(less_interesting_talk_group_names)
             write_files = False
             logging.info('NOT writing files -- debug mode.')
             logging.basicConfig(level=logging.DEBUG)
             logging.root.level = logging.DEBUG
 
+    with open('repeaters.json', 'rb') as repeaters_data_file:
+        repeaters = json.load(repeaters_data_file)
+
+    logging.info(f'loaded {len(repeaters)} repeaters from file.')
+    for repeater in repeaters:
+        repeaters_by_id[repeater['peer_id']] = repeater
+
     try:
         poller = asyncio.create_task(cbridge_poller())
 
-        # await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
-        # await sio.wait()
+        await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
+        await sio.wait()
     except KeyboardInterrupt:
         run_cbridge_poller = False
 
+    await sio.close()
     await poller
-    # await sio.close()
 
     print('done')
 
@@ -488,6 +575,6 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
                         level=logging.WARNING,
-                        stream=sys.stdout)
+                        stream=sys.stderr)
     logging.Formatter.converter = time.gmtime
     asyncio.run(main())
