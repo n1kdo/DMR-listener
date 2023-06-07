@@ -85,6 +85,7 @@ def validate_call_data(call):
     else:
         if found_talk_group.get('tg') != dest_id:
             logging.warning(f'Confused! dest_id {dest_id} does not match found tg: {found_talk_group} in call {call}')
+            call['dest'] = f'({dest_id})'
 
     if dest_id is not None:
         peer_id = call.get('peer_id')
@@ -278,7 +279,7 @@ async def mqtt(data):
                         logging.warning(str(raw_data))
                     # test the call here, do not want to log traffic from a C-Bridge
                     if link_name == 'CBridge CC-CC Link' and context_id == 111311:
-                        logging.warning(f'Not logging CBridge traffic for call: {call} from peer {context_id}')
+                        logging.warning(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
                     else:
                         validate_call_data(call)
                         calls_to_log.append(call)
@@ -559,6 +560,7 @@ async def main():
 
     try:
         aloop = asyncio.get_event_loop()
+        # uggh python 3.6 backwards compat
         poller = aloop.create_task(cbridge_poller())
         #poller = asyncio.create_task(cbridge_poller())
 
@@ -579,6 +581,8 @@ if __name__ == '__main__':
                         level=logging.WARNING,
                         stream=sys.stderr)
     logging.Formatter.converter = time.gmtime
-    loop = asyncio.get_event_loop()
+
+    # uggh python 3.6 backwards compat
+    loop = asyncio.new_event_loop()
     loop.run_until_complete(main())
     # asyncio.run(main())

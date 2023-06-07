@@ -61,7 +61,7 @@ def read_file(filename):
 def read_log(filename, start, end):
     calls = []
     fields = ['timestamp', 'site', 'dest', 'peer_id', 'peer_callsign', 'peer_name',
-              'radio_id', 'radio_name', 'radio_username', 'duration', 'source_peer']
+              'radio_id', 'radio_name', 'radio_username', 'duration', 'source_peer', 'tgid', 'slot']
 
     rows = 0
     with open(filename, 'r') as datafile:

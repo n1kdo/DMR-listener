@@ -41,19 +41,21 @@ tg_remap = {
 def append_logged_calls(filename, new_calls):
     if write_files and new_calls is not None and len(new_calls) > 0:
         with open(filename, 'a') as datafile:
-            for stuff in new_calls:
-                line = '{},{},{},{},{},{},{},{},{},{},{}'.format(stuff['timestamp'],
-                                                                 stuff['site'],
-                                                                 stuff['dest'],
-                                                                 stuff['peer_id'],
-                                                                 stuff['peer_callsign'],
-                                                                 stuff['peer_name'],
-                                                                 stuff['radio_id'],
-                                                                 stuff['radio_callsign'],
-                                                                 stuff['radio_username'],
-                                                                 stuff['duration'],
-                                                                 stuff['sourcepeer'],
-                                                                 )
+            for call in new_calls:
+                line = '{},{},{},{},{},{},{},{},{},{},{},{},{}'.format(call['timestamp'],
+                                                                       call['site'],
+                                                                       call['dest'],
+                                                                       call['peer_id'],
+                                                                       call['peer_callsign'],
+                                                                       call['peer_name'],
+                                                                       call['radio_id'],
+                                                                       call['radio_callsign'],
+                                                                       call['radio_username'],
+                                                                       call['duration'],
+                                                                       call['sourcepeer'],
+                                                                       call.get('dest_id') or 0,
+                                                                       call.get('slot') or 0,
+                                                                       )
                 datafile.write(line + '\n')
 
 

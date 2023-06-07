@@ -1017,78 +1017,6 @@
     ]
   },
   {
-    "peer_id": "311343",
-    "call": "W4KIP",
-    "input": "449.050",
-    "output": "444.050",
-    "color_code": "1",
-    "location": "Pine Log Mountain, Waleska, Georgia",
-    "network": "Brandmeister",
-    "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
-    "talk_groups": [
-      {
-        "talkgroup": 2,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 9,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 91,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 93,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 310,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 311,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 312,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3100,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3113,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 9990,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 9990,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31131,
-        "slot": 1,
-        "mode": 0
-      }
-    ]
-  },
-  {
     "peer_id": "311350",
     "call": "KM4DND",
     "input": "449.025",
@@ -1153,6 +1081,7 @@
     "color_code": "1",
     "location": "Sawnee Mountain, Georgia",
     "network": "Ham Digital",
+    "notes": "currently not networked",
     "talk_groups": [
       {
         "talkgroup": 1,
@@ -1398,11 +1327,11 @@
   },
   {
     "peer_id": "312243",
-    "call": "WA4OKJ",
+    "call": "N4RMG",
     "input": "447.2375",
     "output": "442.2375",
     "color_code": "1",
-    "location": "Mt. Alto Rome, Georgia",
+    "location": "Mt. Alto, Rome, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
       {

@@ -46,7 +46,7 @@ interesting_peers = {
     310295: "W4KIP Little Sweat Mountain",
     310371: 'W4DOC Atlanta',
     310466: 'K4VYX Savannah',
-    310592: 'KG4BKO Vdalia',
+    310592: 'KG4BKO Vidalia',
     310969: 'W4KST Marietta',
     310996: 'KM4EYX Douglas',
     311303: 'KE4OKD Sandy Springs',
@@ -79,7 +79,7 @@ interesting_peers = {
     311617: 'KE4PMP Parrot GA',
     311637: 'NG4RF Cumming',
     311639: 'K4EGA Eatonton',
-    312243: 'WA4OKJ Rome',
+    312243: 'N4RMG Rome',
     312284: 'KD4IEZ Dublin',
     312288: 'AF1G Kathleen',
     312384: 'KZ4FOX Athens',
@@ -89,6 +89,7 @@ interesting_peers = {
     312477: 'WX4EMA Macon',
     312779: 'WY4EMY Kathleen',
     313132: 'W4BOC Stone Mountain',
+    313269: 'AI1U Snellville',
     }
 
 interesting_peer_ids = interesting_peers.keys()
@@ -256,6 +257,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Reddit', 'tg': 98003, 'description': 'Reddit', },
     {'name': 'BSRG', 'tg': 311340, 'description': 'BSRG', },
     {'name': '311340', 'tg': 311340, 'description': 'BSRG', },
+    {'name': '310592', 'tg': 310592, 'description': 'Vidalia Net', },
     {'name': 'N1KDO Group', 'tg': 3113090, 'description': 'N1KDO Group Call', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
@@ -495,9 +497,9 @@ talk_groups['Ham Digital'] = [
     {'name': 'Alabama Link', 'tg': 31010, 'description': 'Alabama Link', },
     {'name': 'QuadNet', 'tg': 31012, 'description': 'QuadNet', },
     {'name': 'First Coast', 'tg': 31121, 'description': 'First Coast', },
-    {'name': 'GA ARES', 'tg': 31130, 'description': 'Georgia ARES', },
+    {'name': 'Georgia ARES', 'tg': 31130, 'description': 'Georgia ARES', },
     {'name': 'ATL Metro BM', 'tg': 31131, 'description': 'Atlanta Metro BM', },
-    {'name': 'GA North', 'tg': 31134, 'description': 'Georgia North', },
+    {'name': 'North Georgia', 'tg': 31134, 'description': 'Georgia North', },
     {'name': 'GA Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'NY-NJ-PA TriState', 'tg': 31360, 'description': 'NY-NJ-PA TriState', },
     {'name': 'Texas-Nexus', 'tg': 31488, 'description': 'Texas-Nexus', },
