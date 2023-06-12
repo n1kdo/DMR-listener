@@ -37,19 +37,6 @@ run_cbridge_poller = True
 
 # this is a terrible hack to get some cruft out of the brandmeister talk group names.
 
-tg_remap = {
-    'Tac 310 NOT A CALL CHANNEL': 'TAC310',
-    'TAC 311 USA NO NETS!!!': 'TAC311',
-    'TAC 312 USA NO NETS!!!': 'TAC312',
-    'TAC 313 USA NO NETS!!!': 'TAC313',
-    'TAC 314 USA NO NETS!!!': 'TAC314',
-    'TAC 315 USA NO NETS!!!': 'TAC315',
-    'TAC 316 USA NO NETS!!!': 'TAC316',
-    'TAC 317 USA NO NETS!!!': 'TAC317',
-    'TAC 318 USA NO NETS!!!': 'TAC318',
-    'TAC 319 USA NO NETS!!!': 'TAC319',
-}
-
 
 def validate_call_data(call):
     # print(call)
@@ -221,8 +208,6 @@ async def mqtt(data):
                         destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id, f'({destination_id})')
                         logging.info(f'Could not find destination name "{old_destination_name}", will use "{destination_name}".')
 
-                    #destination_name = destination_name.replace(' - 10 Minute Limit', '')
-                    #destination_name = tg_remap.get(destination_name, destination_name)
                     slot = raw_data.get('Slot', -1)
                     if slot == -1:
                         print(raw_data)
@@ -259,27 +244,12 @@ async def mqtt(data):
                         'duration': elapsed,
                         'sourcepeer': '{} -- {}'.format(link_call, context_id)
                     }
-
-                    line = '{},{},{},{},{},{},{},{},{},{},{},{},{}'.format(convert_brandmeister_timestamp(end),
-                                                                           link_name,
-                                                                           slot,  # NEW NEW NEW
-                                                                           destination_name,
-                                                                           destination_id,  # NEW NEW NEW
-                                                                           context_id,
-                                                                           link_call,
-                                                                           link_name,
-                                                                           source_id,
-                                                                           source_call,
-                                                                           source_name,
-                                                                           elapsed,
-                                                                           '{} -- {}'.format(link_call, context_id),
-                                                                           )
                     if len(link_call) == 0 or len(link_name) == 0:
                         logging.warning('no link data')
                         logging.warning(str(raw_data))
                     # test the call here, do not want to log traffic from a C-Bridge
                     if link_name == 'CBridge CC-CC Link' and context_id == 111311:
-                        logging.warning(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
+                        logging.info(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
                     else:
                         validate_call_data(call)
                         calls_to_log.append(call)
@@ -370,14 +340,6 @@ def parse_cbridge_call_data(call):
             call['radio_username'] = more_stuff[1].strip()
         print(call)
 
-    if False:
-        logging.debug(
-            'sourceradio stuff: {}, radio_id: {}, radio_callsign: {}, radio_username: {}'.format(str(stuff),
-                                                                                                 call['radio_id'],
-                                                                                                 call['radio_callsign'],
-                                                                                                 call[
-                                                                                                     'radio_username']))
-
     stuff = call['sourcepeer'].split('--')
     # logging.debug('sourcepeer stuff: ' + str(stuff))
     if len(stuff) == 1:
@@ -438,14 +400,6 @@ def parse_cbridge_call_data(call):
             call['peer_name'] = 'unknown'
     else:
         call['peer_id'] = safe_int(call['sourcepeer'])
-    if False:
-        logging.debug('sourcepeer stuff: {} peer_id: {}, peer_callsign: {}, peer_name: {}'.format(str(stuff),
-                                                                                                  call['peer_id'],
-                                                                                                  call['peer_callsign'],
-                                                                                                  call['peer_name']))
-    # if call['peer_id'] == 'n/a':
-    #    logging.warning(str(call))
-    # print(call)
 
 
 async def cbridge_poller():
@@ -468,6 +422,9 @@ async def cbridge_poller():
 
         async with aiohttp.ClientSession(headers=headers) as session:
             async with session.get(url) as response:
+                status = response.status
+                if status != 200:
+                    logging.warning(f'http get returned status {status}')
                 payload = await response.text('ISO-8859-1')
                 parts = payload.split('\t')
                 # logging.debug(f'got {len(parts)} rows of data...')
@@ -558,6 +515,7 @@ async def main():
     for repeater in repeaters:
         repeaters_by_id[repeater['peer_id']] = repeater
 
+    poller = None
     try:
         aloop = asyncio.get_event_loop()
         # uggh python 3.6 backwards compat
@@ -569,8 +527,9 @@ async def main():
     except KeyboardInterrupt:
         run_cbridge_poller = False
 
-    await sio.close()
-    await poller
+    await sio.wait()
+    if poller:
+        await poller
 
     print('done')
 
