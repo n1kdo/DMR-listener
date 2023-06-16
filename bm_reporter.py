@@ -150,6 +150,191 @@ def write_repeater_html(repeaters, filename='repeaters.html'):
     :return:
     """
     header_lines = read_file('log_analytics_fragment.html')
+    title = 'Selected Georgia DMR Repeaters'
+    now = datetime.datetime.now()
+    disclaimer = f'Generated {now.strftime("%Y-%m-%d %H:%M")}<br>Corrections and suggestions are appreciated.'
+    copying = 'This data was collected and is maintained by hand by N1KDO.  Please do not reproduce it without attribution.'
+    with open(filename, 'w') as htmlfile:
+        htmlfile.write('<html lang="i-klingon">\n<head>\n')
+        htmlfile.write('<title>' + title + '</title>\n')
+        if header_lines is not None:
+            htmlfile.writelines(header_lines)
+        htmlfile.write("""
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">      
+  <style>
+BODY {
+    background-color: #2c3e50;
+    color: white;
+    margin: 0;
+    border: 0;
+    font-family: sans-serif;
+}
+TABLE, TH, TR, TD {
+    border: solid black 1px; 
+    color: black;
+}
+.talk-groups-table {
+    background-color: #cfc;
+    border-collapse: collapse;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.tg-name {
+    text-align: left;
+}
+.tg-number {
+    text-align: right;
+}
+.tabs {
+    overflow: hidden;
+    box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.5);
+}
+.tab {
+    width: 100%;
+    color: white;
+    overflow: hidden;
+}
+.tab-label {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 1em;
+    background: #2c3e50;
+    font-weight: bold;
+    cursor: pointer;
+}
+.tab-label:hover {
+    background: #1a252f;
+}
+.tab-label::after {
+    content: ">";
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    -webkit-transition: all .35s;
+    transition: all .35s;
+}
+.tab-content {
+    background-color: #233;
+    max-height: 0;
+    padding: 0 1em;
+    color: black;
+    -webkit-transition: all .35s;
+    transition: all .35s;
+}
+input:checked + .tab-label {
+    background: black;
+}
+input:checked + .tab-label::after {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+input:checked ~ .tab-content {
+    max-height: 200vh;
+    padding: 1em;
+}
+input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+.heading {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+.copying {
+    text-align: center;
+    font-size: 1em;
+    color: #ff0;
+}
+.disclaimer {
+    font-size: 1em;
+    text-align: center;
+}
+.notes {
+    font-size: 1em;
+    text-align: center;
+    color: #ff8;
+}
+.rtpr-last-heard {
+    font-size: 1em;
+    text-align: center;
+    color: #ff8;
+}
+.rptr-not-heard {
+    color: red;
+    font-weight: bold;
+}
+  </style>
+""")
+        htmlfile.write('</head>\n<body>\n')
+        htmlfile.write('<div class="heading">' + title + '</div>\n')
+        htmlfile.write('<div class="disclaimer">' + disclaimer + '</div>\n')
+        htmlfile.write('<div class="copying">' + copying + '</div>\n')
+        htmlfile.write('<div class="tabs">\n')
+        ctr = 1
+        sorted_repeaters = sorted(repeaters, key=lambda repeater: repeater['call'])
+        for repeater in sorted_repeaters:
+            last_heard = repeater.get('last_heard')
+            notes = repeater.get('notes')
+            network = repeater.get('network')
+            if last_heard is None and notes is None and network == 'Brandmeister':
+                logging.warning(f'Not reporting repeater {repeater["peer_id"]} {repeater["call"]} because it has not been seen.')
+                continue
+            htmlfile.write('<div class="tab">\n')
+            htmlfile.write('<input type="checkbox" id="chck{}">\n'.format(ctr))
+            rptr = '{} {} {}'.format(repeater['call'], repeater['output'], repeater['location'])
+            htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
+            htmlfile.write('<div class="tab-content">\n')
+            htmlfile.write('<table class="talk-groups-table">\n')
+            info = '{} {} {} {} CC {} {}'.format(repeater['call'], repeater['location'], repeater['output'], repeater['input'], repeater['color_code'], repeater['network'])
+            htmlfile.write('<tr><th colspan="4" class="rptr-info">{}</th></tr>\n'.format(info))
+            if last_heard is not None:
+                last_heard = 'Last Heard ' + last_heard.strftime("%Y-%m-%d %H:%M:%S")
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-last-heard">{last_heard}</th></tr>\n')
+            elif network == 'Brandmeister':
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-not-heard">Not Heard</th></tr>\n')
+            else:
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-last-heard">Availability is Unknown.</th></tr>\n')
+            talk_groups = sorted(repeater['talk_groups'], key=lambda item: item['talkgroup'])
+            htmlfile.write('<tr><th>Talk Group Name</th><th>TG #</th><th>TS #<br>#</th><th>Notes</th></tr>\n')
+            for ts in [1, 2]:
+                for talk_group in talk_groups:
+                    tg_number = safe_int(talk_group['talkgroup'])
+                    tg_timeslot = talk_group['slot']
+                    tg_mode = talk_group['mode']
+                    talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
+                    if talk_group_data is None:
+                        if tg_number < 99999:
+                            logging.warning(f'missing talk group data for tg {tg_number} on peer {repeater["peer_id"]} network {repeater["network"]}')
+                        talk_group_data = {'description': f'Unknown talk group {tg_number}', 'tg': str(tg_number)}
+                    if tg_timeslot == ts:
+                        if tg_mode == 0:
+                            mode = 'static'
+                        else:
+                            mode = ''
+                        htmlfile.write(f'<tr><td class="tg-name">{talk_group_data["description"]}</td><td class="tg-number">{tg_number}</td><td class="tg-number">{tg_timeslot}</td><td class="tg-number">{mode}</td></tr>\n')
+            htmlfile.write('</table>\n')
+
+            if notes is not None:
+                htmlfile.write('<p class="notes">{}</p>\n'.format(notes))
+            htmlfile.write('</div>\n')
+            htmlfile.write('</div>\n')
+            ctr += 1
+        htmlfile.write('</div>\n')
+        htmlfile.write('<div class="copying">' + copying + '</div>\n')
+        htmlfile.write('</body></html>\n')
+
+
+def write_repeater_html_old(repeaters, filename='repeaters.html'):
+    """
+    write data for web
+    :return:
+    """
+    header_lines = read_file('log_analytics_fragment.html')
     title = 'Metro Atlanta Area DMR Repeaters'
     now = datetime.datetime.now()
     disclaimer = f'Generated {now.strftime("%Y-%m-%d %H:%M")}<br>Corrections and suggestions are appreciated.'

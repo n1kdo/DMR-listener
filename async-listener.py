@@ -79,20 +79,19 @@ def validate_call_data(call):
         if peer_id is not None:
             repeater = repeaters_by_id.get(peer_id)
             if repeater is not None:
-                print(f'found repeater {repeater}')
+                # print(f'found repeater {repeater}')
                 repeater_talk_groups = repeater.get('talk_groups')
                 if repeater_talk_groups is not None:
                     found_talk_group = None
                     for talk_group in repeater_talk_groups:
                         if dest_id == talk_group.get('talkgroup'):
-                            print(f'found matching talk group {talk_group}')
+                            # print(f'found matching talk group {talk_group}')
                             found_talk_group = talk_group
                     if found_talk_group is not None:
                         found_slot = found_talk_group.get('slot')
                         slot = call.get('slot')
-                        print(f'found_slot {found_slot}, slot {slot}')
-
-    return True
+                        # print(f'found_slot {found_slot}, slot {slot}')
+    return found_talk_group is not None
 
 
 def append_logged_calls(filename, calls):

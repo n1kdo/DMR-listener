@@ -150,7 +150,6 @@ BODY {
 }
 TABLE, TH, TR, TD {
     border: solid black 1px; 
-    background-color: #ccc;
     color: black;
 }
 .talk-groups-table {
@@ -239,7 +238,7 @@ input {
     text-align: center;
     color: #ff8;
 }
-.rtpr-last-heard {
+.rptr-last-heard {
     font-size: 1em;
     text-align: center;
     color: #ff8;
@@ -264,18 +263,18 @@ input {
                 logging.warning(f'Not reporting repeater {repeater["peer_id"]} {repeater["call"]} because it has not been seen.')
                 continue
             htmlfile.write('<div class="tab">\n')
-            htmlfile.write('<input type="checkbox" id="chck{}">'.format(ctr))
+            htmlfile.write('<input type="checkbox" id="chck{}\n">'.format(ctr))
             rptr = '{} {} {}'.format(repeater['call'], repeater['output'], repeater['location'])
             htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
             htmlfile.write('<div class="tab-content">\n')
             htmlfile.write('<table class="talk-groups-table">\n')
             info = '{} {} {} {} CC {} {}'.format(repeater['call'], repeater['location'], repeater['output'], repeater['input'], repeater['color_code'], repeater['network'])
-            htmlfile.write('<tr><th colspan="4" class="rptr-info">{}</th></tr>'.format(info))
+            htmlfile.write('<tr><th colspan="4" class="rptr-info">{}</th></tr>\n'.format(info))
             if last_heard is not None:
                 last_heard = 'Last Heard ' + last_heard.strftime("%Y-%m-%d %H:%M:%S")
-                htmlfile.write(f'<tr><th colspan="4" class="rptr-last-heard">{last_heard}</th></tr>')
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-last-heard">{last_heard}</th></tr>\n')
             else:
-                htmlfile.write(f'<tr><th colspan="4" class="rptr-not-heard">Not Heard</th></tr>')
+                htmlfile.write(f'<tr><th colspan="4" class="rptr-not-heard">Not Heard</th></tr>\n')
             talk_groups = sorted(repeater['talk_groups'], key=lambda item: item['talkgroup'])
             htmlfile.write('<tr><th>Talk Group Name</th><th>TG #</th><th>TS #<br>#</th><th>Notes</th></tr>\n')
             for ts in [1, 2]:
