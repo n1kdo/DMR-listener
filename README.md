@@ -1,8 +1,11 @@
-# cbridge-listener
-cbridge listener is a tool that scrapes the "call watch" web service of a C-Bridge and collects information about the usage.
+# DMR-listener
 
-it is a toy I made, initially to collect and sort contact data to manually load into my XPR radios.  Once I started collecting data,
-I decided I could crunch it a little more, so the tool grew kind of organically to add some new features, for instance
+DMR listener is a tool that scrapes the "call watch" web service of a C-Bridge, listens to MQTT
+data brom Brandmeister and collects information about the usage.
+
+This is a toy I made, initially to collect and sort contact data to manually load into my XPR radios.
+Once I started collecting data, I realized I could mine more useful information from this data, 
+so the tool grew kind of organically to add some new features, for instance
 
 * usage by talkgroup by repeater
 * usage by user by repeater by talkgroup
@@ -12,7 +15,6 @@ I decided I could crunch it a little more, so the tool grew kind of organically 
 the static data with the collected data and issues a warning if there are talkgroups found in the collected
 data that are not listed in the hardcoded dicts for each repeater.  Kinda clunky.
 * web reports for repeater and user usage, live at https://www.n1kdo.com/dmr_data
-
-I'd make this public if it wasn't so damned *ugly*.
+* I also added a listing of some selected Georgia DMR repeaters.
 
 ![example](activity.png)

@@ -246,12 +246,13 @@ async def mqtt(data):
                     if len(link_call) == 0 or len(link_name) == 0:
                         logging.warning('no link data')
                         logging.warning(str(raw_data))
-                    # test the call here, do not want to log traffic from a C-Bridge
-                    if link_name == 'CBridge CC-CC Link' and context_id == 111311:
-                        logging.info(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
                     else:
-                        validate_call_data(call)
-                        calls_to_log.append(call)
+                        # test the call here, do not want to log traffic from a C-Bridge
+                        if link_name == 'CBridge CC-CC Link' and context_id == 111311:
+                            logging.info(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
+                        else:
+                            validate_call_data(call)
+                            calls_to_log.append(call)
 
     except KeyError as ke:
         logging.error('KeyError: ' + str(ke))

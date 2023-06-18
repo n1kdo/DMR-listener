@@ -489,7 +489,7 @@ talk_groups['Ham Digital'] = [
     {'name': 'MWreg', 'tg': 3169, 'description': 'Midwest Region ND SD NE MN IA MO WI IL MI IN OH', },
     {'name': 'NEreg', 'tg': 3172, 'description': 'Northeast Region NY NJ VT MA CT NH RI ME', },
     {'name': 'MAreg', 'tg': 3173, 'description': 'Mid-Atlantic Region PA WV VA MD DE DC', },
-    {'name': 'SEreg', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
+    {'name': 'Southeast', 'tg': 3174, 'description': 'Southeast Region AR LA KY TN MS AL GA FL NC SC', },
     {'name': 'SPreg', 'tg': 3175, 'description': 'Southern Plains Region KS OK TX', },
     {'name': 'SWreg', 'tg': 3176, 'description': 'Southwest Region CA NV AZ NM HI', },
     {'name': 'MTreg', 'tg': 3177, 'description': 'Mountain Region AK WA OR ID MT WY UT CO', },
