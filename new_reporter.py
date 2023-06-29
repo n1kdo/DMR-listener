@@ -241,7 +241,7 @@ input {
 .rptr-last-heard {
     font-size: 1em;
     text-align: center;
-    color: #ff8;
+color: black;
 }
 .rptr-not-heard {
     color: red;
@@ -263,7 +263,7 @@ input {
                 logging.warning(f'Not reporting repeater {repeater["peer_id"]} {repeater["call"]} because it has not been seen.')
                 continue
             htmlfile.write('<div class="tab">\n')
-            htmlfile.write('<input type="checkbox" id="chck{}\n">'.format(ctr))
+            htmlfile.write('<input type="checkbox" id="chck{}">\n'.format(ctr))
             rptr = '{} {} {}'.format(repeater['call'], repeater['output'], repeater['location'])
             htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
             htmlfile.write('<div class="tab-content">\n')

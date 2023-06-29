@@ -115,7 +115,7 @@ def append_logged_calls(filename, calls):
                                       call.get('slot') or 0,
                                       )
                     outfile.write(line + '\n')
-                    print(line)
+                    # print(line)
         else:
             for call in calls:
                 s = str(call)[1:-1]  # the curlies
