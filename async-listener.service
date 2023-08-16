@@ -1,12 +1,12 @@
 [Unit]
-Description=cbridge listener Service
+Description=DMR call listener Service
 Wants=network.target
 
 [Service]
 Type=simple
 User=jeff
 Group=jeff
-ExecStart=/home/jeff/cbridge-listener/listener.py
+ExecStart=/home/jeff/cbridge-listener/async-listener.py
 KillMode=process
 WorkingDirectory=/home/jeff/cbridge-listener
 

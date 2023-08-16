@@ -23,6 +23,11 @@ from common import talk_group_network_number_to_name_dict
 URL = 'https://api.brandmeister.network'
 SIO_PATH = '/lh/socket.io'
 
+CBRIDGE_CALL_WATCH_API = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
+CBRIDGE_SITE = 'K4USD'
+# data_url = 'https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+# site = 'Ham Digital'
+
 LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'
 DUPLICATES_LIST_SIZE = 50
 
@@ -403,10 +408,6 @@ def parse_cbridge_call_data(call):
 
 
 async def cbridge_poller():
-    # data_url = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
-    data_url = 'https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
-    site = 'Ham Digital'
-
     data_labels = ['time', 'duration', 'sourcepeer', 'sourceradio', 'dest', 'rssi', 'site', 'lossrate']
     update_number = 0
     headers = {'User-Agent': 'N1KDO C-Bridge scraper, contact n1kdo to make it stop.'}
@@ -414,9 +415,9 @@ async def cbridge_poller():
     while run_cbridge_poller:
         calls = []
         if update_number > 0:
-            url = f'{data_url}?param=ajaxcallwatch&updatenumber={update_number}'
+            url = f'{CBRIDGE_CALL_WATCH_API}?param=ajaxcallwatch&updatenumber={update_number}'
         else:
-            url = f'{data_url}?param=ajaxcallwatch'
+            url = f'{CBRIDGE_CALL_WATCH_API}?param=ajaxcallwatch'
 
         logging.info(f'polling {url}')
 
@@ -465,7 +466,7 @@ async def cbridge_poller():
                         parse_cbridge_call_data(call)
                         call_site = call.get('site') or 'missing'
                         call['call_site'] = call_site
-                        call['site'] = site
+                        call['site'] = CBRIDGE_SITE
                         # validate_call_data(call)  # TODO FIXME don't do this too often
                         if call_site[0:6] not in ['BM-US-', 'US-BM-']:
                             filtered_dest = call.get('filtered_dest') or 'missing'
@@ -519,6 +520,7 @@ async def main():
     try:
         aloop = asyncio.get_event_loop()
         # uggh python 3.6 backwards compat
+        # cbridge poller disabled since it only 403s now.
         poller = aloop.create_task(cbridge_poller())
         #poller = asyncio.create_task(cbridge_poller())
 
