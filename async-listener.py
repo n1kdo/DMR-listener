@@ -23,10 +23,10 @@ from common import talk_group_network_number_to_name_dict
 URL = 'https://api.brandmeister.network'
 SIO_PATH = '/lh/socket.io'
 
-CBRIDGE_CALL_WATCH_API = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
-CBRIDGE_SITE = 'K4USD'
-# data_url = 'https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
-# site = 'Ham Digital'
+# CBRIDGE_CALL_WATCH_API = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
+# CBRIDGE_SITE = 'K4USD Network'
+CBRIDGE_CALL_WATCH_API ='https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+CBRIDGE_SITE = 'Ham Digital'
 
 LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'
 DUPLICATES_LIST_SIZE = 50
@@ -127,7 +127,7 @@ def append_logged_calls(filename, calls):
                 s = s.replace(": ", ":")
                 s = s.replace(', ', ' ')
                 s = s.replace("'", "")
-                print(s)
+                # print(s)
                 line = fmt.format(call['timestamp'],
                                   call['site'],
                                   call['dest'],
@@ -214,7 +214,7 @@ async def mqtt(data):
 
                     slot = raw_data.get('Slot', -1)
                     if slot == -1:
-                        print(raw_data)
+                        logging.warning(raw_data)
                     if len(destination_name) == 0 or destination_name == 'Cluster':
                         destination_name = str(destination_id)
                     source_id = raw_data.get('SourceID', 0)
@@ -467,8 +467,8 @@ async def cbridge_poller():
                         call_site = call.get('site') or 'missing'
                         call['call_site'] = call_site
                         call['site'] = CBRIDGE_SITE
-                        # validate_call_data(call)  # TODO FIXME don't do this too often
-                        if call_site[0:6] not in ['BM-US-', 'US-BM-']:
+                        if call_site[0:5].upper() not in ['BM-US', 'US-BM', 'BRAND']:
+                            # print(f'allowed call_site={call_site}')
                             filtered_dest = call.get('filtered_dest') or 'missing'
                             peer_id = call.get('peer_id') or -1
                             if filtered_dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
@@ -502,8 +502,8 @@ async def main():
     missing_destinations = []
     if len(sys.argv) > 1:
         if sys.argv[1].lower() == 'test':
-            interesting_talk_groups.extend(less_interesting_talk_groups)
-            interesting_talk_group_names.extend(less_interesting_talk_group_names)
+            # interesting_talk_groups.extend(less_interesting_talk_groups)
+            # interesting_talk_group_names.extend(less_interesting_talk_group_names)
             write_files = False
             logging.info('NOT writing files -- debug mode.')
             logging.basicConfig(level=logging.DEBUG)

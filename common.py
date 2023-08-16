@@ -142,6 +142,7 @@ site_name_to_network_map = {
     'DMR-MARC-CCEAST': 'DMR-MARC',
     'DMR-MARC-CCWEST': 'DMR-MARC',
     'DMR-SE': 'DMR-SE',
+    'K4USD': 'K4USD',
     'K4USD Network': 'K4USD',
     'K4USD-2 Network': 'K4USD',
     'Ham Digital': 'Ham Digital',
