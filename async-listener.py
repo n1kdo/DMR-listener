@@ -142,7 +142,7 @@ def append_logged_calls(filename, calls):
                                   call.get('dest_id') or 0,
                                   call.get('slot') or 0,
                                   )
-                print(f'not saved: {line}')
+                print(f'not writing: {line}')
 
 
 def safe_int(s, default=-1):
@@ -249,8 +249,7 @@ async def mqtt(data):
                         'sourcepeer': '{} -- {}'.format(link_call, context_id)
                     }
                     if len(link_call) == 0 or len(link_name) == 0:
-                        logging.warning('no link data')
-                        logging.warning(str(raw_data))
+                        logging.debug(f'no link data {str(raw_data)}')
                     else:
                         # test the call here, do not want to log traffic from a C-Bridge
                         if link_name == 'CBridge CC-CC Link' and context_id == 111311:
