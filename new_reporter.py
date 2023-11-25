@@ -829,6 +829,7 @@ def normalize_talkgroup_names(calls):
                             found_tg_name = True  # not found, not gonna find.
                 else:  # tg_id is 0
                     logging.warning(f'Brandmeister with tg_id=0 {call}')
+                    found_tg_name = True
             else:
                 dest = call.get('dest') or '!missing!'
                 if dest.startswith('Unknown Ipsc group '):
@@ -848,7 +849,7 @@ def normalize_talkgroup_names(calls):
             logging.error('network is none! {call}')
 
         if not found_tg_name:
-            logging.warning(f'could not fixup {call}')
+            logging.warning(f'could not find talkgroup name for {call}')
 
 
 def main():
