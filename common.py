@@ -90,6 +90,7 @@ interesting_peers = {
     312779: 'WY4EMY Kathleen',
     313132: 'W4BOC Stone Mountain',
     313269: 'AI1U Snellville',
+    313874: 'K9APD Pine Log Mountain Waleska',
     }
 
 interesting_peer_ids = interesting_peers.keys()

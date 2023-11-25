@@ -418,73 +418,76 @@ async def cbridge_poller():
         else:
             url = f'{CBRIDGE_CALL_WATCH_API}?param=ajaxcallwatch'
 
-        logging.info(f'polling {url}')
+        try:
+            logging.info(f'polling {url}')
 
-        async with aiohttp.ClientSession(headers=headers) as session:
-            async with session.get(url) as response:
-                status = response.status
-                if status != 200:
-                    logging.warning(f'http get returned status {status}')
-                payload = await response.text('ISO-8859-1')
-                parts = payload.split('\t')
-                # logging.debug(f'got {len(parts)} rows of data...')
-                try:
-                    for line in parts:
-                        call = {}
-                        line = line.replace('&nbsp;', ' ')
-                        line = line.replace(',', '_')
-                        sections = line.split('\010')
-                        if len(sections) == 2:
-                            # logging.debug(f'sections[1]={sections[1]}')
-                            if update_number == 0:
-                                update_number = safe_int(sections[1])
-                                break  # do not collect call data from our first call to the cbridge
-                            else:
-                                update_number = safe_int(sections[1])
+            async with aiohttp.ClientSession(headers=headers) as session:
+                async with session.get(url) as response:
+                    status = response.status
+                    if status != 200:
+                        logging.warning(f'http get returned status {status}')
+                    payload = await response.text('ISO-8859-1')
+                    parts = payload.split('\t')
+                    # logging.debug(f'got {len(parts)} rows of data...')
+                    try:
+                        for line in parts:
+                            call = {}
+                            line = line.replace('&nbsp;', ' ')
+                            line = line.replace(',', '_')
+                            sections = line.split('\010')
+                            if len(sections) == 2:
+                                # logging.debug(f'sections[1]={sections[1]}')
+                                if update_number == 0:
+                                    update_number = safe_int(sections[1])
+                                    break  # do not collect call data from our first call to the cbridge
+                                else:
+                                    update_number = safe_int(sections[1])
 
-                        sections = sections[0].split('\013')
-                        if len(sections) != len(data_labels):
-                            print('something is not right!')
-                            print(sections)
-                            print('---')
-                            continue
-                        if sections[0].strip() == '':
-                            # logging.debug(f'empty row: {sections}')
-                            continue
-                        for i in range(0, len(data_labels)):
-                            if data_labels[i] == 'duration':
-                                try:
-                                    d = float(sections[i])
-                                except Exception as e:
-                                    print(e)
-                                    print(sections)
-                                    d = 0.0
-                                call['duration'] = d
-                            else:
-                                call[data_labels[i]] = sections[i]
-                        parse_cbridge_call_data(call)
-                        call_site = call.get('site') or 'missing'
-                        call['call_site'] = call_site
-                        call['site'] = CBRIDGE_SITE
-                        if call_site[0:5].upper() not in ['BM-US', 'US-BM', 'BRAND']:
-                            # print(f'allowed call_site={call_site}')
-                            filtered_dest = call.get('filtered_dest') or 'missing'
-                            peer_id = call.get('peer_id') or -1
-                            if filtered_dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
-                                validate_call_data(call)
-                                calls.append(call)
+                            sections = sections[0].split('\013')
+                            if len(sections) != len(data_labels):
+                                print('something is not right!')
+                                print(sections)
+                                print('---')
+                                continue
+                            if sections[0].strip() == '':
+                                # logging.debug(f'empty row: {sections}')
+                                continue
+                            for i in range(0, len(data_labels)):
+                                if data_labels[i] == 'duration':
+                                    try:
+                                        d = float(sections[i])
+                                    except Exception as e:
+                                        print(e)
+                                        print(sections)
+                                        d = 0.0
+                                    call['duration'] = d
+                                else:
+                                    call[data_labels[i]] = sections[i]
+                            parse_cbridge_call_data(call)
+                            call_site = call.get('site') or 'missing'
+                            call['call_site'] = call_site
+                            call['site'] = CBRIDGE_SITE
+                            if call_site[0:5].upper() not in ['BM-US', 'US-BM', 'BRAND']:
+                                # print(f'allowed call_site={call_site}')
+                                filtered_dest = call.get('filtered_dest') or 'missing'
+                                peer_id = call.get('peer_id') or -1
+                                if filtered_dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
+                                    validate_call_data(call)
+                                    calls.append(call)
 
-                except RuntimeError as ex:  # Exception as ex:
-                    print()
-                    print('...problem')
-                    print(line)
-                    e = sys.exc_info()[0]
-                    print('Problem with web query:')
-                    print(e)
-                    print(ex)
-                    raise ex
-        logging.info(f'done polling, collected {len(calls)} calls')
-        append_logged_calls(LOGGED_CALLS_FILENAME, calls)
+                    except RuntimeError as ex:  # Exception as ex:
+                        print()
+                        print('...problem')
+                        print(line)
+                        e = sys.exc_info()[0]
+                        print('Problem with web query:')
+                        print(e)
+                        print(ex)
+                        raise ex
+            logging.info(f'done polling, collected {len(calls)} calls')
+            append_logged_calls(LOGGED_CALLS_FILENAME, calls)
+        except aiohttp.client_exceptions.ClientConnectorError as exc:
+            logging.error(f'error polling {url}: ', exc_info=exc)
         await asyncio.sleep(30)
 
 

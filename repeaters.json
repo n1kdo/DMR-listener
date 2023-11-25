@@ -2064,5 +2064,53 @@
         "mode": 0
       }
     ]
+  },
+    {
+    "peer_id": "313874",
+    "call": "K9APD",
+    "input": "449.325",
+    "output": "444.325",
+    "color_code": "1",
+    "location": "Waleska, Georgia",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31133,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
   }
+
 ]
