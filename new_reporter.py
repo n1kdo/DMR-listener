@@ -828,7 +828,7 @@ def normalize_talkgroup_names(calls):
                             call['dest'] = f'Unknown Talkgroup {tgid_int}'
                             found_tg_name = True  # not found, not gonna find.
                 else:  # tg_id is 0
-                    logging.warning(f'Brandmeister with tg_id=0 {call}')
+                    logging.info(f'Brandmeister with tg_id=0 {call}')
                     found_tg_name = True
             else:
                 dest = call.get('dest') or '!missing!'

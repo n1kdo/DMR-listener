@@ -483,11 +483,13 @@ async def cbridge_poller():
                         print('Problem with web query:')
                         print(e)
                         print(ex)
-                        raise ex
+                        # raise ex
             logging.info(f'done polling, collected {len(calls)} calls')
             append_logged_calls(LOGGED_CALLS_FILENAME, calls)
         except aiohttp.client_exceptions.ClientConnectorError as exc:
             logging.error(f'error polling {url}: ', exc_info=exc)
+        except Exception as e:
+            logging.error(f'error polling {url}, {e}')
         await asyncio.sleep(30)
 
 
@@ -522,7 +524,6 @@ async def main():
     try:
         aloop = asyncio.get_event_loop()
         # uggh python 3.6 backwards compat
-        # cbridge poller disabled since it only 403s now.
         poller = aloop.create_task(cbridge_poller())
         #poller = asyncio.create_task(cbridge_poller())
 

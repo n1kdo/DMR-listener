@@ -21,6 +21,267 @@
     ]
   },
   {
+    "peer_id": 313269,
+    "call": "AI1U",
+    "input": "447.6",
+    "output": "442.6",
+    "color_code": "3",
+    "location": "Snellville, Georgia",
+    "network": "Ham Digital",
+    "talk_groups": [
+      {
+        "talkgroup": 31131,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 93,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 133,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 907,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 113,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 114,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3101,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31720,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31121,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3112,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31011,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9071,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9072,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3173,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3169,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3177,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31362,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31360,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3172,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9998,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31012,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3145,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31132,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3175,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3176,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31136,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 310,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 311,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 312,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 313,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 314,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 315,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 316,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 317,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 318,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 319,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 1776,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
     "peer_id": 311326,
     "call": "AI1U",
     "input": "447.5375",
@@ -2065,7 +2326,7 @@
       }
     ]
   },
-    {
+  {
     "peer_id": "313874",
     "call": "K9APD",
     "input": "449.325",
