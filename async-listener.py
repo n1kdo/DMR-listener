@@ -490,6 +490,7 @@ async def cbridge_poller():
             logging.error(f'error polling {url}: ', exc_info=exc)
         except Exception as e:
             logging.error(f'error polling {url}, {e}')
+        logging.warning('restarting cbridge poller loop...')
         await asyncio.sleep(30)
 
 

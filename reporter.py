@@ -13,7 +13,8 @@ from common import filter_talk_group_name
 
 import charts
 
-logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
+logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
 logging.Formatter.converter = time.gmtime
 

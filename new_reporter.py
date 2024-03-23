@@ -11,10 +11,6 @@ from common import filter_talk_group_name
 
 import charts
 
-logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
-                    level=logging.INFO)
-logging.Formatter.converter = time.gmtime
-
 
 def convert_elapsed(elapsed):
     hours, remainder = divmod(elapsed, 3600)
@@ -828,7 +824,7 @@ def normalize_talkgroup_names(calls):
                             call['dest'] = f'Unknown Talkgroup {tgid_int}'
                             found_tg_name = True  # not found, not gonna find.
                 else:  # tg_id is 0
-                    logging.info(f'Brandmeister with tg_id=0 {call}')
+                    #logging.info(f'Brandmeister with tg_id=0 {call}')
                     found_tg_name = True
             else:
                 dest = call.get('dest') or '!missing!'
@@ -1102,7 +1098,8 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
                         level=logging.INFO)
     logging.Formatter.converter = time.gmtime
     main()
