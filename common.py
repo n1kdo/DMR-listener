@@ -39,7 +39,7 @@ less_interesting_talk_group_names = [  # for debugging with more volume
 
 less_interesting_talk_groups = [91, 93, 310, 311, 312, 313, 314, 315, 315, 317, 318, 319, 3100, ]
 
-# all traffic from the interesting peers will be logged.  Best to not turn on brandmeister.
+# all traffic from the interesting peers will be logged.  Best to not turn on Brandmeister.
 interesting_peers = {
     310051: 'K5TEX Free Home',
     310293: 'W4BOC Stone Mountain',
@@ -521,6 +521,7 @@ talk_groups['Ham Digital'] = [
     {'name': 'Tidewater VA', 'tg': 31515, 'description': 'Tidewater VA', },
     {'name': 'TGIF', 'tg': 31665, 'description': 'TGIF Network', },
     {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
+    {'name': 'Kingsland Local', 'tg': 311307, 'description': 'Kingsland 311307', },
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]

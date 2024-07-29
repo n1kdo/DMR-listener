@@ -25,7 +25,8 @@ SIO_PATH = '/lh/socket.io'
 
 # CBRIDGE_CALL_WATCH_API = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
 # CBRIDGE_SITE = 'K4USD Network'
-CBRIDGE_CALL_WATCH_API ='https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+#CBRIDGE_CALL_WATCH_API ='https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
+CBRIDGE_CALL_WATCH_API = 'https://cbridge-scraper.hamdigital.net/data.txt'  # hamdigital atl
 CBRIDGE_SITE = 'Ham Digital'
 
 LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'
@@ -100,48 +101,23 @@ def validate_call_data(call):
 
 
 def append_logged_calls(filename, calls):
-    fmt = '{},{},{},{},{},{},{},{},{},{},{},{},{}'
     if calls is not None and len(calls) > 0:
         if write_files:
             with open(filename, 'a') as outfile:
                 for call in calls:
-                    line = fmt.format(call['timestamp'],
-                                      call['site'],
-                                      call['dest'],
-                                      call['peer_id'],
-                                      call['peer_callsign'],
-                                      call['peer_name'],
-                                      call['radio_id'],
-                                      call['radio_callsign'],
-                                      call['radio_username'],
-                                      call['duration'],
-                                      call['sourcepeer'],
-                                      call.get('dest_id') or 0,
-                                      call.get('slot') or 0,
-                                      )
+                    line = f"{call['timestamp']},{call['site']},{call['dest']},{call['peer_id']}," \
+                           f"{call['peer_callsign']},{call['peer_name']},{call['radio_id']}," \
+                           f"{call['radio_callsign']},{call['radio_username']},{call['duration']}," \
+                           f"{call['sourcepeer']},{call.get('dest_id') or 0},{call.get('slot') or 0}"
+
                     outfile.write(line + '\n')
                     # print(line)
         else:
             for call in calls:
-                s = str(call)[1:-1]  # the curlies
-                s = s.replace(": ", ":")
-                s = s.replace(', ', ' ')
-                s = s.replace("'", "")
-                # print(s)
-                line = fmt.format(call['timestamp'],
-                                  call['site'],
-                                  call['dest'],
-                                  call['peer_id'],
-                                  call['peer_callsign'],
-                                  call['peer_name'],
-                                  call['radio_id'],
-                                  call['radio_callsign'],
-                                  call['radio_username'],
-                                  call['duration'],
-                                  call['sourcepeer'],
-                                  call.get('dest_id') or 0,
-                                  call.get('slot') or 0,
-                                  )
+                line = f"{call['timestamp']},{call['site']},{call['dest']},{call['peer_id']}," \
+                       f"{call['peer_callsign']},{call['peer_name']},{call['radio_id']}," \
+                       f"{call['radio_callsign']},{call['radio_username']},{call['duration']}," \
+                       f"{call['sourcepeer']},{call.get('dest_id') or 0},{call.get('slot') or 0}"
                 print(f'not writing: {line}')
 
 
@@ -420,7 +396,6 @@ async def cbridge_poller():
 
         try:
             logging.info(f'polling {url}')
-
             async with aiohttp.ClientSession(headers=headers) as session:
                 async with session.get(url) as response:
                     status = response.status
@@ -490,8 +465,8 @@ async def cbridge_poller():
             logging.error(f'error polling {url}: ', exc_info=exc)
         except Exception as e:
             logging.error(f'error polling {url}, {e}')
-        logging.warning('restarting cbridge poller loop...')
         await asyncio.sleep(30)
+    logging.warning('cbridge poller exit...')
 
 
 async def main():
@@ -521,21 +496,27 @@ async def main():
     for repeater in repeaters:
         repeaters_by_id[repeater['peer_id']] = repeater
 
+    aloop = asyncio.get_event_loop()
     poller = None
-    try:
-        aloop = asyncio.get_event_loop()
-        # uggh python 3.6 backwards compat
-        poller = aloop.create_task(cbridge_poller())
-        #poller = asyncio.create_task(cbridge_poller())
+    while run_cbridge_poller:
+        if poller is not None:
+            try:
+                poller.cancel()
+            except asyncio.CancelledError as cex:
+                logging.exception('cancel failed', exc_info=cex)
+        try:
+            # uggh python 3.6 backwards compat
+            poller = aloop.create_task(cbridge_poller())
+            #poller = asyncio.create_task(cbridge_poller())
 
-        await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
+            await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
+            await sio.wait()
+        except KeyboardInterrupt:
+            run_cbridge_poller = False
+
         await sio.wait()
-    except KeyboardInterrupt:
-        run_cbridge_poller = False
-
-    await sio.wait()
-    if poller:
-        await poller
+        if poller:
+            await poller
 
     print('done')
 
