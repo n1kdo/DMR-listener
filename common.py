@@ -252,7 +252,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Southwest GA', 'tg': 31136, 'description': 'Southwest Georgia', },
     {'name': 'KingsLand Digital', 'tg': 31137, 'description': 'Kingsland Digital', },
     {'name': 'Georgia Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
-    {'name': 'BSRG', 'tg': 31140, 'description': 'BSRG', },
+    {'name': 'BSRG', 'tg': 311340, 'description': 'BSRG', },
     {'name': 'Maui County', 'tg': 31151, 'description': 'Maui County', },
     {'name': 'NY-NJ-PA TriState', 'tg': 31360, 'description': 'NY-NJ-PA TriState', },
     {'name': 'Tidewater VA', 'tg': 31515, 'description': 'Tidewater VA', },
