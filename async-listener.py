@@ -9,6 +9,8 @@ import sys
 import logging
 import time
 
+from aiohttp.client_exceptions import ClientConnectorError
+
 import common
 from common import filter_talk_group_name
 from common import interesting_peer_ids
@@ -140,7 +142,7 @@ def convert_brandmeister_timestamp(s):
         return None
 
 
-sio = socketio.AsyncClient()
+sio = socketio.AsyncClient(handle_sigint=False)
 
 
 @sio.event
@@ -161,17 +163,16 @@ async def mqtt(data):
             context_id = raw_data.get('ContextID', -1)
             if destination_id in common.interesting_talk_groups or context_id in interesting_peer_ids:
                 #  print('len(last_ten)={}'.format(len(last_ten)))
-                if raw_data in most_recent_calls:
-                    logging.debug('duplicate!' + str(raw_data))
+                sessionID = raw_data.get('SessionID', 'missing')
+                logging.debug(raw_data)
+                if sessionID in most_recent_calls:
+                    logging.debug('duplicate! ' + str(raw_data))
                 else:
                     if destination_id < 999999 and destination_id not in talk_group_number_to_name_dict:
                         if destination_id not in missing_destinations:
                             missing_destinations.append(destination_id)
                             logging.warning(f'Cannot lookup destination id {destination_id}')
 
-                    most_recent_calls.insert(0, raw_data)
-                    if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
-                        most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
                     start = safe_int(raw_data.get('Start', '0'))
                     end = safe_int(raw_data.get('Stop', '0'))
                     elapsed = float(end - start)
@@ -211,6 +212,7 @@ async def mqtt(data):
 
                     call = {
                         'timestamp': convert_brandmeister_timestamp(start),
+                        'unique': sessionID,  # this is a unique value for this call
                         'site': 'Brandmeister',  # because this is all of brandmeister here...
                         'dest': destination_name,
                         'dest_id': destination_id,  # NEW NEW NEW
@@ -225,7 +227,7 @@ async def mqtt(data):
                         'sourcepeer': '{} -- {}'.format(link_call, context_id)
                     }
                     if len(link_call) == 0 or len(link_name) == 0:
-                        logging.debug(f'no link data {str(raw_data)}')
+                        logging.debug(f'no link call or name data {str(raw_data)}')
                     else:
                         # test the call here, do not want to log traffic from a C-Bridge
                         if link_name == 'CBridge CC-CC Link' and context_id == 111311:
@@ -233,6 +235,9 @@ async def mqtt(data):
                         else:
                             validate_call_data(call)
                             calls_to_log.append(call)
+                            most_recent_calls.insert(0, sessionID)
+                            if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
+                                most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
 
     except KeyError as ke:
         logging.error('KeyError: ' + str(ke))
@@ -278,6 +283,7 @@ def convert_cbridge_timestamp(s):
 def parse_cbridge_call_data(call):
     # print(call)
     call['timestamp'] = convert_cbridge_timestamp(call['time'])
+    call['unique'] = call.get('time', 'no_time') + '|' + call.get('sourceradio', 'no_sourceradio')
     filtered_dest = filter_talk_group_name(call['dest'])
     call['filtered_dest'] = filtered_dest
     call['radio_callsign'] = ''
@@ -461,8 +467,8 @@ async def cbridge_poller():
                         # raise ex
             logging.info(f'done polling, collected {len(calls)} calls')
             append_logged_calls(LOGGED_CALLS_FILENAME, calls)
-        except aiohttp.client_exceptions.ClientConnectorError as exc:
-            logging.error(f'error polling {url}: ', exc_info=exc)
+        except ClientConnectorError as exc:
+            logging.error(f'ClientConnectorError polling {url}: ')
         except Exception as e:
             logging.error(f'error polling {url}, {e}')
         await asyncio.sleep(30)
@@ -513,11 +519,11 @@ async def main():
             await sio.wait()
         except KeyboardInterrupt:
             run_cbridge_poller = False
+            await sio.disconnect()
 
         await sio.wait()
         if poller:
             await poller
-
     print('done')
 
 
@@ -530,5 +536,8 @@ if __name__ == '__main__':
 
     # uggh python 3.6 backwards compat
     loop = asyncio.new_event_loop()
-    loop.run_until_complete(main())
-    # asyncio.run(main())
+    asyncio.set_event_loop(loop)
+    try:
+        loop.run_until_complete(main())
+    except KeyboardInterrupt:
+        run_cbridge_poller = False
