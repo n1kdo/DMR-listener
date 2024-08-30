@@ -37,15 +37,13 @@ DUPLICATES_LIST_SIZE = 50
 write_files = True
 most_recent_calls = []  # this is used to help prevent duplicate records.
 missing_destinations = []
-
 repeaters = []
 repeaters_by_id = {}
 
 run_cbridge_poller = True
 
+
 # this is a terrible hack to get some cruft out of the brandmeister talk group names.
-
-
 def validate_call_data(call):
     # print(call)
     dest_id = call.get('dest_id')
@@ -70,7 +68,7 @@ def validate_call_data(call):
             found_talk_group = talk_group
             break
     if found_talk_group is None:
-        logging.warning(f'Cannot find talk group {call_talk_group_name} in network {network_name} {call}')
+        logging.warning(f'Cannot find talk group "{call_talk_group_name}" in network "{network_name}" calldata={call}')
         return False
 
     if dest_id is None:
@@ -171,7 +169,7 @@ async def mqtt(data):
                     if destination_id < 999999 and destination_id not in talk_group_number_to_name_dict:
                         if destination_id not in missing_destinations:
                             missing_destinations.append(destination_id)
-                            logging.warning(f'Cannot lookup destination id {destination_id}')
+                            logging.warning(f'Cannot lookup destination id {destination_id} [brandmeister]')
 
                     start = safe_int(raw_data.get('Start', '0'))
                     end = safe_int(raw_data.get('Stop', '0'))
@@ -468,9 +466,9 @@ async def cbridge_poller():
             logging.info(f'done polling, collected {len(calls)} calls')
             append_logged_calls(LOGGED_CALLS_FILENAME, calls)
         except ClientConnectorError as exc:
-            logging.error(f'ClientConnectorError polling {url}: ')
+            logging.error(f'ClientConnectorError polling {url}: {str(exc)}')
         except Exception as e:
-            logging.error(f'error polling {url}, {e}')
+            logging.exception(f'error polling {url}: {str(exc)}', exc_info=e)
         await asyncio.sleep(30)
     logging.warning('cbridge poller exit...')
 
