@@ -467,7 +467,7 @@ async def cbridge_poller():
             append_logged_calls(LOGGED_CALLS_FILENAME, calls)
         except ClientConnectorError as exc:
             logging.error(f'ClientConnectorError polling {url}: {str(exc)}')
-        except Exception as e:
+        except Exception as exc:
             logging.exception(f'error polling {url}: {str(exc)}', exc_info=e)
         await asyncio.sleep(30)
     logging.warning('cbridge poller exit...')

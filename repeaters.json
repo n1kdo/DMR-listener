@@ -4,7 +4,7 @@
     "call": "AI1U",
     "input": "447.7",
     "output": "442.7",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Lawrenceville, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -25,7 +25,7 @@
     "call": "AI1U",
     "input": "447.6",
     "output": "442.6",
-    "color_code": "3",
+    "color_code": 3,
     "location": "Snellville, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
@@ -286,7 +286,7 @@
     "call": "AI1U",
     "input": "447.5375",
     "output": "442.5375",
-    "color_code": "7",
+    "color_code": 7,
     "location": "Lawrenceville, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
@@ -547,7 +547,7 @@
     "call": "K4IO",
     "input": "448.125",
     "output": "443.125",
-    "color_code": "2",
+    "color_code": 2,
     "location": "Mansfield, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -564,11 +564,11 @@
     ]
   },
   {
-    "peer_id": "311318",
+    "peer_id": 311318,
     "call": "K4QHR",
     "input": "447.1125",
     "output": "442.1125",
-    "color_code": "7",
+    "color_code": 7,
     "location": "Kingsland, Georgia",
     "network": "Brandmeister",
     "notes": "",
@@ -600,7 +600,7 @@
     "call": "K4VLD",
     "input": "147.675",
     "output": "147.075",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Valdosta, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -622,11 +622,11 @@
     ]
   },
   {
-    "peer_id": "310466",
+    "peer_id": 310466,
     "call": "K4VYX",
     "input": "447.8125",
     "output": "442.8125",
-    "color_code": "3",
+    "color_code": 3,
     "location": "Savannah, Georgia",
     "network": "DMR-SE",
     "notes": "",
@@ -768,7 +768,7 @@
     "call": "K5TEX",
     "input": "902.950",
     "output": "927.950",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Free Home, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -825,11 +825,11 @@
     ]
   },
   {
-    "peer_id": "311322",
+    "peer_id": 311322,
     "call": "KA3JIJ",
     "input": "449.95",
     "output": "444.95",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Wauka Mountain, Clermont, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -856,11 +856,11 @@
     ]
   },
   {
-    "peer_id": "312284",
+    "peer_id": 312284,
     "call": "KD4IEZ",
     "input": "449.7875",
     "output": "444.7875",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Dublin, Georgia",
     "network": "DMR-SE",
     "talk_groups": [
@@ -887,11 +887,11 @@
     ]
   },
   {
-    "peer_id": "311314",
+    "peer_id": 311314,
     "call": "KD4KHO",
     "input": "439.4",
     "output": "434.4",
-    "color_code": "3",
+    "color_code": 3,
     "location": "Canton, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -918,11 +918,11 @@
     ]
   },
   {
-    "peer_id": "311338",
+    "peer_id": 311338,
     "call": "KD4Z",
     "input": "447.975",
     "output": "442.975",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Sweat Mountain, Marietta, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
@@ -944,7 +944,7 @@
     "call": "KE4UAS",
     "input": "449.875",
     "output": "444.875",
-    "color_code": "1",
+    "color_code": 1,
     "location": "McDonough, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -966,11 +966,11 @@
     ]
   },
   {
-    "peer_id": "310592",
+    "peer_id": 310592,
     "call": "KG4BKO",
     "input": "449.9875",
     "output": "444.9875",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Vidalia, Georgia",
     "network": "DMR-SE",
     "talk_groups": [
@@ -1007,11 +1007,11 @@
     ]
   },
   {
-    "peer_id": "311350",
+    "peer_id": 311350,
     "call": "KM4DND",
     "input": "449.025",
     "output": "444.025",
-    "color_code": "3",
+    "color_code": 3,
     "location": "Waycross, Georgia",
     "network": "DMR-SE",
     "notes": "",
@@ -1064,11 +1064,11 @@
     ]
   },
   {
-    "peer_id": "312444",
+    "peer_id": 312444,
     "call": "KZ4FOX",
     "input": "445.6625",
     "output": "440.6625",
-    "color_code": "5",
+    "color_code": 5,
     "location": "Athens, Georgia",
     "network": "Brandmeister",
     "notes": "This is a full-time DMR repeater connected to the Brandmeister network. Both time slots can access any talk group connected to that network.",
@@ -1125,7 +1125,7 @@
     "call": "KZ4FOX",
     "input": "447.375",
     "output": "442.375",
-    "color_code": "2",
+    "color_code": 2,
     "location": "Athens, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -1142,11 +1142,11 @@
     ]
   },
   {
-    "peer_id": "312243",
+    "peer_id": 312243,
     "call": "N4RMG",
     "input": "447.2375",
     "output": "442.2375",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Mt. Alto, Rome, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -1168,11 +1168,11 @@
     ]
   },
   {
-    "peer_id": "311321",
+    "peer_id": 311321,
     "call": "N4TAW",
     "input": "448.7375",
     "output": "443.7375",
-    "color_code": "3",
+    "color_code": 3,
     "location": "Between, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
@@ -1329,11 +1329,11 @@
     ]
   },
   {
-    "peer_id": "311637",
+    "peer_id": 311637,
     "call": "NG4RF",
     "input": "447.1125",
     "output": "442.1125",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Sawnee Mountain, Georgia",
     "network": "Ham Digital",
     "notes": "Now connected to Internet",
@@ -1581,11 +1581,11 @@
     ]
   },
   {
-    "peer_id": "311307",
+    "peer_id": 311307,
     "call": "W1KFR",
     "input": "449.625",
     "output": "444.625",
-    "color_code": "3",
+    "color_code": 3,
     "location": "Kingsland, Georgia",
     "network": "DMR-SE",
     "notes": "",
@@ -1638,11 +1638,11 @@
     ]
   },
   {
-    "peer_id": "313142",
+    "peer_id": 313142,
     "call": "W4BOC",
     "input": "446.8125",
     "output": "441.8125",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Stone Mountain, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
@@ -1834,11 +1834,11 @@
     ]
   },
   {
-    "peer_id": "313169",
+    "peer_id": 313169,
     "call": "W4CMB",
     "input": "448.2",
     "output": "443.2",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Lavonia, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
@@ -1876,11 +1876,11 @@
     ]
   },
   {
-    "peer_id": "310371",
+    "peer_id": 310371,
     "call": "W4DOC",
     "input": "449.825",
     "output": "444.825",
-    "color_code": "10",
+    "color_code": 10,
     "location": "Atlanta, Georgia",
     "network": "Ham Digital",
     "talk_groups": [
@@ -2020,6 +2020,11 @@
         "mode": 1
       },
       {
+        "talkgroup": 3172,
+        "slot": 2,
+        "mode": 1
+      },
+      {
         "talkgroup": 3174,
         "slot": 2,
         "mode": 1
@@ -2082,11 +2087,11 @@
     ]
   },
   {
-    "peer_id": "310295",
+    "peer_id": 310295,
     "call": "W4KIP",
     "input": "146.13",
     "output": "146.73",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Sweat Mountain, Marietta, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
@@ -2104,11 +2109,11 @@
     ]
   },
   {
-    "peer_id": "311340",
+    "peer_id": 311340,
     "call": "W4KIP",
     "input": "449.775",
     "output": "444.775",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Sweat Mountain, Marietta, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
@@ -2130,7 +2135,7 @@
     "call": "W4KIP",
     "input": "449.9375",
     "output": "444.9375",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Atlanta, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -2147,11 +2152,11 @@
     ]
   },
   {
-    "peer_id": "310969",
+    "peer_id": 310969,
     "call": "W4KST",
     "input": "448.275",
     "output": "443.275",
-    "color_code": "7",
+    "color_code": 7,
     "location": "KSU Campus, Marietta, Georgia",
     "network": "K4USD",
     "talk_groups": [
@@ -2173,11 +2178,11 @@
     ]
   },
   {
-    "peer_id": "311337",
+    "peer_id": 311337,
     "call": "WA4ASI",
     "input": "449.8",
     "output": "444.8",
-    "color_code": "2",
+    "color_code": 2,
     "location": "Covington, Georgia",
     "network": "Brandmeister",
     "notes": "Any Brandmeister talk group may be activated on Time Slot  1 or 2",
@@ -2199,7 +2204,7 @@
     "call": "WA4ASI",
     "input": "146.325",
     "output": "146.925",
-    "color_code": "2",
+    "color_code": 2,
     "location": "Covington, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -2230,7 +2235,7 @@
     "call": "WR4SG",
     "input": "447.7125",
     "output": "442.7125",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Valdosta, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -2257,11 +2262,11 @@
     ]
   },
   {
-    "peer_id": "312477",
+    "peer_id": 312477,
     "call": "WX4EMA",
     "input": "448.075",
     "output": "443.075",
-    "color_code": "7",
+    "color_code": 7,
     "location": "Macon, Georgia",
     "network": "Brandmeister",
     "notes": "",
@@ -2283,7 +2288,7 @@
     "call": "WX4PCH",
     "input": "449.3125",
     "output": "444.3125",
-    "color_code": "7",
+    "color_code": 7,
     "location": "Powersville , Georgia",
     "network": "Brandmeister",
     "talk_groups": [
@@ -2300,11 +2305,11 @@
     ]
   },
   {
-    "peer_id": "312779",
+    "peer_id": 312779,
     "call": "WY4EMA",
     "input": "445.575",
     "output": "440.575",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Kathleen, Georgia",
     "network": "Brandmeister",
     "notes": "",
@@ -2322,11 +2327,11 @@
     ]
   },
   {
-    "peer_id": "313874",
+    "peer_id": 313874,
     "call": "K9APD",
     "input": "449.325",
     "output": "444.325",
-    "color_code": "1",
+    "color_code": 1,
     "location": "Waleska, Georgia",
     "network": "Brandmeister",
     "notes": "",
@@ -2368,5 +2373,4 @@
       }
     ]
   }
-
 ]
