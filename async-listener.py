@@ -47,6 +47,7 @@ run_cbridge_poller = True
 def validate_call_data(call):
     # print(call)
     dest_id = call.get('dest_id')
+    # this looks up talk groups by name.
     call_talk_group_name = call.get('filtered_dest') or call.get('dest') or '!no_dest!'
     if call_talk_group_name[0] == '(' and call_talk_group_name[-1] == ')':
         #logging.warning(f'Not a talk group name: {call_talk_group_name}, dest_id: {call.get("dest_id")}')
@@ -78,7 +79,7 @@ def validate_call_data(call):
     else:
         if found_talk_group.get('tg') != dest_id:
             logging.warning(f'Confused! dest_id {dest_id} does not match found tg: {found_talk_group} in call {call}')
-            call['dest'] = f'({dest_id})'
+            call['dest'] = f'{call_talk_group_name} {dest_id}'  # make brandmeister talk groups show up as "Local x"
 
     if dest_id is not None:
         peer_id = call.get('peer_id')
@@ -118,7 +119,7 @@ def append_logged_calls(filename, calls):
                        f"{call['peer_callsign']},{call['peer_name']},{call['radio_id']}," \
                        f"{call['radio_callsign']},{call['radio_username']},{call['duration']}," \
                        f"{call['sourcepeer']},{call.get('dest_id') or 0},{call.get('slot') or 0}"
-                print(f'not writing: {line}')
+                logging.debug(f'not writing: {line}')
 
 
 def safe_int(s, default=-1):
@@ -490,8 +491,8 @@ async def main():
             # interesting_talk_group_names.extend(less_interesting_talk_group_names)
             write_files = False
             logging.info('NOT writing files -- debug mode.')
-            logging.basicConfig(level=logging.DEBUG)
-            logging.root.level = logging.DEBUG
+            #  logging.basicConfig(level=logging.DEBUG)
+            logging.root.level = logging.INFO
 
     with open('repeaters.json', 'rb') as repeaters_data_file:
         repeaters = json.load(repeaters_data_file)
