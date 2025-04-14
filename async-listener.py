@@ -1,9 +1,10 @@
 #!/bin/python3
 
+import argparse
 import datetime
-import json
 import asyncio
 import aiohttp
+import json
 import socketio
 import sys
 import logging
@@ -11,18 +12,18 @@ import time
 
 from aiohttp.client_exceptions import ClientConnectorError
 
-import common
-from common import filter_talk_group_name
-from common import interesting_peer_ids
-from common import interesting_talk_groups
-from common import less_interesting_talk_groups
-from common import interesting_talk_group_names
-from common import less_interesting_talk_group_names
-from common import talk_group_alias_to_number_dict
-from common import talk_group_number_to_name_dict
-from common import talk_group_network_number_to_name_dict
+from common import (filter_talk_group_name,
+                    interesting_peer_ids,
+                    interesting_talk_groups,
+                    interesting_talk_group_names,
+                    site_name_to_network_map,
+                    talk_groups,
+                    talk_group_alias_to_number_dict,
+                    talk_group_number_to_name_dict,
+                    talk_group_network_number_to_name_dict)
+# from common import less_interesting_talk_groups, less_interesting_talk_group_names
 
-URL = 'https://api.brandmeister.network'
+BM_API_URL = 'https://api.brandmeister.network'
 SIO_PATH = '/lh/socket.io'
 
 # CBRIDGE_CALL_WATCH_API = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
@@ -55,11 +56,11 @@ def validate_call_data(call):
     if 'Unknown Ipsc' in call_talk_group_name:
         return False
     site = call.get('site') or '!no site!'
-    network_name = common.site_name_to_network_map.get(site)
+    network_name = site_name_to_network_map.get(site)
     if network_name is None:
         logging.warning(f'No network for site {site} {call}')
         return False
-    network_talk_groups = common.talk_groups.get(network_name)
+    network_talk_groups = talk_groups.get(network_name)
     if network_talk_groups is None:
         logging.warning(f'No talk groups for network {network_name} {call}')
         return False
@@ -119,7 +120,7 @@ def append_logged_calls(filename, calls):
                        f"{call['peer_callsign']},{call['peer_name']},{call['radio_id']}," \
                        f"{call['radio_callsign']},{call['radio_username']},{call['duration']}," \
                        f"{call['sourcepeer']},{call.get('dest_id') or 0},{call.get('slot') or 0}"
-                logging.debug(f'not writing: {line}')
+                logging.info(f'not writing: {line}')
 
 
 def safe_int(s, default=-1):
@@ -146,7 +147,7 @@ sio = socketio.AsyncClient(handle_sigint=False)
 
 @sio.event
 async def connect():
-    logging.info('connected')
+    logging.info('sio.event connect')
 
 
 @sio.on('mqtt')
@@ -155,12 +156,15 @@ async def mqtt(data):
     global missing_destinations
     global write_files
     calls_to_log = []
+    logging.debug('sio mqtt received')
     raw_data = json.loads(data['payload'])
     try:
         if raw_data.get('Event', '').strip() == 'Session-Stop':
+            # logging.debug('Session-Stop')
             destination_id = raw_data.get('DestinationID', -1)
             context_id = raw_data.get('ContextID', -1)
-            if destination_id in common.interesting_talk_groups or context_id in interesting_peer_ids:
+            if destination_id in interesting_talk_groups or context_id in interesting_peer_ids:
+                logging.info(f'Session-Stop DestinationID: {destination_id}, ContextID: {context_id}')
                 #  print('len(last_ten)={}'.format(len(last_ten)))
                 sessionID = raw_data.get('SessionID', 'missing')
                 logging.debug(raw_data)
@@ -226,7 +230,7 @@ async def mqtt(data):
                         'sourcepeer': '{} -- {}'.format(link_call, context_id)
                     }
                     if len(link_call) == 0 or len(link_name) == 0:
-                        logging.debug(f'no link call or name data {str(raw_data)}')
+                        logging.info(f'no link call or name data {str(raw_data)}')
                     else:
                         # test the call here, do not want to log traffic from a C-Bridge
                         if link_name == 'CBridge CC-CC Link' and context_id == 111311:
@@ -248,7 +252,7 @@ async def mqtt(data):
 
 @sio.event
 async def disconnect():
-    logging.info('disconnected')
+    logging.info('sio.event disconnect')
 
 
 # CBridge stuff
@@ -485,14 +489,12 @@ async def main():
     write_files = True
     most_recent_calls = []
     missing_destinations = []
-    if len(sys.argv) > 1:
-        if sys.argv[1].lower() == 'test':
-            # interesting_talk_groups.extend(less_interesting_talk_groups)
-            # interesting_talk_group_names.extend(less_interesting_talk_group_names)
-            write_files = False
-            logging.info('NOT writing files -- debug mode.')
-            #  logging.basicConfig(level=logging.DEBUG)
-            logging.root.level = logging.INFO
+    if args is not None and args.test:
+        # interesting_talk_groups.extend(less_interesting_talk_groups)
+        # interesting_talk_group_names.extend(less_interesting_talk_group_names)
+        write_files = False
+        logging.info('NOT writing files -- debug mode.')
+        #  logging.basicConfig(level=logging.DEBUG)
 
     with open('repeaters.json', 'rb') as repeaters_data_file:
         repeaters = json.load(repeaters_data_file)
@@ -513,9 +515,9 @@ async def main():
             # uggh python 3.6 backwards compat
             poller = aloop.create_task(cbridge_poller())
             #poller = asyncio.create_task(cbridge_poller())
-
-            await sio.connect(url=URL, socketio_path=SIO_PATH, transports='websocket')
-            await sio.wait()
+            # start up brandmeister socketio listener
+            await sio.connect(url=BM_API_URL, socketio_path=SIO_PATH, transports='websocket')
+            await sio.wait()  # TODO is this redundant since it also exists lower in this loop?
         except KeyboardInterrupt:
             run_cbridge_poller = False
             await sio.disconnect()
@@ -523,13 +525,25 @@ async def main():
         await sio.wait()
         if poller:
             await poller
-    print('done')
+    logging.info('async listener done.')
 
 
 if __name__ == '__main__':
+    global args
+    parser = argparse.ArgumentParser(description='async-listener collects DMR traffic from a CBridge and BM')
+    parser.add_argument('--debug', action='store_true', help='show logging informational output')
+    parser.add_argument('--info', action='store_true', help='show informational diagnostic output')
+    parser.add_argument('--test', action='store_true', help='enable test mode')
+    args = parser.parse_args()
+    if args.debug:
+        log_level = logging.DEBUG
+    elif args.info:
+        log_level = logging.INFO
+    else:
+        log_level = logging.WARNING
     logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        level=logging.WARNING,
+                        level=log_level,
                         stream=sys.stderr)
     logging.Formatter.converter = time.gmtime
 
@@ -540,3 +554,4 @@ if __name__ == '__main__':
         loop.run_until_complete(main())
     except KeyboardInterrupt:
         run_cbridge_poller = False
+    logging.info('async-listener main() exit.')
