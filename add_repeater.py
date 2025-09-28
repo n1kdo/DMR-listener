@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 script adds repeater to repeaters.json
 

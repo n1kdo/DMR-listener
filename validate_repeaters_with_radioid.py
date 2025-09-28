@@ -1,6 +1,7 @@
-"""
-script validates location, color code, and output frequency for repeaters in repeaters.json
-"""
+#!/usr/bin/env python3
+#
+#script validates location, color code, and output frequency for repeaters in repeaters.json
+#
 import json
 import logging
 import requests

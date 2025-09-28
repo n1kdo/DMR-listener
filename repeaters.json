@@ -9,13 +9,13 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 31012,
-        "slot": 1,
+        "talkgroup": 31131,
+        "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 31131,
-        "slot": 2,
+        "talkgroup": 31018,
+        "slot": 1,
         "mode": 0
       }
     ]
@@ -543,6 +543,32 @@
     ]
   },
   {
+    "peer_id": 311639,
+    "call": "K4EGA",
+    "input": "449.425",
+    "output": "444.425",
+    "color_code": "1",
+    "location": "Eatonton, Georgia",
+    "network": "Brandmeister",
+    "talk_groups": [
+      {
+        "talkgroup": 311639,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3111657,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113561,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
     "peer_id": 313248,
     "call": "K4IO",
     "input": "448.125",
@@ -552,13 +578,23 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      },
+      {
         "talkgroup": 31131,
-        "slot": 1,
+        "slot": 2,
         "mode": 0
       },
       {
         "talkgroup": 3113,
-        "slot": 2,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31131,
+        "slot": 1,
         "mode": 0
       }
     ]
@@ -574,6 +610,11 @@
     "notes": "",
     "talk_groups": [
       {
+        "talkgroup": 311307,
+        "slot": 1,
+        "mode": 0
+      },
+      {
         "talkgroup": 31121,
         "slot": 2,
         "mode": 0
@@ -584,13 +625,8 @@
         "mode": 0
       },
       {
-        "talkgroup": 311291,
+        "talkgroup": 312801,
         "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 311307,
-        "slot": 1,
         "mode": 0
       }
     ]
@@ -605,18 +641,23 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 3113,
-        "slot": 2,
-        "mode": 0
-      },
-      {
         "talkgroup": 31121,
         "slot": 2,
         "mode": 0
       },
       {
+        "talkgroup": 31130,
+        "slot": 1,
+        "mode": 0
+      },
+      {
         "talkgroup": 31132,
         "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 1,
         "mode": 0
       }
     ]
@@ -773,17 +814,12 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 3113,
-        "slot": 1,
+        "talkgroup": 30234,
+        "slot": 2,
         "mode": 0
       },
       {
         "talkgroup": 31130,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31131,
         "slot": 1,
         "mode": 0
       },
@@ -798,7 +834,22 @@
         "mode": 0
       },
       {
-        "talkgroup": 30234,
+        "talkgroup": 310593,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 314822,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 314887,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31900,
         "slot": 2,
         "mode": 0
       },
@@ -806,19 +857,51 @@
         "talkgroup": 31151,
         "slot": 2,
         "mode": 0
-      },
+      }
+    ]
+  },
+  {
+    "peer_id": 313874,
+    "call": "K9APD",
+    "input": "449.325",
+    "output": "444.325",
+    "color_code": 1,
+    "location": "Waleska, Georgia",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
       {
-        "talkgroup": 310593,
+        "talkgroup": 3113,
         "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 311340,
+        "talkgroup": 31130,
         "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 314822,
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31133,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31139,
         "slot": 2,
         "mode": 0
       }
@@ -836,11 +919,6 @@
       {
         "talkgroup": 93,
         "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3113,
-        "slot": 2,
         "mode": 0
       },
       {
@@ -896,22 +974,12 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 3113,
+        "talkgroup": 3215969,
         "slot": 1,
         "mode": 0
       },
       {
-        "talkgroup": 31130,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31131,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31134,
+        "talkgroup": 3217955,
         "slot": 2,
         "mode": 0
       }
@@ -928,13 +996,13 @@
     "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
     "talk_groups": [
       {
-        "talkgroup": 3113,
-        "slot": 2,
+        "talkgroup": 31131,
+        "slot": 1,
         "mode": 0
       },
       {
-        "talkgroup": 31131,
-        "slot": 1,
+        "talkgroup": 3113,
+        "slot": 2,
         "mode": 0
       }
     ]
@@ -1074,17 +1142,12 @@
     "notes": "This is a full-time DMR repeater connected to the Brandmeister network. Both time slots can access any talk group connected to that network.",
     "talk_groups": [
       {
-        "talkgroup": 3113,
-        "slot": 2,
+        "talkgroup": 312384,
+        "slot": 1,
         "mode": 0
       },
       {
-        "talkgroup": 3171,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31131,
+        "talkgroup": 98003,
         "slot": 2,
         "mode": 0
       },
@@ -1094,27 +1157,17 @@
         "mode": 0
       },
       {
-        "talkgroup": 98003,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 310869,
+        "talkgroup": 3113,
         "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 312384,
+        "talkgroup": 31131,
         "slot": 1,
         "mode": 0
       },
       {
-        "talkgroup": 312764,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 315518,
+        "talkgroup": 3100,
         "slot": 2,
         "mode": 0
       }
@@ -1142,6 +1195,32 @@
     ]
   },
   {
+    "peer_id": 310558,
+    "call": "N4MSE",
+    "input": "447.575",
+    "output": "442.575",
+    "color_code": "1",
+    "location": "Hilton Head Island, South Carolina",
+    "network": "Brandmeister",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 1
+      },
+      {
+        "talkgroup": 9,
+        "slot": 2,
+        "mode": 1
+      }
+    ]
+  },
+  {
     "peer_id": 312243,
     "call": "N4RMG",
     "input": "447.2375",
@@ -1151,19 +1230,75 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 3101,
-        "slot": 2,
-        "mode": 0
-      },
-      {
         "talkgroup": 3113,
         "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 314722,
+        "talkgroup": 31621,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 93,
         "slot": 1,
         "mode": 0
+      },
+      {
+        "talkgroup": 31133,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31134,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": 312732,
+    "call": "N4SFU",
+    "input": "448.5625",
+    "output": "443.5625",
+    "color_code": "1",
+    "location": "Twin City, Georgia",
+    "network": "DMR-MARC",
+    "talk_groups": [
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 3174,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 1,
+        "mode": 1
+      },
+      {
+        "talkgroup": 2,
+        "slot": 2,
+        "mode": 1
       }
     ]
   },
@@ -1621,6 +1756,11 @@
         "mode": 0
       },
       {
+        "talkgroup": 31121,
+        "slot": 2,
+        "mode": 0
+      },
+      {
         "talkgroup": 31128,
         "slot": 1,
         "mode": 0
@@ -1844,12 +1984,12 @@
     "notes": "Any Brandmeister talk group may be activated on Time Slot 2",
     "talk_groups": [
       {
-        "talkgroup": 31130,
+        "talkgroup": 312486,
         "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 31131,
+        "talkgroup": 313169,
         "slot": 2,
         "mode": 0
       },
@@ -1859,18 +1999,23 @@
         "mode": 0
       },
       {
+        "talkgroup": 31131,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31130,
+        "slot": 2,
+        "mode": 0
+      },
+      {
         "talkgroup": 31139,
         "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 312486,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 313169,
-        "slot": 2,
+        "talkgroup": 91,
+        "slot": 1,
         "mode": 0
       }
     ]
@@ -2097,13 +2242,13 @@
     "notes": "Any Brandmeister talk group may be activated on Time Slot 1",
     "talk_groups": [
       {
-        "talkgroup": 3113,
-        "slot": 1,
+        "talkgroup": 311340,
+        "slot": 2,
         "mode": 0
       },
       {
-        "talkgroup": 311340,
-        "slot": 2,
+        "talkgroup": 3113,
+        "slot": 1,
         "mode": 0
       }
     ]
@@ -2137,6 +2282,37 @@
     "output": "444.9375",
     "color_code": 1,
     "location": "Atlanta, Georgia",
+    "network": "Brandmeister",
+    "talk_groups": [
+      {
+        "talkgroup": 311340,
+        "slot": 2,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 91,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3100,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": 311343,
+    "call": "W4KIP",
+    "input": "449.05",
+    "output": "444.05",
+    "color_code": "1",
+    "location": "Waleska, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
       {
@@ -2196,6 +2372,11 @@
         "talkgroup": 31131,
         "slot": 1,
         "mode": 0
+      },
+      {
+        "talkgroup": 31139,
+        "slot": 2,
+        "mode": 0
       }
     ]
   },
@@ -2209,24 +2390,9 @@
     "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 9,
+        "talkgroup": 31139,
         "slot": 2,
         "mode": 0
-      },
-      {
-        "talkgroup": 3113,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 9990,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31131,
-        "slot": 2,
-        "mode": 1
       }
     ]
   },
@@ -2315,59 +2481,12 @@
     "notes": "",
     "talk_groups": [
       {
-        "talkgroup": 3113,
-        "slot": 2,
-        "mode": 0
-      },
-      {
         "talkgroup": 31135,
         "slot": 1,
         "mode": 0
-      }
-    ]
-  },
-  {
-    "peer_id": 313874,
-    "call": "K9APD",
-    "input": "449.325",
-    "output": "444.325",
-    "color_code": 1,
-    "location": "Waleska, Georgia",
-    "network": "Brandmeister",
-    "notes": "",
-    "talk_groups": [
+      },
       {
         "talkgroup": 3113,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31130,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31131,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31133,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31134,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 31139,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3174,
         "slot": 2,
         "mode": 0
       }

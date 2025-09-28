@@ -29,7 +29,8 @@ SIO_PATH = '/lh/socket.io'
 # CBRIDGE_CALL_WATCH_API = 'http://w0yc.stu.umn.edu:42420/data.txt'  # K4USD with nobody on it
 # CBRIDGE_SITE = 'K4USD Network'
 #CBRIDGE_CALL_WATCH_API ='https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
-CBRIDGE_CALL_WATCH_API = 'https://cbridge-scraper.hamdigital.net/data.txt'  # hamdigital atl
+# CBRIDGE_CALL_WATCH_API = 'https://cbridge-scraper.hamdigital.net/data.txt'  # hamdigital atl
+CBRIDGE_CALL_WATCH_API = 'http://bridge.hamdigital.net:42420/data.txt'
 CBRIDGE_SITE = 'Ham Digital'
 
 LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'

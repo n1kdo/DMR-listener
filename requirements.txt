@@ -2,6 +2,5 @@ numpy==1.25.2
 matplotlib~=3.7
 python-socketio~=5.3
 websocket-client
-# websocket-client~=1.6
 aiohttp~=3.11
-# requests~=2.30.0
+
