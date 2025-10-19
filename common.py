@@ -97,8 +97,8 @@ interesting_peers = {
     }
 
 interesting_peer_ids = interesting_peers.keys()
-
-
+ignore_peer_ids = [311333011,  # WA4YIH Homebrew Repeater constant kerchunks onto TG 3113.
+                   ]
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
 remap_map = {
     -1: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
