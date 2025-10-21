@@ -9,10 +9,10 @@ import socketio
 import sys
 import logging
 import time
-
 from aiohttp.client_exceptions import ClientConnectorError
 
 from common import (filter_talk_group_name,
+                    ignore_peer_ids,
                     interesting_peer_ids,
                     interesting_talk_groups,
                     interesting_talk_group_names,
@@ -30,8 +30,13 @@ SIO_PATH = '/lh/socket.io'
 # CBRIDGE_SITE = 'K4USD Network'
 #CBRIDGE_CALL_WATCH_API ='https://cbridge.hamdigital.net/data.txt'  # hamdigital atl
 # CBRIDGE_CALL_WATCH_API = 'https://cbridge-scraper.hamdigital.net/data.txt'  # hamdigital atl
-CBRIDGE_CALL_WATCH_API = 'http://bridge.hamdigital.net:42420/data.txt'
-CBRIDGE_SITE = 'Ham Digital'
+#CBRIDGE_CALL_WATCH_API = 'http://bridge.hamdigital.net:42420/data.txt'
+#CBRIDGE_SITE = 'Ham Digital'
+
+CBRIDGE_CALL_WATCH_API = 'http://192.223.28.176:42420/data.txt'
+CBRIDGE_SITE = 'DMR-SE'
+
+HTTP_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'
 
 LOGGED_CALLS_FILENAME = 'async_logged_calls.txt'
 DUPLICATES_LIST_SIZE = 50
@@ -148,7 +153,7 @@ sio = socketio.AsyncClient(handle_sigint=False)
 
 @sio.event
 async def connect():
-    logging.info('sio.event connect')
+    logging.debug('sio.event connect')
 
 
 @sio.on('mqtt')
@@ -164,7 +169,7 @@ async def mqtt(data):
             # logging.debug('Session-Stop')
             destination_id = raw_data.get('DestinationID', -1)
             context_id = raw_data.get('ContextID', -1)
-            if destination_id in interesting_talk_groups or context_id in interesting_peer_ids:
+            if (destination_id in interesting_talk_groups or context_id in interesting_peer_ids) and context_id not in ignore_peer_ids:
                 logging.info(f'Session-Stop DestinationID: {destination_id}, ContextID: {context_id}')
                 #  print('len(last_ten)={}'.format(len(last_ten)))
                 sessionID = raw_data.get('SessionID', 'missing')
@@ -189,9 +194,10 @@ async def mqtt(data):
 
                     destination_name = raw_data.get('DestinationName', '!missing!').strip()
                     if destination_name not in talk_group_alias_to_number_dict['Brandmeister']:
-                        old_destination_name = destination_name
+                        #old_destination_name = destination_name
                         destination_name = talk_group_network_number_to_name_dict['Brandmeister'].get(destination_id, f'({destination_id})')
-                        logging.info(f'Could not find destination name "{old_destination_name}", will use "{destination_name}".')
+                        #logging.info(f'Could not find destination name "{old_destination_name}", will use "{destination_name}".')
+                        #logging.info(raw_data)
 
                     slot = raw_data.get('Slot', -1)
                     if slot == -1:
@@ -214,34 +220,35 @@ async def mqtt(data):
                             'Kerchunk! start: {} end:{} elapsed: {} total_count: {} destination: {} sourcecall: {}'.format(
                                 start, end, elapsed, total_count, destination_name, source_call))
 
-                    call = {
-                        'timestamp': convert_brandmeister_timestamp(start),
-                        'unique': sessionID,  # this is a unique value for this call
-                        'site': 'Brandmeister',  # because this is all of brandmeister here...
-                        'dest': destination_name,
-                        'dest_id': destination_id,  # NEW NEW NEW
-                        'slot': slot,  # NEW NEW NEW
-                        'peer_id': context_id,
-                        'peer_callsign': link_call,
-                        'peer_name': link_name,
-                        'radio_id': source_id,
-                        'radio_callsign': source_call,
-                        'radio_username': source_name,
-                        'duration': elapsed,
-                        'sourcepeer': '{} -- {}'.format(link_call, context_id)
-                    }
-                    if len(link_call) == 0 or len(link_name) == 0:
-                        logging.info(f'no link call or name data {str(raw_data)}')
-                    else:
-                        # test the call here, do not want to log traffic from a C-Bridge
-                        if link_name == 'CBridge CC-CC Link' and context_id == 111311:
-                            logging.info(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
+                    if context_id not in ignore_peer_ids:
+                        call = {
+                            'timestamp': convert_brandmeister_timestamp(start),
+                            'unique': sessionID,  # this is a unique value for this call
+                            'site': 'Brandmeister',  # because this is all of brandmeister here...
+                            'dest': destination_name,
+                            'dest_id': destination_id,  # NEW NEW NEW
+                            'slot': slot,  # NEW NEW NEW
+                            'peer_id': context_id,
+                            'peer_callsign': link_call,
+                            'peer_name': link_name,
+                            'radio_id': source_id,
+                            'radio_callsign': source_call,
+                            'radio_username': source_name,
+                            'duration': elapsed,
+                            'sourcepeer': '{} -- {}'.format(link_call, context_id)
+                        }
+                        if len(link_call) == 0 or len(link_name) == 0:
+                            logging.info(f'no link call or name data {str(raw_data)}')
                         else:
-                            validate_call_data(call)
-                            calls_to_log.append(call)
-                            most_recent_calls.insert(0, sessionID)
-                            if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
-                                most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
+                            # test the call here, do not want to log traffic from a C-Bridge
+                            if link_name == 'CBridge CC-CC Link' and context_id == 111311:
+                                logging.info(f'Not logging {link_name} traffic for call from peer {link_call} {context_id}')
+                            else:
+                                validate_call_data(call)
+                                calls_to_log.append(call)
+                                most_recent_calls.insert(0, sessionID)
+                                if len(most_recent_calls) > DUPLICATES_LIST_SIZE:
+                                    most_recent_calls = most_recent_calls[:DUPLICATES_LIST_SIZE]
 
     except KeyError as ke:
         logging.error('KeyError: ' + str(ke))
@@ -253,7 +260,7 @@ async def mqtt(data):
 
 @sio.event
 async def disconnect():
-    logging.info('sio.event disconnect')
+    logging.debug('sio.event disconnect')
 
 
 # CBridge stuff
@@ -395,7 +402,8 @@ def parse_cbridge_call_data(call):
 async def cbridge_poller():
     data_labels = ['time', 'duration', 'sourcepeer', 'sourceradio', 'dest', 'rssi', 'site', 'lossrate']
     update_number = 0
-    headers = {'User-Agent': 'N1KDO C-Bridge scraper, contact n1kdo to make it stop.'}
+    # headers = {'User-Agent': 'N1KDO C-Bridge scraper, contact n1kdo to make it stop.'}
+    headers = {'User-Agent': HTTP_USER_AGENT}
 
     while run_cbridge_poller:
         calls = []
@@ -469,7 +477,9 @@ async def cbridge_poller():
                         print(e)
                         print(ex)
                         # raise ex
-            logging.info(f'done polling, collected {len(calls)} calls')
+            num_calls = len(calls)
+            if num_calls > 0:
+                logging.info(f'done polling, collected {num_calls} calls')
             append_logged_calls(LOGGED_CALLS_FILENAME, calls)
         except ClientConnectorError as exc:
             logging.error(f'ClientConnectorError polling {url}: {str(exc)}')
@@ -494,7 +504,7 @@ async def main():
         # interesting_talk_groups.extend(less_interesting_talk_groups)
         # interesting_talk_group_names.extend(less_interesting_talk_group_names)
         write_files = False
-        logging.info('NOT writing files -- debug mode.')
+        logging.warning('NOT writing files -- test mode.')
         #  logging.basicConfig(level=logging.DEBUG)
 
     with open('repeaters.json', 'rb') as repeaters_data_file:
