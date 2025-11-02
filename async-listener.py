@@ -16,6 +16,7 @@ from common import (filter_talk_group_name,
                     interesting_peer_ids,
                     interesting_talk_groups,
                     interesting_talk_group_names,
+                    remap_map,
                     site_name_to_network_map,
                     talk_groups,
                     talk_group_alias_to_number_dict,
@@ -59,7 +60,7 @@ def validate_call_data(call):
     if call_talk_group_name[0] == '(' and call_talk_group_name[-1] == ')':
         #logging.warning(f'Not a talk group name: {call_talk_group_name}, dest_id: {call.get("dest_id")}')
         return False
-    if 'Unknown Ipsc' in call_talk_group_name:
+    if 'unknown' in call_talk_group_name.lower():
         return False
     site = call.get('site') or '!no site!'
     network_name = site_name_to_network_map.get(site)
@@ -70,6 +71,13 @@ def validate_call_data(call):
     if network_talk_groups is None:
         logging.warning(f'No talk groups for network {network_name} {call}')
         return False
+    peer_id = call.get('peer_id')
+    remap_list = remap_map.get(peer_id)
+    if remap_list is not None:
+        for remap in remap_list:
+            if remap['tg_name_old'] == call_talk_group_name:
+                call_talk_group_name = remap['tg_name_new']
+
     found_talk_group = None
     for talk_group in network_talk_groups:
         if talk_group.get('name') == call_talk_group_name:
@@ -170,7 +178,7 @@ async def mqtt(data):
             destination_id = raw_data.get('DestinationID', -1)
             context_id = raw_data.get('ContextID', -1)
             if (destination_id in interesting_talk_groups or context_id in interesting_peer_ids) and context_id not in ignore_peer_ids:
-                logging.info(f'Session-Stop DestinationID: {destination_id}, ContextID: {context_id}')
+                logging.debug(f'Session-Stop DestinationID: {destination_id}, ContextID: {context_id}')
                 #  print('len(last_ten)={}'.format(len(last_ten)))
                 sessionID = raw_data.get('SessionID', 'missing')
                 logging.debug(raw_data)
@@ -238,7 +246,7 @@ async def mqtt(data):
                             'sourcepeer': '{} -- {}'.format(link_call, context_id)
                         }
                         if len(link_call) == 0 or len(link_name) == 0:
-                            logging.info(f'no link call or name data {str(raw_data)}')
+                            logging.debug(f'no link call or name data {str(raw_data)}')
                         else:
                             # test the call here, do not want to log traffic from a C-Bridge
                             if link_name == 'CBridge CC-CC Link' and context_id == 111311:
@@ -413,7 +421,7 @@ async def cbridge_poller():
             url = f'{CBRIDGE_CALL_WATCH_API}?param=ajaxcallwatch'
 
         try:
-            logging.info(f'polling {url}')
+            logging.debug(f'polling {url}')
             async with aiohttp.ClientSession(headers=headers) as session:
                 async with session.get(url) as response:
                     status = response.status
