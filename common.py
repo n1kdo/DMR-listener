@@ -20,7 +20,19 @@ interesting_talk_group_names = [
     #"Vidalia Net",
 ]
 
-interesting_talk_groups = [3113, 31130, 31131, 31132, 31133, 31134, 31135, 31136, 31137, 31138, 31139, 311340, 3113090, ]
+interesting_talk_groups = [3113,
+                           31130,
+                           31131,
+                           31132,
+                           31133,
+                           31134,
+                           31135,
+                           31136,
+                           31137,
+                           31138,
+                           31139,
+                           311340,
+                           3113090, ]
 
 less_interesting_talk_group_names = [  # for debugging with more volume
     'TAC 310',
@@ -104,17 +116,22 @@ remap_map = {
     -1: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     0: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],  # 0 will always remap.
     -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    310466: [{'tg_name_old': 'Savannah - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Savannah - FL Statewide','tg_name_new': 'Florida State-wide'}],
     310592: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
-    311307: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    311307: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Kingsland - FL Statewide', 'tg_name_new': 'Florida State-wide'}],
     311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311350: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
-    312284: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312284: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Dublin GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312485: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312732: [{'tg_name_old': 'Twin City GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
 }
 
 
@@ -138,7 +155,12 @@ def filter_talk_group_name(tg_name):
     return s
 
 
-networks = ['Brandmeister', 'DMR-MARC', 'DMR-SE', 'K4USD', 'Ham Digital']
+networks = ['Brandmeister',
+            'DMR-MARC',
+            'DMR-SE',
+            #'K4USD',
+            'Ham Digital',
+            ]
 
 site_name_to_network_map = {
     'Brandmeister': 'Brandmeister',
