@@ -114,23 +114,36 @@ ignore_peer_ids = [311333011,  # WA4YIH Homebrew Repeater constant kerchunks ont
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
 remap_map = {
     -1: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    0: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],  # 0 will always remap.
-    -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    0: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}, # 0 will always remap.
+        ],
+#    -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310466: [{'tg_name_old': 'Savannah - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
-             {'tg_name_old': 'Savannah - FL Statewide','tg_name_new': 'Florida State-wide'}],
-    310592: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    311307: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'},
-             {'tg_name_old': 'Kingsland - FL Statewide', 'tg_name_new': 'Florida State-wide'}],
-    311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    311350: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
-    311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+             {'tg_name_old': 'Savannah - Local', 'tg_name_new': 'Local 9'},
+             {'tg_name_old': 'Savannah - Kingsland 9', 'tg_name_new': 'Kingsland - Local'},
+             {'tg_name_old': 'Savannah - FL Statewide','tg_name_new': 'FLstate'},
+             ],
+    310592: [{'tg_name_old': 'Vidalia - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
+#    310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    311307: [{'tg_name_old': 'Kingsland - BM - WW', 'tg_name_new': 'BM-WW'},
+             {'tg_name_old': 'Kingsland - Bridge 3100', 'tg_name_new': 'USA 3100'},
+             {'tg_name_old': 'Kingsland - First Coast', 'tg_name_new': 'First Coast'},
+             {'tg_name_old': 'Kingsland - FL Statewide', 'tg_name_new': 'FLstate'},
+             {'tg_name_old': 'Kingsland - GA Statewide', 'tg_name_new': 'GAstate'},
+             {'tg_name_old': 'Kingsland - NE FL ARES', 'tg_name_new': 'NE FL ARES'},
+             ],
+#    311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    311350: [{'tg_name_old': 'Waycross - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Waycross - Parrot', 'tg_name_new': 'Parrot'},
+             {'tg_name_old': 'Waycross - USA 3100', 'tg_name_new': 'USA 3100'},
+             {'tg_name_old': 'Waycross - Local', 'tg_name_new': 'Local9'},
+             ],
+#    311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
-    312284: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'},
-             {'tg_name_old': 'Dublin GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
-    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+    312284: [{'tg_name_old': 'Dublin GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             ],
+#    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
-    312485: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
+#    312485: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312732: [{'tg_name_old': 'Twin City GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
 }
 
@@ -168,9 +181,6 @@ site_name_to_network_map = {
     'DMR-MARC-CCEAST': 'DMR-MARC',
     'DMR-MARC-CCWEST': 'DMR-MARC',
     'DMR-SE': 'DMR-SE',
-    'K4USD': 'K4USD',
-    'K4USD Network': 'K4USD',
-    'K4USD-2 Network': 'K4USD',
     'Ham Digital': 'Ham Digital',
     'Homebrew Repeater': 'Brandmeister',  # obsolete
     'MMDVM Host': 'Brandmeister',  # obsolete
@@ -336,10 +346,10 @@ talk_groups['DMR-SE'] = [
     {'name': 'TAC318', 'tg': 318, 'description': 'TAC318', },
     {'name': 'TAC319', 'tg': 319, 'description': 'TAC319', },
     {'name': 'USA', 'tg': 1776, 'description': 'USA 1776', },
-    {'name': 'Bridge', 'tg': 3100, 'description': 'Bridge 3100', },
+    {'name': 'USA 3100', 'tg': 3100, 'description': 'USA 3100', },
     {'name': 'DEstate', 'tg': 3110, 'description': 'Delaware State-wide', },
     {'name': 'DCstate', 'tg': 3111, 'description': 'District of Columbia', },
-    {'name': 'Florida', 'tg': 3112, 'description': 'Florida State-wide', },
+    {'name': 'FLstate', 'tg': 3112, 'description': 'Florida State-wide', },
     {'name': 'GAstate', 'tg': 3113, 'description': 'Georgia State-wide', },
     {'name': 'INstate', 'tg': 3118, 'description': 'Indiana State-wide', },
     {'name': 'KYstate', 'tg': 3121, 'description': 'Kentucky State-wide', },
@@ -393,6 +403,9 @@ talk_groups['DMR-SE'] = [
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
+"""
+deprecated
+#
 talk_groups['K4USD'] = [
     {'name': 'DMR-MARC NA', 'tg': 1, 'description': 'DMR-MARC North America', },
     {'name': 'Local2', 'tg': 2, 'description': 'Local 2', },
@@ -466,6 +479,7 @@ talk_groups['K4USD'] = [
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
+"""
 
 talk_groups['Ham Digital'] = [
     {'name': 'Worldwide', 'tg': 1, 'description': 'DMR-MARC Worldwide', },
