@@ -112,6 +112,7 @@ interesting_peer_ids = interesting_peers.keys()
 ignore_peer_ids = [311333011,  # WA4YIH Homebrew Repeater constant kerchunks onto TG 3113.
                    ]
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
+# names must map to talk group map names, below.
 remap_map = {
     -1: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     0: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}, # 0 will always remap.
@@ -125,21 +126,26 @@ remap_map = {
     310592: [{'tg_name_old': 'Vidalia - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
 #    310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311307: [{'tg_name_old': 'Kingsland - BM - WW', 'tg_name_new': 'BM-WW'},
+             {'tg_name_old': 'Kingsland - BM - NA', 'tg_name_new': 'BM-NA'},
              {'tg_name_old': 'Kingsland - Bridge 3100', 'tg_name_new': 'USA 3100'},
              {'tg_name_old': 'Kingsland - First Coast', 'tg_name_new': 'First Coast'},
              {'tg_name_old': 'Kingsland - FL Statewide', 'tg_name_new': 'FLstate'},
              {'tg_name_old': 'Kingsland - GA Statewide', 'tg_name_new': 'GAstate'},
              {'tg_name_old': 'Kingsland - NE FL ARES', 'tg_name_new': 'NE FL ARES'},
+             {'tg_name_old': 'Kingsland - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
              ],
 #    311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311350: [{'tg_name_old': 'Waycross - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Waycross - Kingsland 9', 'tg_name_new': 'Kingsland - Local'},
              {'tg_name_old': 'Waycross - Parrot', 'tg_name_new': 'Parrot'},
+             {'tg_name_old': 'Waycross - BM - NA', 'tg_name_new': 'BM-NA'},
              {'tg_name_old': 'Waycross - USA 3100', 'tg_name_new': 'USA 3100'},
              {'tg_name_old': 'Waycross - Local', 'tg_name_new': 'Local9'},
              ],
 #    311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312284: [{'tg_name_old': 'Dublin GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Dublin GA - Local', 'tg_name_new': 'Local 9'},
              ],
 #    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
@@ -148,6 +154,7 @@ remap_map = {
 }
 
 
+# TODO functionality duplicated in async-listener.
 def filter_talk_group_name(tg_name):
     # Strip "CC" and everything after it.
     s = re.sub(r' CC.*', '', tg_name)

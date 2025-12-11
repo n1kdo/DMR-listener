@@ -11,8 +11,7 @@ import logging
 import time
 from aiohttp.client_exceptions import ClientConnectorError
 
-from common import (filter_talk_group_name,
-                    ignore_peer_ids,
+from common import (ignore_peer_ids,
                     interesting_peer_ids,
                     interesting_talk_groups,
                     interesting_talk_group_names,
@@ -84,7 +83,8 @@ def validate_call_data(call):
             found_talk_group = talk_group
             break
     if found_talk_group is None:
-        logging.warning(f'Cannot find talk group "{call_talk_group_name}" in network "{network_name}" calldata={call}')
+        logging.warning(f'Cannot find talk group "{call_talk_group_name}" in network "{network_name}" on repeater "{site}".')
+        logging.warning(call)
         return False
 
     if dest_id is None:
@@ -188,7 +188,7 @@ async def mqtt(data):
                     if destination_id < 999999 and destination_id not in talk_group_number_to_name_dict:
                         if destination_id not in missing_destinations:
                             missing_destinations.append(destination_id)
-                            logging.warning(f'Cannot lookup destination id {destination_id} [brandmeister]')
+                            logging.warning(f'can not lookup destination id {destination_id} [brandmeister]')
 
                     start = safe_int(raw_data.get('Start', '0'))
                     end = safe_int(raw_data.get('Stop', '0'))
@@ -299,11 +299,35 @@ def convert_cbridge_timestamp(s):
         return None
 
 
+
+def filter_cbridge_talk_group_name(tg_name):
+    # Strip "CC" and everything after it.
+    s = re.sub(r' CC.*', '', tg_name)
+    # strip "CC" alone
+    s = re.sub(r' CC', '', s)
+    # strip out number-number-number
+    s = re.sub(r' \d+-\d+-\d+', '', s)
+    # strip out number-number
+    s = re.sub(r' \d+-\d+', '', s)
+    # print("%s | %s" % (s, old_s))
+    # remove trailing TG <number>
+    i = s.find(' TG ')
+    if i > 0:
+        s = s[0:i]
+    s = s.strip()
+    if len(s) < 1:
+        logging.warning('talkgroup name filter problem: {} -> {}'.format(tg_name, s))
+    return s
+
+
 def parse_cbridge_call_data(call):
     # print(call)
     call['timestamp'] = convert_cbridge_timestamp(call['time'])
     call['unique'] = call.get('time', 'no_time') + '|' + call.get('sourceradio', 'no_sourceradio')
-    filtered_dest = filter_talk_group_name(call['dest'])
+    dest = call['dest']
+    call['original_dest'] = dest
+    filtered_dest = filter_cbridge_talk_group_name(dest)
+    call['dest'] = filtered_dest
     call['filtered_dest'] = filtered_dest
     call['radio_callsign'] = ''
     call['radio_username'] = ''

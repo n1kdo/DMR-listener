@@ -798,6 +798,7 @@ def print_users_summary(users_list):
 def normalize_talkgroup_names(calls):
     for call in calls:
         site = call.get('site')
+        # TODO: soon to be redundant?
         call['dest'] = filter_talk_group_name(call.get('dest') or '!missing!')
         network = site_name_to_network_map.get(site)
         tgid = call.get('tgid') or '0'
