@@ -5,6 +5,7 @@ import datetime
 import asyncio
 import aiohttp
 import json
+import re
 import socketio
 import sys
 import logging
@@ -516,7 +517,7 @@ async def cbridge_poller():
         except ClientConnectorError as exc:
             logging.error(f'ClientConnectorError polling {url}: {str(exc)}')
         except Exception as exc:
-            logging.exception(f'error polling {url}: {str(exc)}', exc_info=e)
+            logging.exception(f'error polling {url}: {str(exc)}', exc_info=exc)
         await asyncio.sleep(30)
     logging.warning('cbridge poller exit...')
 
