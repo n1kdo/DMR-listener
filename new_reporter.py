@@ -279,6 +279,9 @@ color: black;
     color: red;
     font-weight: bold;
 }
+.red {
+    color: red;
+}
   </style>
 """)
         htmlfile.write('</head>\n<body>\n')
@@ -297,7 +300,10 @@ color: black;
             htmlfile.write('<div class="tab">\n')
             htmlfile.write('<input type="checkbox" id="chck{}">\n'.format(ctr))
             rptr = '{} {} {}'.format(repeater['call'], repeater['output'], repeater['location'])
-            htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
+            if last_heard is None:
+                htmlfile.write('<label class="tab-label red" for="chck{}">{} (not heard)</label>\n'.format(ctr, rptr))
+            else:
+                htmlfile.write('<label class="tab-label" for="chck{}">{}</label>\n'.format(ctr, rptr))
             htmlfile.write('<div class="tab-content">\n')
             htmlfile.write('<table class="talk-groups-table">\n')
             info = '{} {} {} {} CC {} {}'.format(repeater['call'], repeater['location'], repeater['output'], repeater['input'], repeater['color_code'], repeater['network'])
@@ -314,7 +320,11 @@ color: black;
                     tg_number = safe_int(talk_group['talkgroup'])
                     tg_timeslot = talk_group['slot']
                     tg_mode = talk_group['mode']
-                    talk_group_data = talk_group_number_to_data_mapping[repeater['network']].get(tg_number)
+                    mapping = talk_group_number_to_data_mapping.get(repeater['network'])
+                    if mapping is not None:
+                        talk_group_data = mapping.get(tg_number)
+                    else:
+                        talk_group_data = None
                     if talk_group_data is None:
                         if tg_number < 99999:
                             logging.warning(f'missing talk group data for tg {tg_number} on peer {repeater["peer_id"]} network {repeater["network"]}')
