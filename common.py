@@ -7,16 +7,15 @@ interesting_talk_group_names = [
     'ATL Metro',
     'Atlanta Metro',
     #  'Bridge',
-    'GAstate',
-    'Georgia',
-    'GA ARES',
-    'Georgia ARES',
-    'GA North',
-    'North Georgia',
-    'GA Skywarn',
-    'Georgia Skywarn'
+    'GAstate',  # 3113
+    'Georgia',  # 3113 TODO should normalize this.
+    'GA ARES',  # 31130
+    'Georgia ARES', # 31130 TODO SHOULD NORMALIZE
+    'GA North',  # 31134
+    'North Georgia',  # 31134 TODO SHOULD NORMALIZE
+    'GA Skywarn',  # 31139
+    'Georgia Skywarn'  # 31139 TODO SHOULD NORMALIZE
     "SEreg",
-    #"Vdalia Net",
     #"Vidalia Net",
 ]
 
@@ -53,6 +52,7 @@ less_interesting_talk_groups = [91, 93, 310, 311, 312, 313, 314, 315, 315, 317, 
 
 # all traffic from the interesting peers will be logged.  Best to not turn on Brandmeister.
 interesting_peers = {
+    310028: 'KK4JPG Forsyth',
     310051: 'K5TEX Free Home',
     310293: 'W4BOC Stone Mountain',
     310295: "W4KIP Little Sweat Mountain",
@@ -81,9 +81,9 @@ interesting_peers = {
     311337: 'WA4ASI Covington',
     311338: 'KD4Z Roswell',
     311339: 'KD4APP Ball Ground',
-    311340: 'W4KIP Marietta',
-    311343: 'W4KIP Marietta',
-    311344: 'W4KIP Atlanta',
+    311340: 'W4KIP Little Sweat',
+    311343: 'W4KIP Pine Log',
+    311344: 'W4KIP Blackjack',
     311347: 'WB4BXO LaGrange',
     311348: 'WR4SG Valdosta',
     311350: 'KM4DND Waycross',
@@ -103,13 +103,16 @@ interesting_peers = {
     312732: 'N4SFU Twin City',
     312779: 'WY4EMY Kathleen',
     313027: 'KE4UHF Vidalia',
-    313132: 'W4BOC Stone Mountain',
+    313142: 'W4BOC Stone Mountain',
+    313248: 'K4IO Mansfield',
     313269: 'AI1U Snellville',
     313874: 'K9APD Pine Log Mountain Waleska',
+    314785: 'Kathleen',
     }
 
 interesting_peer_ids = interesting_peers.keys()
 ignore_peer_ids = [311333011,  # WA4YIH Homebrew Repeater constant kerchunks onto TG 3113.
+                   316886205,  # KM4BA analog link?
                    ]
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
 # names must map to talk group map names, below.
@@ -119,9 +122,14 @@ remap_map = {
         ],
 #    -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310466: [{'tg_name_old': 'Savannah - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Savannah - MARC - NA', 'tg_name_new': 'DMR-MARC NA'},
              {'tg_name_old': 'Savannah - Local', 'tg_name_new': 'Local 9'},
+             {'tg_name_old': 'Savannah - BM - WW', 'tg_name_new': 'BM-WW'},
+             {'tg_name_old': 'Savannah - BM - NA', 'tg_name_new': 'BM-NA'},
              {'tg_name_old': 'Savannah - Kingsland 9', 'tg_name_new': 'Kingsland - Local'},
              {'tg_name_old': 'Savannah - FL Statewide','tg_name_new': 'FLstate'},
+             {'tg_name_old': 'Savannah - GA Statewide', 'tg_name_new': 'GAstate'},
+             {'tg_name_old': 'Savannah - USA 3100', 'tg_name_new': 'USA 3100'},
              ],
     310592: [{'tg_name_old': 'Vidalia - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
 #    310996: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
@@ -131,11 +139,14 @@ remap_map = {
              {'tg_name_old': 'Kingsland - First Coast', 'tg_name_new': 'First Coast'},
              {'tg_name_old': 'Kingsland - FL Statewide', 'tg_name_new': 'FLstate'},
              {'tg_name_old': 'Kingsland - GA Statewide', 'tg_name_new': 'GAstate'},
+             {'tg_name_old': 'Kingsland - GA ARES', "tg_name_new": "GA ARES"},
              {'tg_name_old': 'Kingsland - NE FL ARES', 'tg_name_new': 'NE FL ARES'},
              {'tg_name_old': 'Kingsland - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Kingsland - Parrot', 'tg_name_new': 'Parrot'},
              ],
 #    311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311350: [{'tg_name_old': 'Waycross - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
+             {'tg_name_old': 'Waycross - GA Statewide', 'tg_name_new': 'GAstate'},
              {'tg_name_old': 'Waycross - Kingsland 9', 'tg_name_new': 'Kingsland - Local'},
              {'tg_name_old': 'Waycross - Parrot', 'tg_name_new': 'Parrot'},
              {'tg_name_old': 'Waycross - BM - NA', 'tg_name_new': 'BM-NA'},
@@ -250,6 +261,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Idaho - 10 Minute Limit', 'tg': 3116, 'description': 'Idaho State-wide', },
     {'name': 'Maryland - 10 Minute Limit', 'tg': 3124, 'description': 'Maryland State-wide', },
     {'name': 'Maryland', 'tg': 3124, 'description': 'Maryland State-wide', },
+    {'name': 'New Jersey', 'tg': 3134, 'description': 'New Jersey State-wide', },
     {'name': 'South Carolina - 10 Minute Limit', 'tg': 3145, 'description': 'South Carolina State-wide', },
     {'name': 'North Carolina - 10 Minute Limit', 'tg': 3137, 'description': 'North Carolina State-Wide', },
     {'name': 'Tennessee', 'tg': 3147, 'description': 'Tennessee State-wide', },
@@ -295,7 +307,8 @@ talk_groups['Brandmeister'] = [
     {'name': 'North Georgia', 'tg': 31134, 'description': 'North Georgia', },
     {'name': 'Central GA', 'tg': 31135, 'description': 'Central Georgia', },
     {'name': 'Southwest GA', 'tg': 31136, 'description': 'Southwest Georgia', },
-    {'name': 'KingsLand Digital', 'tg': 31137, 'description': 'Kingsland Digital', },
+    {'name': 'Kingsland Digital', 'tg': 31137, 'description': 'Kingsland Digital', },
+    {'name': 'GA TAC', 'tg': 31138, 'description': 'Georgia TAC', },
     {'name': 'Georgia Skywarn', 'tg': 31139, 'description': 'Georgia Skywarn', },
     {'name': 'BSRG', 'tg': 311340, 'description': 'BSRG', },
     {'name': 'Maui County', 'tg': 31151, 'description': 'Maui County', },
@@ -306,8 +319,10 @@ talk_groups['Brandmeister'] = [
     {'name': 'Handi-Hams', 'tg': 31990, 'description': 'Handi-Hams', },
     {'name': 'Hamfurs', 'tg': 98002, 'description': 'Hamfurs', },
     {'name': 'Reddit', 'tg': 98003, 'description': 'Reddit', },
+    {'name': 'WVNET', 'tg': 98638, 'description': 'Wireless Village Net', },
     {'name': 'Vidalia Net', 'tg': 310592, 'description': 'Vidalia Net', },
     {'name': 'Kingsland Digital', 'tg': 311307, 'description': 'Kingsland Digital', },
+    {'name': 'Parrot 310997', 'tg': 310997, 'description': 'Parrot 310997', },
     {'name': 'BSRG', 'tg': 311340, 'description': 'BSRG', },
     {'name': 'N1KDO Group', 'tg': 3113090, 'description': 'N1KDO Group Call', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
