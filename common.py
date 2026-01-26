@@ -2,7 +2,7 @@ import logging
 import json
 import re
 
-# all traffic to these talk groups will be logged.
+# all traffic to these talk groups will be logged.  TODO: use the TG ID numbers instead.
 interesting_talk_group_names = [
     'ATL Metro',
     'Atlanta Metro',
@@ -120,7 +120,6 @@ remap_map = {
     -1: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     0: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}, # 0 will always remap.
         ],
-#    -3102: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     310466: [{'tg_name_old': 'Savannah - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
              {'tg_name_old': 'Savannah - MARC - NA', 'tg_name_new': 'DMR-MARC NA'},
              {'tg_name_old': 'Savannah - Local', 'tg_name_new': 'Local 9'},
@@ -144,7 +143,6 @@ remap_map = {
              {'tg_name_old': 'Kingsland - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
              {'tg_name_old': 'Kingsland - Parrot', 'tg_name_new': 'Parrot'},
              ],
-#    311318: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311350: [{'tg_name_old': 'Waycross - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
              {'tg_name_old': 'Waycross - GA Statewide', 'tg_name_new': 'GAstate'},
              {'tg_name_old': 'Waycross - Kingsland 9', 'tg_name_new': 'Kingsland - Local'},
@@ -153,44 +151,19 @@ remap_map = {
              {'tg_name_old': 'Waycross - USA 3100', 'tg_name_new': 'USA 3100'},
              {'tg_name_old': 'Waycross - Local', 'tg_name_new': 'Local9'},
              ],
-#    311617: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312284: [{'tg_name_old': 'Dublin GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
              {'tg_name_old': 'Dublin GA - Local', 'tg_name_new': 'Local 9'},
              ],
-#    312391: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
-#    312485: [{'tg_name_old': 'Vdalia Net', 'tg_name_new': 'Vidalia Net'}],
     312732: [{'tg_name_old': 'Twin City GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
 }
-
-
-# TODO functionality duplicated in async-listener. Now obsolete.  Do not use.
-def filter_talk_group_name(tg_name):
-    # Strip "CC" and everything after it.
-    s = re.sub(r' CC.*', '', tg_name)
-    # strip "CC" alone
-    s = re.sub(r' CC', '', s)
-    # strip out number-number-number
-    s = re.sub(r' \d+-\d+-\d+', '', s)
-    # strip out number-number
-    s = re.sub(r' \d+-\d+', '', s)
-    # print("%s | %s" % (s, old_s))
-    # remove trailing TG <number>
-    i = s.find(' TG ')
-    if i > 0:
-        s = s[0:i]
-    s = s.strip()
-    if len(s) < 1:
-        logging.warning('talkgroup name filter problem: {} -> {}'.format(tg_name, s))
-    return s
-
 
 networks = ['Brandmeister',
             'DMR-MARC',
             'DMR-SE',
             #'K4USD',
-            'Ham Digital',
+            #'Ham Digital',
             ]
 
 site_name_to_network_map = {
@@ -199,14 +172,14 @@ site_name_to_network_map = {
     'DMR-MARC-CCEAST': 'DMR-MARC',
     'DMR-MARC-CCWEST': 'DMR-MARC',
     'DMR-SE': 'DMR-SE',
-    'Ham Digital': 'Ham Digital',
+    #'Ham Digital': 'Ham Digital',
     'Homebrew Repeater': 'Brandmeister',  # obsolete
     'MMDVM Host': 'Brandmeister',  # obsolete
     'Motorola IP Site Connect': 'Brandmeister',  # obsolete
     }
 
 """ 
-mapping of C-bridge talkgroup name to talkgroup number to description
+mapping of talkgroup name,t alkgroup number, description
 """
 talk_groups = {}
 
@@ -325,6 +298,7 @@ talk_groups['Brandmeister'] = [
     {'name': 'Parrot 310997', 'tg': 310997, 'description': 'Parrot 310997', },
     {'name': 'BSRG', 'tg': 311340, 'description': 'BSRG', },
     {'name': 'N1KDO Group', 'tg': 3113090, 'description': 'N1KDO Group Call', },
+    {'name': 'WA4EOC Cherokee ARES', 'tg': 3215969, 'description': 'Cherokee County Amateur Radio Emergency Service', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
 
@@ -501,7 +475,6 @@ talk_groups['K4USD'] = [
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
-"""
 
 talk_groups['Ham Digital'] = [
     {'name': 'Worldwide', 'tg': 1, 'description': 'DMR-MARC Worldwide', },
@@ -600,6 +573,7 @@ talk_groups['Ham Digital'] = [
     {'name': 'TNTEN', 'tg': 314710, 'description': 'Tennessee Ten', },
     {'name': 'AllCall', 'tg': 16777215, 'description': 'All Call (don\'t!)', },
 ]
+"""
 
 new_master_dict = {}
 for network in networks:
