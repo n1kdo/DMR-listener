@@ -5,3 +5,4 @@ log_analytics_fragment.html
 *.html
 *.iml
 activity.png
+/talkgroups.json
