@@ -55,6 +55,7 @@ run_cbridge_poller = True
 def validate_call_data(call):
     # print(call)
     dest_id = call.get('dest_id')
+    repeater_name = call.get('sourcepeer')
     # this looks up talk groups by name.
     call_talk_group_name = call.get('filtered_dest') or call.get('dest') or '!no_dest!'
     if call_talk_group_name[0] == '(' and call_talk_group_name[-1] == ')':
@@ -84,7 +85,7 @@ def validate_call_data(call):
             found_talk_group = talk_group
             break
     if found_talk_group is None:
-        logging.warning(f'Cannot find talk group "{call_talk_group_name}" in network "{network_name}" on repeater "{site}".')
+        logging.warning(f'Cannot find talk group "{call_talk_group_name}" in network "{network_name}" on repeater "{repeater_name}".')
         logging.warning(call)
         return False
 
@@ -171,13 +172,21 @@ async def mqtt(data):
     global missing_destinations
     global write_files
     calls_to_log = []
-    logging.debug('sio mqtt received')
+    # logging.debug('sio mqtt received')
     raw_data = json.loads(data['payload'])
     try:
         if raw_data.get('Event', '').strip() == 'Session-Stop':
-            # logging.debug('Session-Stop')
+            logging.debug('Session-Stop ' + str(raw_data))
             destination_id = raw_data.get('DestinationID', -1)
             context_id = raw_data.get('ContextID', -1)
+            if not isinstance(context_id, int):
+                #logging.warning(f'context ID {context_id} is not an integer, it is a {type(context_id)}')
+                #logging.warning('Session-Stop ' + str(raw_data))
+                context_id = -1  # TODO: why?
+            peer_id = safe_int(context_id)
+            # look for usage of Georgia talk groups from nodes that are not on the list.
+            if peer_id < 1000000 and peer_id not in interesting_peer_ids and peer_id not in ignore_peer_ids and destination_id in interesting_talk_groups:
+                logging.warning(f'BM: interesting usage of talkgroup DestinationID: {destination_id}, from peer ContextID: {context_id}')
             if (destination_id in interesting_talk_groups or context_id in interesting_peer_ids) and context_id not in ignore_peer_ids:
                 logging.debug(f'Session-Stop DestinationID: {destination_id}, ContextID: {context_id}')
                 #  print('len(last_ten)={}'.format(len(last_ten)))
@@ -497,6 +506,9 @@ async def cbridge_poller():
                                 # print(f'allowed call_site={call_site}')
                                 filtered_dest = call.get('filtered_dest') or 'missing'
                                 peer_id = call.get('peer_id') or -1
+                                dest_id = call.get('dest_id')
+                                if dest_id in interesting_talk_groups and peer_id not in interesting_peer_ids:
+                                    logging.warning(f'CB: interesting usage of talkgroup dest_id {dest_id}, from peer_id: {peer_id}')
                                 if filtered_dest in interesting_talk_group_names or peer_id in interesting_peer_ids:
                                     validate_call_data(call)
                                     calls.append(call)

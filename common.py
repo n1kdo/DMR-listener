@@ -165,7 +165,7 @@ remap_map = {
 }
 
 
-# TODO functionality duplicated in async-listener.
+# TODO functionality duplicated in async-listener. Now obsolete.  Do not use.
 def filter_talk_group_name(tg_name):
     # Strip "CC" and everything after it.
     s = re.sub(r' CC.*', '', tg_name)

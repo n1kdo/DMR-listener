@@ -6,9 +6,12 @@ import logging
 import sys
 import time
 
-from common import talk_group_name_to_number_mapping, talk_group_number_to_data_mapping, site_name_to_network_map
-from common import filter_talk_group_name
-
+from common import (interesting_peer_ids,
+                    site_name_to_network_map,
+                    remap_map,
+                    talk_group_name_to_number_mapping,
+                    talk_group_number_to_data_mapping,
+                    )
 import charts
 
 
@@ -58,33 +61,66 @@ def read_log(filename, start, end):
               'radio_id', 'radio_name', 'radio_username', 'duration', 'source_peer', 'tgid', 'slot']
 
     rows = 0
-    with open(filename, 'r') as datafile:
-        csvreader = csv.DictReader(datafile, fields)
-        for row in csvreader:
-            rows += 1
-            tss = row.get('timestamp')
-            if tss is None:
-                continue
-            ts = convert_iso_timestamp(tss)
-            if ts is not None:
-                row['timestamp'] = ts
-                if start is not None and ts < start or end is not None and ts > end:
+    try:
+        with open(filename, 'r') as datafile:
+            csvreader = csv.DictReader(datafile, fields)
+            for row in csvreader:
+                rows += 1
+                tss = row.get('timestamp')
+                if tss is None:
+                    continue
+                ts = convert_iso_timestamp(tss)
+                if ts is not None:
+                    row['timestamp'] = ts
+                    if start is not None and ts < start or end is not None and ts > end:
+                        continue
+                else:
+                    print('oh shit.')
                     continue
 
-            duration = row.get('duration') or '0'
-            if duration is not None:
-                try:
-                    row['duration'] = float(duration)
-                except Exception as e:
-                    print(e)
-                    print(row)
-            else:
-                row['duration'] = 0.0
-            if row.get('peer_id') is not None:
-                row['peer_id'] = safe_int(row['peer_id'])
-            if row.get('radio_id') is not None:
-                row['radio_id'] = safe_int(row['radio_id'])
-            calls.append(row)
+                duration = row.get('duration') or '0'
+                if duration is not None:
+                    try:
+                        row['duration'] = float(duration)
+                    except Exception as e:
+                        print(e)
+                        print(row)
+                else:
+                    row['duration'] = 0.0
+                if row.get('peer_id') is not None:
+                    row['peer_id'] = safe_int(row['peer_id'])
+                if row.get('radio_id') is not None:
+                    row['radio_id'] = safe_int(row['radio_id'])
+                if row.get('dest') is not None:
+                    talk_group = row['dest']
+                    peer_id = row.get('peer_id')
+                    tg_id = row.get('tg_id')
+                    # filter out talk groups that are uninteresting
+                    # if talk_group not in interesting_talk_group_names and peer_id not in interesting_peer_ids:
+                    if peer_id not in interesting_peer_ids:
+                        continue
+                    # HACK HACK HACK alert. Fix up data that is bad from the source.  Yecch.
+                    remap_list = remap_map.get(0)  # 0 is global remap.
+                    if remap_list is not None:
+                        for remap in remap_list:
+                            if remap['tg_name_old'] == talk_group:
+                                talk_group = remap['tg_name_new']
+
+                    remap_list = remap_map.get(peer_id)
+                    if remap_list is not None:
+                        for remap in remap_list:
+                            if remap['tg_name_old'] == talk_group:
+                                talk_group = remap['tg_name_new']
+                    row['talk_group'] = talk_group
+
+                    #if tg_id not in interesting_talk_groups:
+                    #    continue
+                    #if talk_group not in interesting_talk_group_names:
+                    #    continue
+                calls.append(row)
+    except Exception as e:
+        print(e)
+        raise e
 
     logging.info('read        {} rows'.format(rows))
     logging.info('filtered to {} records'.format(len(calls)))
@@ -798,8 +834,6 @@ def print_users_summary(users_list):
 def normalize_talkgroup_names(calls):
     for call in calls:
         site = call.get('site')
-        # TODO: soon to be redundant?
-        call['dest'] = filter_talk_group_name(call.get('dest') or '!missing!')
         network = site_name_to_network_map.get(site)
         tgid = call.get('tgid') or '0'
         found_tg_name = False
