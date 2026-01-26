@@ -28,6 +28,7 @@
     "color_code": 3,
     "location": "Snellville, Georgia",
     "network": "Ham Digital",
+    "notes": "Ham Digital network is kaput",
     "talk_groups": [
       {
         "talkgroup": 31131,
@@ -289,6 +290,7 @@
     "color_code": 7,
     "location": "Lawrenceville, Georgia",
     "network": "Ham Digital",
+    "notes": "Ham Digital network is kaput",
     "talk_groups": [
       {
         "talkgroup": 31131,
@@ -1310,6 +1312,7 @@
     "color_code": 3,
     "location": "Between, Georgia",
     "network": "Ham Digital",
+    "notes": "Ham Digital Network is defunct",
     "talk_groups": [
       {
         "talkgroup": 1,
@@ -1470,248 +1473,22 @@
     "output": "442.1125",
     "color_code": 1,
     "location": "Sawnee Mountain, Georgia",
-    "network": "Ham Digital",
-    "notes": "Now connected to Internet",
+    "network": "Brandmeister",
     "talk_groups": [
-      {
-        "talkgroup": 1,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 2,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 9,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 10,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 13,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 91,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 93,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 133,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 310,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 311,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 312,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 313,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 314,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 315,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 316,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 317,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 318,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 319,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 1776,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3100,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3112,
-        "slot": 2,
-        "mode": 1
-      },
-      {
+        {
         "talkgroup": 3113,
         "slot": 2,
+        "mode": 1
+      },
+            {
+        "talkgroup": 31131,
+        "slot": 2,
         "mode": 0
-      },
-      {
-        "talkgroup": 3121,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3125,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3127,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3133,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3139,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3145,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3147,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3148,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3155,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3169,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3172,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3174,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3175,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3176,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3182,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8951,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 9998,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31012,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31121,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31130,
-        "slot": 2,
-        "mode": 1
       },
       {
         "talkgroup": 31134,
         "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31139,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31665,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 314710,
-        "slot": 2,
-        "mode": 1
+        "mode": 0
       }
     ]
   },
@@ -1784,192 +1561,17 @@
     "output": "441.8125",
     "color_code": 1,
     "location": "Stone Mountain, Georgia",
-    "network": "Ham Digital",
+    "network": "Brandmeister",
     "talk_groups": [
       {
-        "talkgroup": 1,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 2,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8,
-        "slot": 1,
-        "mode": 0
-      },
-      {
-        "talkgroup": 9,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 13,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 91,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 93,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 133,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 310,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 311,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 312,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 313,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 314,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 315,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 316,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 317,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 318,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 319,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 1776,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3100,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3112,
-        "slot": 2,
-        "mode": 1
-      },
-      {
         "talkgroup": 3113,
-        "slot": 2,
+        "slot": 1,
         "mode": 0
       },
-      {
-        "talkgroup": 3126,
+       {
+        "talkgroup": 31131,
         "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3139,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3147,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3172,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3174,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8951,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 9998,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31012,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31121,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31130,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31134,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31139,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31665,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31990,
-        "slot": 2,
-        "mode": 1
+        "mode": 0
       }
     ]
   },
@@ -2027,207 +1629,18 @@
     "output": "444.825",
     "color_code": 10,
     "location": "Atlanta, Georgia",
-    "network": "Ham Digital",
+    "network": "Brandmeister",
     "talk_groups": [
+
       {
-        "talkgroup": 1,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 2,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 3,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8,
+        "talkgroup": 31131,
         "slot": 1,
         "mode": 0
-      },
-      {
-        "talkgroup": 9,
-        "slot": 2,
-        "mode": 0
-      },
-      {
-        "talkgroup": 13,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 91,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 93,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 133,
-        "slot": 1,
-        "mode": 1
-      },
-      {
-        "talkgroup": 310,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 311,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 312,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 313,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 314,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 315,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 316,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 317,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 318,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 319,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 907,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 1776,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3100,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3112,
-        "slot": 2,
-        "mode": 1
       },
       {
         "talkgroup": 3113,
         "slot": 2,
         "mode": 0
-      },
-      {
-        "talkgroup": 3139,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3147,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3148,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3172,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 3174,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 8951,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 9998,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31012,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31121,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31130,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31131,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31134,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31139,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31665,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 31990,
-        "slot": 2,
-        "mode": 1
-      },
-      {
-        "talkgroup": 314710,
-        "slot": 2,
-        "mode": 1
       }
     ]
   },
@@ -2334,7 +1747,7 @@
     "output": "443.275",
     "color_code": 7,
     "location": "KSU Campus, Marietta, Georgia",
-    "network": "K4USD",
+    "network": "Brandmeister",
     "talk_groups": [
       {
         "talkgroup": 2,
@@ -2455,7 +1868,7 @@
     "input": "449.3125",
     "output": "444.3125",
     "color_code": 7,
-    "location": "Powersville , Georgia",
+    "location": "Ft. Valley, Georgia",
     "network": "Brandmeister",
     "talk_groups": [
       {
@@ -2475,6 +1888,28 @@
     "call": "WY4EMA",
     "input": "445.575",
     "output": "440.575",
+    "color_code": 1,
+    "location": "Kathleen, Georgia",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 31135,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 3113,
+        "slot": 2,
+        "mode": 0
+      }
+    ]
+  },
+  {
+    "peer_id": 314785,
+    "call": "W4MB",
+    "input": "446.800",
+    "output": "441.800",
     "color_code": 1,
     "location": "Kathleen, Georgia",
     "network": "Brandmeister",
