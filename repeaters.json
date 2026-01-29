@@ -1301,5 +1301,27 @@
         "mode": 0
       }
     ]
+  },
+  {
+    "peer_id": 314796,
+    "call": "WD4EMA",
+    "input": "445.650",
+    "output": "440.650",
+    "color_code": 1,
+    "location": "Chatsworth, Georgia",
+    "network": "Brandmeister",
+    "notes": "",
+    "talk_groups": [
+      {
+        "talkgroup": 31130,
+        "slot": 1,
+        "mode": 0
+      },
+      {
+        "talkgroup": 31133,
+        "slot": 1,
+        "mode": 0
+      }
+    ]
   }
 ]

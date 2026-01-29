@@ -107,13 +107,15 @@ interesting_peers = {
     313248: 'K4IO Mansfield',
     313269: 'AI1U Snellville',
     313874: 'K9APD Pine Log Mountain Waleska',
-    314785: 'Kathleen',
+    314785: 'W4MB Kathleen',
+    314796: 'WD4EMA Chatsworth',
     }
 
 interesting_peer_ids = interesting_peers.keys()
 ignore_peer_ids = [311333011,  # WA4YIH Homebrew Repeater constant kerchunks onto TG 3113.
                    316886205,  # KM4BA analog link?
                    ]
+less_interesting_peer_ids = [31045]  # don't warn on traffic to Georgia talk groups from these peers.
 # remap talk groups names on particular peers to make them consistent.  This helps to reduce GIGO.
 # names must map to talk group map names, below.
 remap_map = {
@@ -151,10 +153,14 @@ remap_map = {
              {'tg_name_old': 'Waycross - USA 3100', 'tg_name_new': 'USA 3100'},
              {'tg_name_old': 'Waycross - Local', 'tg_name_new': 'Local9'},
              ],
+    311617: [{'tg_name_old': 'Dawson GA - First Coast', 'tg_name_new': 'First Coast'},
+             {'tg_name_old': 'Dawson GA - Local', 'tg_name_new': 'Local9'},
+             ],
     311637: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312284: [{'tg_name_old': 'Dublin GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'},
              {'tg_name_old': 'Dublin GA - Local', 'tg_name_new': 'Local 9'},
              ],
+    312391: [{'tg_name_old': 'Cochran GA - Central GA', 'tg_name_new': 'Central GA'}],
     312444: [{'tg_name_old': 'Local8', 'tg_name_new': 'ATL Metro'}],
     312732: [{'tg_name_old': 'Twin City GA - Vidalia Net', 'tg_name_new': 'Vidalia Net'}],
 }

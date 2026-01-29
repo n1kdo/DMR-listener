@@ -16,6 +16,7 @@ from common import (ignore_peer_ids,
                     interesting_peer_ids,
                     interesting_talk_groups,
                     interesting_talk_group_names,
+                    less_interesting_peer_ids,
                     remap_map,
                     site_name_to_network_map,
                     talk_groups,
@@ -185,7 +186,7 @@ async def mqtt(data):
                 context_id = -1  # TODO: why?
             peer_id = safe_int(context_id)
             # look for usage of Georgia talk groups from nodes that are not on the list.
-            if peer_id < 1000000 and peer_id not in interesting_peer_ids and peer_id not in ignore_peer_ids and destination_id in interesting_talk_groups:
+            if peer_id < 1000000 and peer_id not in interesting_peer_ids and peer_id not in ignore_peer_ids and peer_id not in less_interesting_peer_ids and destination_id in interesting_talk_groups:
                 logging.warning(f'BM: interesting usage of talkgroup DestinationID: {destination_id}, from peer ContextID: {context_id}')
             if (destination_id in interesting_talk_groups or context_id in interesting_peer_ids) and context_id not in ignore_peer_ids:
                 logging.debug(f'Session-Stop DestinationID: {destination_id}, ContextID: {context_id}')
