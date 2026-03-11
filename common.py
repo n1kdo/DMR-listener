@@ -30,8 +30,7 @@ interesting_talk_groups = [3113,
                            31137,
                            31138,
                            31139,
-                           311340,
-                           3113090, ]
+                           ]
 
 less_interesting_talk_group_names = [  # for debugging with more volume
     'TAC 310',
